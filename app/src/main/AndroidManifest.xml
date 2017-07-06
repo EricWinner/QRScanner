@@ -11,6 +11,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -31,18 +37,11 @@
         </activity>
         <activity
             android:name="com.example.ubuntu.qc_scanner.LoginActivity"
-            android:label="@string/app_name">
-        </activity>
-        <activity
-            android:name="com.example.ubuntu.qc_scanner.RegisterActivity"
-            android:label="@string/app_name">
-        </activity>
-        <activity
-            android:name="com.example.ubuntu.qc_scanner.QCScannerActivity"
-            android:label="@string/app_name">
-        </activity>
-        <activity android:name="io.github.xudaojie.qrcodelib.CaptureActivity"/>
-        <activity android:name=".SimpleCaptureActivity"/>
+            android:label="@string/app_name"></activity>
+        <activity android:name="com.example.ubuntu.qc_scanner.RegisterActivity"></activity>
+        <activity android:name="com.example.ubuntu.qc_scanner.QCScannerActivity"></activity>
+        <activity android:name="io.github.xudaojie.qrcodelib.CaptureActivity" />
+        <activity android:name=".SimpleCaptureActivity" />
     </application>
 
 </manifest>

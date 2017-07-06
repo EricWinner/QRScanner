@@ -30,6 +30,9 @@ repositories {
 //    maven { url "http://repo1.maven.org/maven2" }
     maven { url "https://jitpack.io" }
 //    maven { url "https://mvnrepository.com/artifact" }
+    flatDir {
+        dirs 'libs' //this way we can find the .aar file in libs folder
+    }
 }
 
 dependencies {
@@ -41,9 +44,13 @@ dependencies {
     compile 'com.android.support:design:25.1.0'
     compile files('libs/volley_source.jar')
     compile files('libs/gson-2.7.jar')
+    compile files('libs/MobCommons-2017.0607.1736.jar')
+    compile files('libs/MobTools-2017.0607.1736.jar')
     compile 'pub.devrel:easypermissions:0.2.0'
     testCompile 'junit:junit:4.12'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
     //compile project(':qrcodelib')
     compile 'com.github.XuDaojie:QRCode-Android:v0.4.2'
+    compile name: 'SMSSDK-3.0.0', ext: 'aar'
+    compile name: 'SMSSDKGUI-3.0.0', ext: 'aar'
 }
