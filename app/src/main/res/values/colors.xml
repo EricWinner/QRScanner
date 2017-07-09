@@ -9,4 +9,6 @@
     <color name="color_register_hint">#40ff93</color>
     <color name="colorPositive">#40596B</color>
     <color name="colorNegative">#FF7058</color>
+    <color name="activity_background">#232530</color>
+    <color name="green">#03fc31</color>
 </resources>

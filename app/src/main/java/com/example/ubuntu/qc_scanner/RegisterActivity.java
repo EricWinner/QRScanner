@@ -30,6 +30,7 @@ import com.example.ubuntu.qc_scanner.mode.UserPreference;
 import com.example.ubuntu.qc_scanner.util.Utils;
 import com.geniusforapp.fancydialog.FancyAlertDialog;
 import com.mob.MobSDK;
+import com.spark.submitbutton.SubmitButton;
 
 import java.util.ArrayList;
 
@@ -53,7 +54,7 @@ public class RegisterActivity extends AppCompatActivity implements HttpResponeCa
     private EditText mRegisterPassword;
     private EditText mRegisterVerificationCode;
     private Button mRegisterButton;
-    private Button mRegisterCommitButton;
+    private SubmitButton mRegisterCommitButton;
     private RequestQueue mRequestQueue;
 
     private int i = 30;
@@ -233,7 +234,7 @@ public class RegisterActivity extends AppCompatActivity implements HttpResponeCa
             }
         });
 
-        mRegisterCommitButton = (Button) this.findViewById(R.id.register_commit);
+        mRegisterCommitButton = (SubmitButton) this.findViewById(R.id.register_commit);
         mRegisterCommitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -29,7 +29,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.ebanx.swipebtn.OnStateChangeListener;
+import com.ebanx.swipebtn.SwipeButton;
 import com.example.ubuntu.qc_scanner.util.Utils;
 
 import java.util.ArrayList;
@@ -90,11 +93,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.username_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        SwipeButton mEmailSignInButton = (SwipeButton) findViewById(R.id.username_sign_in_button);
+
+        mEmailSignInButton.setOnStateChangeListener(new OnStateChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onStateChange(boolean active) {
                 attemptLogin();
+                Toast.makeText(LoginActivity.this, "State: " + active, Toast.LENGTH_SHORT).show();
             }
         });
 

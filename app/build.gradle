@@ -34,6 +34,9 @@ repositories {
     flatDir {
         dirs 'libs' //this way we can find the .aar file in libs folder
     }
+    maven {
+        url 'https://dl.bintray.com/spark/maven'
+    }
 }
 
 dependencies {
@@ -54,4 +57,6 @@ dependencies {
     compile name: 'SMSSDK-3.0.0', ext: 'aar'
     compile name: 'SMSSDKGUI-3.0.0', ext: 'aar'
     compile 'com.geniusforapp.fancydialog:FancyDialog:0.1.0'
+    compile 'com.ebanx:swipe-button:0.5.1'
+    compile 'me.spark:submitbutton:1.0.1'
 }
