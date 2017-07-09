@@ -92,7 +92,5 @@ public class RequestApiData {
 
 		//请求数据接口
 		RequestManager.post(UrlConstance.APP_URL, tagUrl, parameter, clazz, callback);
-
 	}
-
 }

@@ -1,7 +1,8 @@
 package com.example.ubuntu.qc_scanner.application;
-import android.app.Application;
 
-public class ItLanbaoLibApplication extends Application{
+import com.mob.MobApplication;
+
+public class ItLanbaoLibApplication extends MobApplication {
 	
 	private static ItLanbaoLibApplication instance;
 

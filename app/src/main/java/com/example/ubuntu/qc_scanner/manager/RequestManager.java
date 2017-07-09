@@ -19,6 +19,7 @@ import com.example.ubuntu.qc_scanner.http.HttpResponeCallBack;
 import com.example.ubuntu.qc_scanner.mode.ApiParams;
 import com.example.ubuntu.qc_scanner.util.NetworkUtils;
 import com.google.gson.Gson;
+import com.mob.MobApplication;
 
 import java.util.HashMap;
 import java.util.Map;

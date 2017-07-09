@@ -44,21 +44,21 @@ public class WelComeActivity extends Activity implements HttpResponeCallBack{
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                String userAccount = UserPreference.read(KeyConstance.IS_USER_ACCOUNT, null);
+               /* String userAccount = UserPreference.read(KeyConstance.IS_USER_ACCOUNT, null);
                 String userPassword = UserPreference.read(KeyConstance.IS_USER_PASSWORD, null);
-                String userId = UserPreference.read(KeyConstance.IS_USER_ID, null);
+                String userId = UserPreference.read(KeyConstance.IS_USER_ID, null);*/
 
-                if (TextUtils.isEmpty(userAccount)) {
-                    Intent intent = new Intent();
-                    intent.setClass(WelComeActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                    finish();
+                Intent intent = new Intent();
+                intent.setClass(WelComeActivity.this, LoginActivity.class);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
+                /*if (TextUtils.isEmpty(userAccount)) {
                 } else {
                     //用保存的信息直接登录
                     RequestApiData.getInstance().getLoginData(userAccount, userPassword,
                             UserBaseInfo.class, WelComeActivity.this);
-                }
+                }*/
             }
 
             @Override

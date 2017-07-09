@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView
-                    android:id="@+id/username"
+                    android:id="@+id/phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_username"
@@ -73,39 +73,36 @@
                 android:text="@string/action_sign_in"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/forget_password_view"
-                android:layout_width="wrap_content"
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:textSize="@dimen/forget_text_size"
-                android:textColor="@color/forget_text_color"
-                android:text="@string/forget_password" />
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:id="@+id/forget_password_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:textSize="@dimen/forget_text_size"
+                    android:textColor="@color/forget_text_color"
+                    android:text="@string/forget_password" />
+
+                <TextView
+                    android:id="@+id/register_account_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/register_account"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="@dimen/forget_text_size"
+                    android:textColor="@color/forget_text_color"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
         </LinearLayout>
 
     </ScrollView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="end"
-        >
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/register_view_background"/>
-
-        <TextView
-            android:id="@+id/register_account_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/register_account"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:textSize="@dimen/forget_text_size"
-            android:textColor="@color/forget_text_color"/>
-    </LinearLayout>
 
 </LinearLayout>

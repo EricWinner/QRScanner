@@ -2,17 +2,20 @@
     <string name="app_name">QC_Scanner</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_username">用户名</string>
-    <string name="prompt_password">密码 </string>
+    <string name="prompt_username">手机号码</string>
+    <string name="prompt_password">密码</string>
     <string name="action_sign_in">登录</string>
     <string name="action_sign_in_short">登录</string>
-    <string name="error_invalid_email">邮箱地址是非法的</string>
+    <string name="error_invalid_email">手机号码不正确</string>
     <string name="error_invalid_password">密码太短</string>
     <string name="error_incorrect_password">密码不正确</string>
     <string name="error_field_required">此空是必须填写的</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="permission_rationale">"提供电子邮件需要联系人权限落成。"</string>
     <string name="forget_password">忘记密码?</string>
     <string name="register_account">注册帐号!</string>
+    <string name="input_phone_number">请输入手机号</string>
+    <string name="input_phone_pasword">请输入密码</string>
+    <string name="input_verification">请输入验证码</string>
+    <string name="get_verification_code">获取验证码</string>
+    <string name="confirm_login">确认登录</string>
 </resources>
