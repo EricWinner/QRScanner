@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
 import android.content.CursorLoader;
@@ -19,14 +18,15 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,16 +37,13 @@ import com.example.ubuntu.qc_scanner.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via username/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>,View.OnClickListener {
+public class LoginActivity extends BaseActivity implements LoaderCallbacks<Cursor>,View.OnClickListener {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -76,7 +73,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentLayout(R.layout.activity_login);
+
+        setTitle("Login");//设置标题
+        setToolBarMenuOnclick(new EventBusMenuItemClick());//设置menu菜单的显示和点击事件
         // Set up the login form.
         mUsernameView = (AutoCompleteTextView) findViewById(R.id.phone_number);
         populateAutoComplete();
@@ -386,6 +386,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_login, menu);
+        return true;
+    }
+
+    private class EventBusMenuItemClick implements Toolbar.OnMenuItemClickListener {
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_message:
+                    Toast.makeText(LoginActivity.this, "Click action_message", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.action_message1:
+                    Toast.makeText(LoginActivity.this, "Click action_message1", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+            return false;
         }
     }
 }

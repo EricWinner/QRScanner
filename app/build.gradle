@@ -37,6 +37,7 @@ repositories {
     maven {
         url 'https://dl.bintray.com/spark/maven'
     }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -58,5 +59,6 @@ dependencies {
     compile name: 'SMSSDKGUI-3.0.0', ext: 'aar'
     compile 'com.geniusforapp.fancydialog:FancyDialog:0.1.0'
     compile 'com.ebanx:swipe-button:0.5.1'
-    compile 'me.spark:submitbutton:1.0.1'
+    compile 'com.github.ishaan1995:ButtonProgressBar:1.0'
+    compile 'com.android.support:animated-vector-drawable:25.1.0'
 }

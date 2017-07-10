@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#408cff</color>
+    <color name="colorPrimary">#e9a642</color>
+    <color name="colorPrimaryDark">#be7d04</color>
+    <color name="colorAccent">#f1620d</color>
     <color name="forget_text_color">#408cff</color>
     <color name="register_view_background">#525353</color>
-    <color name="register_background">#50525353</color>
-    <color name="color_register_hint">#40ff93</color>
+    <color name="register_background">#504cf1f1</color>
+    <color name="color_register_hint">#f7a660</color>
     <color name="colorPositive">#40596B</color>
     <color name="colorNegative">#FF7058</color>
-    <color name="activity_background">#232530</color>
+    <color name="activity_background">#f9f7f7</color>
     <color name="green">#03fc31</color>
+    <color name="white">#FFFFFF</color>
 </resources>

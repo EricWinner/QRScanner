@@ -19,4 +19,8 @@
     <string name="input_verification">Please input verification code!</string>
     <string name="get_verification_code">Get verification code!</string>
     <string name="confirm_login">Confirm Login!</string>
+    <string name="title_action_cut">Cut</string>
+    <string name="title_action_copy">Copy</string>
+    <string name="title_action_delete">Delete</string>
+    <string name="title_action_share">Share</string>
 </resources>

@@ -11,6 +11,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,19 +31,19 @@ import com.example.ubuntu.qc_scanner.mode.UserPreference;
 import com.example.ubuntu.qc_scanner.util.Utils;
 import com.geniusforapp.fancydialog.FancyAlertDialog;
 import com.mob.MobSDK;
-import com.spark.submitbutton.SubmitButton;
 
 import java.util.ArrayList;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import github.ishaan.buttonprogressbar.ButtonProgressBar;
 
 
 /**
  * Created by ubuntu on 17-7-4.
  */
 
-public class RegisterActivity extends AppCompatActivity implements HttpResponeCallBack{
+public class RegisterActivity extends BaseActivity implements HttpResponeCallBack{
 
     private static final String TAG = RegisterActivity.class.getSimpleName();
 
@@ -54,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity implements HttpResponeCa
     private EditText mRegisterPassword;
     private EditText mRegisterVerificationCode;
     private Button mRegisterButton;
-    private SubmitButton mRegisterCommitButton;
+    private ButtonProgressBar mRegisterCommitButton;
     private RequestQueue mRequestQueue;
 
     private int i = 30;
@@ -123,11 +124,16 @@ public class RegisterActivity extends AppCompatActivity implements HttpResponeCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_phone);
+        setContentLayout(R.layout.activity_register_phone);
         initViews();
         checkPermission();
         registerSDK();
         mRequestQueue = Volley.newRequestQueue(RegisterActivity.this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void registerSDK() {
@@ -234,10 +240,17 @@ public class RegisterActivity extends AppCompatActivity implements HttpResponeCa
             }
         });
 
-        mRegisterCommitButton = (SubmitButton) this.findViewById(R.id.register_commit);
+        mRegisterCommitButton = (ButtonProgressBar) this.findViewById(R.id.register_commit);
         mRegisterCommitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mRegisterCommitButton.startLoader();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRegisterCommitButton.stopLoader();
+                    }
+                }, 5000);
                 String phoneNumber = mRegisterPhoneNumber.getText().toString();
                 String password = mRegisterPassword.getText().toString();
                 String verification = mRegisterVerificationCode.getText().toString();
@@ -247,6 +260,12 @@ public class RegisterActivity extends AppCompatActivity implements HttpResponeCa
                     if (Utils.isChinaPhoneLegal(phoneNumber)) {
                         //TODO
                         requestRegisterInfo(phoneNumber, password);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mRegisterCommitButton.stopLoader();
+                            }
+                        }, 5000);
                     } else {
                         Toast.makeText(RegisterActivity.this, "输入的密码不正确",Toast.LENGTH_LONG).show();
                     }
