@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- 将多个图片或上面两种效果按照顺序层叠起来 -->
+    <item>
+        <bitmap
+            android:src="@drawable/diamond_upholstery"
+            android:tileMode="repeat" />
+    </item>
+    <item android:bottom="100dp">
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/splash_top" />
+    </item>
+</layer-list>

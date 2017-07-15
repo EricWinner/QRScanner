@@ -23,4 +23,13 @@
     <string name="title_action_copy">Copy</string>
     <string name="title_action_delete">Delete</string>
     <string name="title_action_share">Share</string>
+
+    <string name="welcome_head_01">Spreadsheets on the go</string>
+    <string name="welcome_content_01">Get stuff done with or without an internet connection.</string>
+    <string name="welcome_head_02">Share and edit together</string>
+    <string name="welcome_content_02">Write on your own or invite more people to contribute.</string>
+    <string name="welcome_head_03">Automatically save to the web</string>
+    <string name="welcome_content_03">Never lose your progress, so you can keep working from any computer or device.</string>
+    <string name="welcome_head_04">Edit Excel spreadsheets</string>
+    <string name="welcome_content_04">Open, edit, and save Excel files - all within Sheets.</string>
 </resources>

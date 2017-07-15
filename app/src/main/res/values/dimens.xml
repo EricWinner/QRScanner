@@ -5,4 +5,13 @@
     <dimen name="forget_text_size">15sp</dimen>
     <dimen name="common_toolbar_height">48dp</dimen>
     <dimen name="common_tab_height">44dp</dimen>
+
+    <dimen name="welcome_images_size">360.0dp</dimen>
+    <dimen name="welcome_images_margin_top">0dp</dimen>
+    <dimen name="welcome_heading_margin_bottom">12dp</dimen>
+    <dimen name="welcome_text_margin">48dp</dimen>
+    <dimen name="welcome_heading">24sp</dimen>
+    <dimen name="welcome_text_margin_bottom">12dp</dimen>
+    <dimen name="welcome_content_min_height">96dp</dimen>
+    <dimen name="welcome_content">16sp</dimen>
 </resources>
