@@ -1,6 +1,5 @@
 package com.example.ubuntu.qc_scanner;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,25 +8,15 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.example.ubuntu.qc_scanner.application.ItLanBaoApplication;
-import com.example.ubuntu.qc_scanner.fragment.ProductFrament;
-import com.example.ubuntu.qc_scanner.http.HttpResponeCallBack;
-import com.example.ubuntu.qc_scanner.http.RequestApiData;
-import com.example.ubuntu.qc_scanner.http.UrlConstance;
-import com.example.ubuntu.qc_scanner.mode.Constant;
-import com.example.ubuntu.qc_scanner.mode.KeyConstance;
-import com.example.ubuntu.qc_scanner.mode.UserBaseInfo;
-import com.example.ubuntu.qc_scanner.mode.UserPreference;
+import com.example.ubuntu.qc_scanner.fragment.WelcomeFrament;
 import com.example.ubuntu.qc_scanner.util.ScreenUtil;
 import com.nineoldandroids.view.ViewHelper;
 
@@ -35,7 +24,7 @@ import com.nineoldandroids.view.ViewHelper;
  * Created by ubuntu on 17-7-4.
  */
 
-public class WelComeActivity extends AppCompatActivity implements HttpResponeCallBack {
+public class WelComeActivity extends AppCompatActivity  {
 
     private static final String TAG = "WelComeActivity";
 
@@ -149,7 +138,6 @@ public class WelComeActivity extends AppCompatActivity implements HttpResponeCal
 
     private void endTWizard() {
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
-        checkAccount();
         finish();
     }
 
@@ -183,19 +171,19 @@ public class WelComeActivity extends AppCompatActivity implements HttpResponeCal
 
         @Override
         public Fragment getItem(int position) {
-            ProductFrament fragment = null;
+            WelcomeFrament fragment = null;
             switch (position) {
                 case PAGE_ZERO:
-                    fragment = ProductFrament.newInstance(R.layout.welcome_fragment1);
+                    fragment = WelcomeFrament.newInstance(R.layout.welcome_fragment1);
                     break;
                 case PAGE_ONE:
-                    fragment = ProductFrament.newInstance(R.layout.welcome_fragment2);
+                    fragment = WelcomeFrament.newInstance(R.layout.welcome_fragment2);
                     break;
                 case PAGE_TWO:
-                    fragment = ProductFrament.newInstance(R.layout.welcome_fragment3);
+                    fragment = WelcomeFrament.newInstance(R.layout.welcome_fragment3);
                     break;
                 case PAGE_THREE:
-                    fragment = ProductFrament.newInstance(R.layout.welcome_fragment4);
+                    fragment = WelcomeFrament.newInstance(R.layout.welcome_fragment4);
                     break;
                 default:
                     break;
@@ -312,82 +300,6 @@ public class WelComeActivity extends AppCompatActivity implements HttpResponeCal
 
             }
         }
-    }
-
-    private void checkAccount() {
-        String userAccount = UserPreference.read(KeyConstance.IS_USER_ACCOUNT, null);
-        String userPassword = UserPreference.read(KeyConstance.IS_USER_PASSWORD, null);
-        String userId = UserPreference.read(KeyConstance.IS_USER_ID, null);
-
-        Intent intent = new Intent();
-        intent.setClass(WelComeActivity.this, LoginActivity.class);
-        startActivity(intent);
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-        finish();
-        if (TextUtils.isEmpty(userAccount)) {
-        } else {
-            //用保存的信息直接登录
-            RequestApiData.getInstance().getLoginData(userAccount, userPassword,
-                    UserBaseInfo.class, WelComeActivity.this);
-        }
-    }
-
-
-    @Override
-    public void onResponeStart(String apiName) {
-        Toast.makeText(this, "Start...", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onLoading(String apiName, long count, long current) {
-        Toast.makeText(this, "Loading...", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onSuccess(String apiName, Object object) {
-        //当前接口是否是获取用户的基本信息的接口
-        if (UrlConstance.KEY_USER_BASE_INFO.equals(apiName)) {
-            if (object != null && object instanceof UserBaseInfo) {
-                UserBaseInfo info = (UserBaseInfo) object;
-                ItLanBaoApplication.getInstance().setBaseUser(info);//把数据放入到Application里面，全局
-                UserPreference.save(KeyConstance.IS_USER_ID, String.valueOf(info.getUserid()));
-
-                Intent intent = new Intent();
-                intent.setClass(WelComeActivity.this, QCScannerActivity.class);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.slide_in_left,
-                        android.R.anim.slide_out_right);
-                finish();
-
-            } else {
-                Toast.makeText(WelComeActivity.this, "加载失败", Toast.LENGTH_SHORT).show();
-            }
-        } else if (UrlConstance.KEY_LOGIN_INFO.equals(apiName)) {//当前接口是登录的接口
-            //登录返回数据
-            if (object != null && object instanceof UserBaseInfo) {
-                UserBaseInfo info = (UserBaseInfo) object;
-                if (Constant.KEY_SUCCESS.equals(info.getRet())) {
-
-                    ItLanBaoApplication.getInstance().setBaseUser(info);//将用户信息保存在Application中
-                    UserPreference.save(KeyConstance.IS_USER_ID, String.valueOf(info.getUserid()));
-
-                    Intent intent = new Intent();
-                    intent.setClass(WelComeActivity.this, QCScannerActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(android.R.anim.slide_in_left,
-                            android.R.anim.slide_out_right);
-                    finish();
-
-                } else {
-                    Toast.makeText(WelComeActivity.this, info.getMsg(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onFailure(String apiName, Throwable t, int errorNo, String strMsg) {
-        Toast.makeText(this, "Failure", Toast.LENGTH_SHORT).show();
     }
 
     @Override

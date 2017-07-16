@@ -110,6 +110,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
         mForgetPasswordView.setOnClickListener(this);
         mRegisterAccountView.setOnClickListener(this);
+
     }
 
     private void populateAutoComplete() {

@@ -61,4 +61,6 @@ dependencies {
     compile 'com.ebanx:swipe-button:0.5.1'
     compile 'com.github.ishaan1995:ButtonProgressBar:1.0'
     compile 'com.android.support:animated-vector-drawable:25.1.0'
+    compile 'com.loopeer.library:cardstack:1.0.2'
+    compile 'com.github.bloder:magic:1.1'
 }

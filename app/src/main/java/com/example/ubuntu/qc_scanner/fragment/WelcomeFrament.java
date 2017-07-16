@@ -11,12 +11,12 @@ import android.view.ViewGroup;
  * Created by EdwardAdmin on 2017/7/15.
  */
 
-public class ProductFrament extends Fragment{
+public class WelcomeFrament extends Fragment{
 
     private static String LAYOUT_ID = "layout_id";
 
-    public static ProductFrament newInstance (int layoutId) {
-        ProductFrament mProductFragment = new ProductFrament();
+    public static WelcomeFrament newInstance (int layoutId) {
+        WelcomeFrament mProductFragment = new WelcomeFrament();
         Bundle bundle = new Bundle();
         bundle.putInt(LAYOUT_ID, layoutId);
         mProductFragment.setArguments(bundle);
