@@ -27,4 +27,7 @@
     <string name="welcome_content_03">Never lose your progress, so you can keep working from any computer or device.</string>
     <string name="welcome_head_04">Edit Excel spreadsheets</string>
     <string name="welcome_content_04">Open, edit, and save Excel files - all within Sheets.</string>
+    
+    <string name="register_phone_prefix">请输入</string>
+    <string name="register_phone_suffix">收到的验证码</string>
 </resources>

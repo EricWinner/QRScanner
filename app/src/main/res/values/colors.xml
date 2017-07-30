@@ -40,4 +40,6 @@
     <color name="color_24">#9E9E9E</color>
     <color name="color_25">#607D8B</color>
     <color name="color_26">#000000</color>
+
+    <color name="next_background_color">#a9a8a6</color>
 </resources>

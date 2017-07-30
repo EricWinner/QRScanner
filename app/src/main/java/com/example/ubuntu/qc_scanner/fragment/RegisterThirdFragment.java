@@ -9,14 +9,14 @@ import android.view.ViewGroup;
 import com.example.ubuntu.qc_scanner.R;
 
 /**
- * Created by EdwardAdmin on 2017/7/16.
+ * Created by EdwardAdmin on 2017/7/30.
  */
 
-public class QRScannerFragment extends Fragment {
+public class RegisterThirdFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View messageLayout = inflater.inflate(R.layout.qrscanner_layout, container, false);
+        View messageLayout = inflater.inflate(R.layout.activity_register_3, container, false);
         return messageLayout;
     }
 }

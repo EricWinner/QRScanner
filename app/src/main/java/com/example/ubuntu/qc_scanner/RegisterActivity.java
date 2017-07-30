@@ -1,14 +1,13 @@
 package com.example.ubuntu.qc_scanner;
 
 import android.Manifest;
-import android.app.Dialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -20,6 +19,9 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.ubuntu.qc_scanner.application.ItLanBaoApplication;
+import com.example.ubuntu.qc_scanner.fragment.RegisterFirstFragment;
+import com.example.ubuntu.qc_scanner.fragment.RegisterSecondFragment;
+import com.example.ubuntu.qc_scanner.fragment.RegisterThirdFragment;
 import com.example.ubuntu.qc_scanner.http.HttpResponeCallBack;
 import com.example.ubuntu.qc_scanner.http.RequestApiData;
 import com.example.ubuntu.qc_scanner.http.UrlConstance;
@@ -29,12 +31,9 @@ import com.example.ubuntu.qc_scanner.mode.KeyConstance;
 import com.example.ubuntu.qc_scanner.mode.UserBaseInfo;
 import com.example.ubuntu.qc_scanner.mode.UserPreference;
 import com.example.ubuntu.qc_scanner.util.Utils;
-import com.geniusforapp.fancydialog.FancyAlertDialog;
-import com.mob.MobSDK;
 
 import java.util.ArrayList;
 
-import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 import github.ishaan.buttonprogressbar.ButtonProgressBar;
 
@@ -43,13 +42,20 @@ import github.ishaan.buttonprogressbar.ButtonProgressBar;
  * Created by ubuntu on 17-7-4.
  */
 
-public class RegisterActivity extends BaseActivity implements HttpResponeCallBack{
+public class RegisterActivity extends BaseActivity implements HttpResponeCallBack,
+        RegisterFirstFragment.FirstButtonClickListener {
 
     private static final String TAG = RegisterActivity.class.getSimpleName();
 
-    private static final int MSG_RESEND_CODE = 0x01;
-    private static final int MSG_VERIFICATION_CODE = 0x02;
-    private static final int MSG_IDLE_CODE = 0x03;
+    private static final int REGISTER_FIRST = 0x1;
+    private static final int REGISTER_SECOND = 0x2;
+    private static final int REGISTER_THIRD = 0x3;
+
+    private RegisterFirstFragment mRegisterFirstFragment;
+    private RegisterSecondFragment mRegisterSecondFragment;
+    private RegisterThirdFragment mRegisterThirdFragment;
+
+    private FragmentManager mFragmentManager;
 
     private EditText mRegisterPhoneNumber;
     private EditText mRegisterPassword;
@@ -57,6 +63,7 @@ public class RegisterActivity extends BaseActivity implements HttpResponeCallBac
     private Button mRegisterButton;
     private ButtonProgressBar mRegisterCommitButton;
     private RequestQueue mRequestQueue;
+    private String mPhoneNumber;
 
     private int i = 30;
 
@@ -76,47 +83,8 @@ public class RegisterActivity extends BaseActivity implements HttpResponeCallBac
             "http://diy.qqjay.com/u2/2013/0401/4355c29b30d295b26da6f242a65bcaad.jpg"
     };
 
-    Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MSG_RESEND_CODE:
-                    mRegisterButton.setText("重新发送(" + i + ")");
-                    break;
-                case MSG_VERIFICATION_CODE:
-                    mRegisterButton.setText("获取验证中");
-                    mRegisterButton.setClickable(true);
-                    i = 30;
-                    break;
-                case MSG_IDLE_CODE:
-                    int event = msg.arg1;
-                    int result = msg.arg2;
-                    Object data = msg.obj;
-                    Log.d(TAG, "result:" + result + ",,event:" + event);
-                    if (result == SMSSDK.RESULT_COMPLETE) {
-                        if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                            Toast.makeText(RegisterActivity.this, "验证成功",
-                                    Toast.LENGTH_SHORT).show();
-                            Log.e("LOG", "验证成功-----------------------");
-                        } else if (event == cn.smssdk.SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                            Toast.makeText(RegisterActivity.this, "验证已发送",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(RegisterActivity.this, "验证错误",
-                                    Toast.LENGTH_SHORT).show();
-                            ((Throwable) data).printStackTrace();
-                        }
-                    } else {
-                        Toast.makeText(RegisterActivity.this, "验证失败",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
 
-    private void requestRegisterInfo(String phoneNumber,String userPassword) {
+    private void requestRegisterInfo(String phoneNumber, String userPassword) {
         RequestApiData.getInstance().getLoginData(phoneNumber, userPassword,
                 UserBaseInfo.class, RegisterActivity.this);
     }
@@ -125,63 +93,72 @@ public class RegisterActivity extends BaseActivity implements HttpResponeCallBac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentLayout(R.layout.activity_register_phone);
-        initViews();
+
+        mFragmentManager = getFragmentManager();
+
         checkPermission();
-        registerSDK();
         mRequestQueue = Volley.newRequestQueue(RegisterActivity.this);
+        setTabSelection(REGISTER_FIRST);
+    }
+
+    public void setTabSelection(int selection) {
+        clearSelection();
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        hideFragments(transaction);
+        switch (selection) {
+            case REGISTER_FIRST:
+                if (mRegisterFirstFragment == null) {
+                    mRegisterFirstFragment = new RegisterFirstFragment();
+                    mRegisterFirstFragment.setFirstButtonClickListener(this);
+                    transaction.replace(R.id.register_content, mRegisterFirstFragment);
+                } else {
+                    // 如果mRegisterSecondFragment不为空，则直接将它显示出来
+                    transaction.show(mRegisterSecondFragment);
+                }
+                break;
+            case REGISTER_SECOND:
+                if (mRegisterSecondFragment == null) {
+                    mRegisterSecondFragment = new RegisterSecondFragment();
+                    mRegisterSecondFragment.setPhoneNumber(mPhoneNumber);
+                    transaction.replace(R.id.register_content, mRegisterSecondFragment);
+                } else {
+                    // 如果mRegisterSecondFragment不为空，则直接将它显示出来
+                    transaction.show(mRegisterSecondFragment);
+                }
+                break;
+            case REGISTER_THIRD:
+                if (mRegisterThirdFragment == null) {
+                    mRegisterThirdFragment = new RegisterThirdFragment();
+                    transaction.replace(R.id.register_content, mRegisterThirdFragment);
+                } else {
+                    // 如果mRegisterThirdFragment不为空，则直接将它显示出来
+                    transaction.show(mRegisterThirdFragment);
+                }
+                break;
+            default:
+                break;
+        }
+        transaction.commit();
+    }
+
+    private void clearSelection() {
+    }
+
+    private void hideFragments(FragmentTransaction transaction) {
+        if (mRegisterFirstFragment != null) {
+            transaction.hide(mRegisterFirstFragment);
+        }
+        if (mRegisterSecondFragment != null) {
+            transaction.hide(mRegisterSecondFragment);
+        }
+        if (mRegisterThirdFragment != null) {
+            transaction.hide(mRegisterThirdFragment);
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return super.onCreateOptionsMenu(menu);
-    }
-
-    private void registerSDK() {
-        // 在尝试读取通信录时以弹窗提示用户（可选功能）
-        SMSSDK.setAskPermisionOnReadContact(true);
-        if ("moba6b6c6d6".equalsIgnoreCase(MobSDK.getAppkey())) {
-            Log.d(TAG, "smssdk_dont_use_demo_appkey !");
-        }
-
-        EventHandler eventHandler = new EventHandler() {
-            @Override
-            public void afterEvent(int event, int result, Object data) {
-                Message msg = new Message();
-                msg.arg1 = event;
-                msg.arg2 = result;
-                msg.obj = data;
-                handler.sendMessage(msg);
-            }
-        };
-        SMSSDK.registerEventHandler(eventHandler);
-    }
-
-    private void showCustomDialog(final String phoneNumber) {
-        FancyAlertDialog.Builder alert = new FancyAlertDialog.Builder(RegisterActivity.this)
-                .setImageRecourse(R.drawable.ic_cloud_computing)
-                .setTextTitle("SEND SMS")
-                .setBody("是否将短信发送到:" + phoneNumber)
-                .setNegativeColor(R.color.colorNegative)
-                .setNegativeButtonText("Later")
-                .setOnNegativeClicked(new FancyAlertDialog.OnNegativeClicked() {
-                    @Override
-                    public void OnClick(View view, Dialog dialog) {
-                        Log.d(TAG, "confirmDialog = false !");
-                        dialog.dismiss();
-                    }
-                })
-                .setPositiveButtonText("Send")
-                .setPositiveColor(R.color.colorPositive)
-                .setOnPositiveClicked(new FancyAlertDialog.OnPositiveClicked() {
-                    @Override
-                    public void OnClick(View view, Dialog dialog) {
-                        dialog.dismiss();
-                        sendSms(phoneNumber);
-                        Toast.makeText(RegisterActivity.this, "Sending", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .build();
-        alert.show();
     }
 
     private void checkPermission() {
@@ -223,23 +200,6 @@ public class RegisterActivity extends BaseActivity implements HttpResponeCallBac
     }
 
     private void initViews() {
-        mRegisterPhoneNumber = (EditText) this.findViewById(R.id.register_phone_number);
-        mRegisterPassword = (EditText) this.findViewById(R.id.register_password);
-        mRegisterVerificationCode = (EditText) this.findViewById(R.id.register_verification_code);
-
-        mRegisterButton = (Button) this.findViewById(R.id.btn_getSMS);
-        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String phoneNumber = mRegisterPhoneNumber.getText().toString();
-                if (TextUtils.isEmpty(phoneNumber) || !Utils.isChinaPhoneLegal(phoneNumber)) {
-                    Toast.makeText(RegisterActivity.this, "手机号码输入有误！", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                showCustomDialog(phoneNumber);
-            }
-        });
-
         mRegisterCommitButton = (ButtonProgressBar) this.findViewById(R.id.register_commit);
         mRegisterCommitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -267,37 +227,15 @@ public class RegisterActivity extends BaseActivity implements HttpResponeCallBac
                             }
                         }, 5000);
                     } else {
-                        Toast.makeText(RegisterActivity.this, "输入的密码不正确",Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterActivity.this, "输入的密码不正确", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(RegisterActivity.this, "输入信息不完整",Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, "输入信息不完整", Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
-    private void sendSms(String phoneNumber) {
-        SMSSDK.getVerificationCode("86", phoneNumber);
-        mRegisterButton.setClickable(false);
-        mRegisterButton.setText("再次输入倒计时" + "(" + i + ")");
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (; i > 0; i--) {
-                    handler.sendEmptyMessage(MSG_RESEND_CODE);
-                    if (i <= 0) {
-                        break;
-                    }
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                handler.sendEmptyMessage(MSG_VERIFICATION_CODE);
-            }
-        }).start();
-    }
 
     @Override
     protected void onResume() {
@@ -361,4 +299,10 @@ public class RegisterActivity extends BaseActivity implements HttpResponeCallBac
         Log.e(TAG, "Save failure, apiName = " + apiName + ",errorNo = " + errorNo + ",strMsg = " + strMsg);
     }
 
+    @Override
+    public void onFirstButtonClick(String phoneNumber) {
+        mPhoneNumber = phoneNumber;
+        Log.d("jiangsu", "onFirstButtonClick mPhoneNumber = " + mPhoneNumber);
+        setTabSelection(REGISTER_SECOND);
+    }
 }
