@@ -13,13 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.ubuntu.qc_scanner.R;
-import com.example.ubuntu.qc_scanner.RegisterActivity;
 import com.geniusforapp.fancydialog.FancyAlertDialog;
 import com.mob.MobSDK;
 
@@ -37,6 +36,8 @@ public class RegisterSecondFragment extends Fragment {
     private static final int MSG_RESEND_CODE = 0x01;
     private static final int MSG_VERIFICATION_CODE = 0x02;
     private static final int MSG_IDLE_CODE = 0x03;
+
+    private SecondButtonClickListener mSecondButtonClickListener;
 
     private String mPhoneNumber;
     private String mVerificationCodeString;
@@ -83,7 +84,7 @@ public class RegisterSecondFragment extends Fragment {
         });
     }
 
-    public void setPhoneNumber (String phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         mPhoneNumber = phoneNumber;
     }
 
@@ -177,12 +178,15 @@ public class RegisterSecondFragment extends Fragment {
                     int event = msg.arg1;
                     int result = msg.arg2;
                     Object data = msg.obj;
-                    Log.d(TAG, "result:" + result + ",,event:" + event);
+                    Log.d(TAG, "result:" + result + ",event:" + event);
                     if (result == SMSSDK.RESULT_COMPLETE) {
                         if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                             Toast.makeText(getActivity(), "验证成功",
                                     Toast.LENGTH_SHORT).show();
-                            Log.e("LOG", "验证成功-----------------------");
+                            Log.e(TAG, "验证成功!");
+                            if (mSecondButtonClickListener != null) {
+                                mSecondButtonClickListener.onSecondButtonClick();
+                            }
                         } else if (event == cn.smssdk.SMSSDK.EVENT_GET_VERIFICATION_CODE) {
                             Toast.makeText(getActivity(), "验证已发送",
                                     Toast.LENGTH_SHORT).show();
@@ -203,22 +207,33 @@ public class RegisterSecondFragment extends Fragment {
     };
 
     private void registerSDK() {
-        // 在尝试读取通信录时以弹窗提示用户（可选功能）
-        SMSSDK.setAskPermisionOnReadContact(true);
         if ("moba6b6c6d6".equalsIgnoreCase(MobSDK.getAppkey())) {
             Log.d(TAG, "smssdk_dont_use_demo_appkey !");
         }
-
         EventHandler eventHandler = new EventHandler() {
             @Override
             public void afterEvent(int event, int result, Object data) {
+                Log.d("jiangsu", "afterEvent event = " + event + ",result = " + result + ",data = " + data);
                 Message msg = new Message();
                 msg.arg1 = event;
                 msg.arg2 = result;
                 msg.obj = data;
+                msg.what = MSG_IDLE_CODE;
                 handler.sendMessage(msg);
             }
         };
         SMSSDK.registerEventHandler(eventHandler);
+    }
+
+    public void setSecondButtonClickListener(SecondButtonClickListener listener) {
+        mSecondButtonClickListener = listener;
+    }
+
+    public void removeSecondButtonClickListener() {
+        mSecondButtonClickListener = null;
+    }
+
+    public interface SecondButtonClickListener {
+        void onSecondButtonClick();
     }
 }

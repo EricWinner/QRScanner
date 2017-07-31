@@ -59,6 +59,10 @@ public class RegisterFirstFragment extends Fragment {
         mFirstButtonClickListener = listener;
     }
 
+    public void removeFirstButtonClickListener() {
+        mFirstButtonClickListener = null;
+    }
+
     public interface FirstButtonClickListener {
         void onFirstButtonClick(String phoneNumber);
     }

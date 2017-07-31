@@ -53,7 +53,7 @@ public class SplashActivity extends AppCompatActivity implements HttpResponeCall
     }
 
     private boolean isFirstLogin() {
-        mSharedPreferences = getSharedPreferences(LOGIN_COUNT, MODE_WORLD_READABLE);
+        mSharedPreferences = getSharedPreferences(LOGIN_COUNT, MODE_PRIVATE);
         int count = mSharedPreferences.getInt(LOGIN_COUNT, 0);
         if (count == 0) {
             SharedPreferences.Editor editor = mSharedPreferences.edit();

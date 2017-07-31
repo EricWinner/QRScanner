@@ -4,6 +4,9 @@
 
 package com.example.ubuntu.qc_scanner.manager;
 
+import android.text.TextUtils;
+import android.util.Log;
+
 import com.android.volley.Request;
 import com.android.volley.Request.Method;
 import com.android.volley.Request.Priority;
@@ -67,6 +70,7 @@ public class RequestManager {
     public static <T> void post(final String app_url, final String tag_url, final HashMap<String, String> parameter, Class<T> clazz,
                                 final HttpResponeCallBack callback) {
         //发送post请求服务器
+        Log.d("jiangsu", "RequestManager post tag_url = " + tag_url);
         post(app_url, tag_url, parameter, clazz, callback, Priority.NORMAL);
     }
 
@@ -93,7 +97,7 @@ public class RequestManager {
         //eg:拼接成注册的接口  http://www.itlanbao.com/api/app/users/user_register_Handler.ashx
         StringBuilder builder = new StringBuilder(app_url);
         builder.append(url);
-
+        Log.d("jiangsu", "post url = " + url);
         // 检查当前网络是否可用
         final NetworkUtils networkUtils = new NetworkUtils(ItLanbaoLibApplication.getInstance());
 
@@ -118,10 +122,16 @@ public class RequestManager {
                         // TODO Auto-generated method stub
                         //这个位置先公共解析处理共同异常
                         try {
-                            if (response != null && callback != null) {
+                            Log.d("jiangsu", "StringRequest onSuccess response = " + response + ",url = " + url);
+                            if (!TextUtils.isEmpty(response) && callback != null) {
                                 Gson gson = new Gson();
                                 //回调请求成功，同时url和解析的对象
                                 callback.onSuccess(url, gson.fromJson(response, clazz));
+                            } else {
+                                if (callback != null) {
+                                    callback.onFailure(url, new Throwable("response == null"), 0, "返回异常");
+                                    return;
+                                }
                             }
                         } catch (Exception e) {
                             // TODO: handle exception
@@ -169,6 +179,4 @@ public class RequestManager {
         }
         return api;
     }
-
-
 }

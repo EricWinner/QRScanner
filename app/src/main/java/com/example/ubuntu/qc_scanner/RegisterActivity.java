@@ -7,13 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -30,12 +25,10 @@ import com.example.ubuntu.qc_scanner.mode.Constant;
 import com.example.ubuntu.qc_scanner.mode.KeyConstance;
 import com.example.ubuntu.qc_scanner.mode.UserBaseInfo;
 import com.example.ubuntu.qc_scanner.mode.UserPreference;
-import com.example.ubuntu.qc_scanner.util.Utils;
 
 import java.util.ArrayList;
 
 import cn.smssdk.SMSSDK;
-import github.ishaan.buttonprogressbar.ButtonProgressBar;
 
 
 /**
@@ -43,7 +36,9 @@ import github.ishaan.buttonprogressbar.ButtonProgressBar;
  */
 
 public class RegisterActivity extends BaseActivity implements HttpResponeCallBack,
-        RegisterFirstFragment.FirstButtonClickListener {
+        RegisterFirstFragment.FirstButtonClickListener,
+        RegisterSecondFragment.SecondButtonClickListener,
+        RegisterThirdFragment.ThirdButtonClickListener {
 
     private static final String TAG = RegisterActivity.class.getSimpleName();
 
@@ -57,15 +52,9 @@ public class RegisterActivity extends BaseActivity implements HttpResponeCallBac
 
     private FragmentManager mFragmentManager;
 
-    private EditText mRegisterPhoneNumber;
-    private EditText mRegisterPassword;
-    private EditText mRegisterVerificationCode;
-    private Button mRegisterButton;
-    private ButtonProgressBar mRegisterCommitButton;
     private RequestQueue mRequestQueue;
     private String mPhoneNumber;
-
-    private int i = 30;
+    private String mAccountPassword;
 
     // 短信注册，随机产生头像
     private static final String[] AVATARS = {
@@ -83,26 +72,23 @@ public class RegisterActivity extends BaseActivity implements HttpResponeCallBac
             "http://diy.qqjay.com/u2/2013/0401/4355c29b30d295b26da6f242a65bcaad.jpg"
     };
 
-
     private void requestRegisterInfo(String phoneNumber, String userPassword) {
-        RequestApiData.getInstance().getLoginData(phoneNumber, userPassword,
-                UserBaseInfo.class, RegisterActivity.this);
+        Log.d("jiangsu", "requestRegisterInfo getRegisterData !!");
+        RequestApiData.getInstance().getRegisterData(phoneNumber, userPassword,
+                AnalyticalRegistInfo.class, RegisterActivity.this);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentLayout(R.layout.activity_register_phone);
-
         mFragmentManager = getFragmentManager();
-
         checkPermission();
         mRequestQueue = Volley.newRequestQueue(RegisterActivity.this);
         setTabSelection(REGISTER_FIRST);
     }
 
     public void setTabSelection(int selection) {
-        clearSelection();
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         hideFragments(transaction);
         switch (selection) {
@@ -120,6 +106,7 @@ public class RegisterActivity extends BaseActivity implements HttpResponeCallBac
                 if (mRegisterSecondFragment == null) {
                     mRegisterSecondFragment = new RegisterSecondFragment();
                     mRegisterSecondFragment.setPhoneNumber(mPhoneNumber);
+                    mRegisterSecondFragment.setSecondButtonClickListener(this);
                     transaction.replace(R.id.register_content, mRegisterSecondFragment);
                 } else {
                     // 如果mRegisterSecondFragment不为空，则直接将它显示出来
@@ -129,6 +116,7 @@ public class RegisterActivity extends BaseActivity implements HttpResponeCallBac
             case REGISTER_THIRD:
                 if (mRegisterThirdFragment == null) {
                     mRegisterThirdFragment = new RegisterThirdFragment();
+                    mRegisterThirdFragment.setThirdButtonClickListener(this);
                     transaction.replace(R.id.register_content, mRegisterThirdFragment);
                 } else {
                     // 如果mRegisterThirdFragment不为空，则直接将它显示出来
@@ -139,9 +127,6 @@ public class RegisterActivity extends BaseActivity implements HttpResponeCallBac
                 break;
         }
         transaction.commit();
-    }
-
-    private void clearSelection() {
     }
 
     private void hideFragments(FragmentTransaction transaction) {
@@ -199,44 +184,6 @@ public class RegisterActivity extends BaseActivity implements HttpResponeCallBac
         }
     }
 
-    private void initViews() {
-        mRegisterCommitButton = (ButtonProgressBar) this.findViewById(R.id.register_commit);
-        mRegisterCommitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mRegisterCommitButton.startLoader();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRegisterCommitButton.stopLoader();
-                    }
-                }, 5000);
-                String phoneNumber = mRegisterPhoneNumber.getText().toString();
-                String password = mRegisterPassword.getText().toString();
-                String verification = mRegisterVerificationCode.getText().toString();
-
-                if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(password)
-                        && !TextUtils.isEmpty(verification)) {
-                    if (Utils.isChinaPhoneLegal(phoneNumber)) {
-                        //TODO
-                        requestRegisterInfo(phoneNumber, password);
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mRegisterCommitButton.stopLoader();
-                            }
-                        }, 5000);
-                    } else {
-                        Toast.makeText(RegisterActivity.this, "输入的密码不正确", Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    Toast.makeText(RegisterActivity.this, "输入信息不完整", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -250,7 +197,20 @@ public class RegisterActivity extends BaseActivity implements HttpResponeCallBac
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        removeListener();
         SMSSDK.unregisterAllEventHandler();
+    }
+
+    private void removeListener() {
+        if (mRegisterFirstFragment != null) {
+            mRegisterFirstFragment.removeFirstButtonClickListener();
+        }
+        if (mRegisterSecondFragment != null) {
+            mRegisterSecondFragment.removeSecondButtonClickListener();
+        }
+        if (mRegisterThirdFragment != null) {
+            mRegisterThirdFragment.removeThirdButtonClickListener();
+        }
     }
 
     @Override
@@ -267,20 +227,21 @@ public class RegisterActivity extends BaseActivity implements HttpResponeCallBac
     @Override
     public void onSuccess(String apiName, Object object) {
         //注册接口
+        Log.d("jiangsu", "onSuccess apiName = " + apiName + ",object = " + object);
         if (UrlConstance.KEY_REGIST_INFO.equals(apiName)) {
             if (object != null && object instanceof AnalyticalRegistInfo) {
+                mRegisterThirdFragment.onSuccessLogin();
+
                 AnalyticalRegistInfo info = (AnalyticalRegistInfo) object;
                 String successCode = info.getRet();
+                Log.d("jiangsu", "onSuccess successCode = " + successCode);
                 if (successCode.equals(Constant.KEY_SUCCESS)) {
                     UserBaseInfo baseUser = new UserBaseInfo();
                     baseUser.setEmail(info.getEmail());
-                    baseUser.setNickname(info.getNickname());
-                    baseUser.setUserhead(info.getUserhead());
                     baseUser.setUserid(String.valueOf(info.getUserid()));
                     ItLanBaoApplication.getInstance().setBaseUser(baseUser);
-                    UserPreference.save(KeyConstance.IS_USER_ID, String.valueOf(info.getUserid()));
                     UserPreference.save(KeyConstance.IS_USER_ACCOUNT, info.getEmail());
-                    //UserPreference.save(KeyConstance.IS_USER_PASSWORD, mPassword.getText().toString());
+                    UserPreference.save(KeyConstance.IS_USER_PASSWORD, mAccountPassword);
 
                     Toast.makeText(RegisterActivity.this, "注册成功...", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RegisterActivity.this, QCScannerActivity.class);
@@ -295,14 +256,24 @@ public class RegisterActivity extends BaseActivity implements HttpResponeCallBac
 
     @Override
     public void onFailure(String apiName, Throwable t, int errorNo, String strMsg) {
-        Toast.makeText(RegisterActivity.this, "保存失败", Toast.LENGTH_SHORT).show();
+        Toast.makeText(RegisterActivity.this, strMsg, Toast.LENGTH_SHORT).show();
         Log.e(TAG, "Save failure, apiName = " + apiName + ",errorNo = " + errorNo + ",strMsg = " + strMsg);
     }
 
     @Override
     public void onFirstButtonClick(String phoneNumber) {
         mPhoneNumber = phoneNumber;
-        Log.d("jiangsu", "onFirstButtonClick mPhoneNumber = " + mPhoneNumber);
         setTabSelection(REGISTER_SECOND);
+    }
+
+    @Override
+    public void onSecondButtonClick() {
+        setTabSelection(REGISTER_THIRD);
+    }
+
+    @Override
+    public void onThirdButtonClick(String password) {
+        mAccountPassword = password;
+        requestRegisterInfo(mPhoneNumber, mAccountPassword);
     }
 }
