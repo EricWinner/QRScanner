@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e6e1e1"
     android:orientation="vertical">
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,7 +14,7 @@
         android:background="#FFFFFF">
 
         <TextView
-            android:id="@+id/register_serial_number"
+            android:id="@+id/forget_account_number"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
@@ -25,26 +23,25 @@
             android:paddingLeft="10dp"
             android:paddingRight="20dp"
             android:paddingTop="10dp"
-            android:text="+86"
+            android:text="帐号"
             android:textColor="#000000"
             android:textSize="18sp"/>
 
         <View
-            android:id="@+id/register_cut_line"
+            android:id="@+id/forget_cut_line"
             android:layout_width="2dp"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/register_serial_number"
+            android:layout_alignRight="@+id/forget_account_number"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="#a6a5a5"/>
+            android:layout_marginBottom="10dp"/>
 
         <EditText
-            android:id="@+id/register_number"
+            android:id="@+id/forget_number"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/register_serial_number"
+            android:layout_toEndOf="@+id/forget_account_number"
             android:hint="请输入手机号"
             android:maxLength="11"
             android:paddingLeft="10dp"
@@ -52,34 +49,13 @@
             android:background="@null"/>
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="30dp">
-        <RadioButton
-            android:id="@+id/radio_agree"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:checked="true"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="同意扫描条形码用户注册协议"
-            android:layout_toEndOf="@+id/radio_agree"
-            android:paddingLeft="10dp"
-            android:gravity="center"/>
-    </RelativeLayout>
-
     <Button
-        android:id="@+id/register_next_1"
+        android:id="@+id/forget_next_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:background="@color/next_background_color"
         android:text="下一步"
         android:textColor="#7b7a77"

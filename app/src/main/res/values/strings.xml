@@ -37,4 +37,7 @@
     <string name="menu_action_all_down">All down</string>
     <string name="menu_action_up_down">Up down</string>
     <string name="menu_action_up_down_stack">Up down stack</string>
+
+    <string name="register_phone_prefix">Please enter</string>
+    <string name="register_phone_suffix">Received verification code.</string>
 </resources>

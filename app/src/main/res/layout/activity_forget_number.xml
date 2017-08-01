@@ -7,9 +7,8 @@
     android:background="@color/activity_background">
 
     <FrameLayout
-        android:id="@+id/register_content"
+        android:id="@+id/forget_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </FrameLayout>
-
 </LinearLayout>

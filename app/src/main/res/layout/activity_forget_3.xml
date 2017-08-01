@@ -6,7 +6,6 @@
     android:background="#e6e1e1"
     android:orientation="vertical">
 
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -14,54 +13,36 @@
         android:layout_marginRight="40dp"
         android:layout_marginTop="30dp"
         android:gravity="center"
-        android:text="请设置登录密码"
+        android:text="请设置新的登录密码"
         android:textColor="#000000"
         android:textSize="16sp" />
-
-    <EditText
-        android:id="@+id/login_password"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:background="#FFFFFF"
-        android:hint="请输入6-20位字符"
-        android:maxLength="20"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
-
-    <EditText
-        android:id="@+id/confirm_password"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="10dp"
-        android:background="#FFFFFF"
-        android:hint="再次输入密码"
-        android:maxLength="20"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp">
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="0dp">
+
+        <EditText
+            android:id="@+id/reset_password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFFFFF"
+            android:hint="请输入6-20位字符"
+            android:maxLength="20"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
 
         <RadioButton
-            android:id="@+id/radio_visible"
+            android:id="@+id/reset_password_visible"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/reset_password"
+            android:layout_alignBottom="@+id/reset_password"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="11dp"
             android:checked="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_toEndOf="@+id/radio_visible"
-            android:gravity="center"
-            android:paddingLeft="10dp"
-            android:text="密码可见" />
     </RelativeLayout>
 
     <TextView
@@ -69,17 +50,21 @@
         android:layout_height="50dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="密码由6-20位字母、数字或半角符号组成"
+        android:hint="备注：请将密码设置为6-20位，并且由字母、数字或半角符号组成,不能与旧密码相同"
+        android:lineSpacingExtra="3dp"
+        android:lineSpacingMultiplier="1.5"
         android:textColor="#7b7a77"
         android:textSize="14sp" />
 
     <github.ishaan.buttonprogressbar.ButtonProgressBar
-        android:id="@+id/register_next_3"
+        android:id="@+id/forget_next_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
+        android:layout_marginTop="10dp"
         app:bgColor="#a9a8a6"
         app:text="完成"
         app:textColor="#7b7a77"
