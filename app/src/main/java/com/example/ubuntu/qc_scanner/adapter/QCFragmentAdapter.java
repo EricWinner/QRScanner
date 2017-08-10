@@ -1,4 +1,4 @@
-package com.example.ubuntu.qc_scanner.fragment;
+package com.example.ubuntu.qc_scanner.adapter;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

@@ -15,7 +15,7 @@ import com.example.ubuntu.qc_scanner.R;
 public class QRDataFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View messageLayout = inflater.inflate(R.layout.qrdatalist_layout, container, false);
-        return messageLayout;
+        View qrDataLayout = inflater.inflate(R.layout.qrdatalist_layout, container, false);
+        return qrDataLayout;
     }
 }

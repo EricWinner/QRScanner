@@ -16,7 +16,7 @@ public class QRScannerFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View messageLayout = inflater.inflate(R.layout.qrscanner_layout, container, false);
-        return messageLayout;
+        View qrScannerLayout = inflater.inflate(R.layout.qrscanner_layout, container, false);
+        return qrScannerLayout;
     }
 }

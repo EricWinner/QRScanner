@@ -34,6 +34,8 @@ public class QRCoreActivity extends BaseActivity {
     private MagicButton mQCDataButton;
     private MagicButton mQCExcelButton;
 
+    private int mCurrentState = QRSCANNER;
+
     private FragmentManager fragmentManager;
 
     @Override
@@ -50,7 +52,6 @@ public class QRCoreActivity extends BaseActivity {
         mQCScannerButton.setMagicButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("jiangsu", "111 magic_button_scanner !!");
                 Intent i = new Intent(QRCoreActivity.this, SimpleCaptureActivity.class);
                 QRCoreActivity.this.startActivityForResult(i, REQUEST_QR_CODE);
             }
@@ -58,36 +59,65 @@ public class QRCoreActivity extends BaseActivity {
         mQCDataButton.setMagicButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setMaginButtonsInVisible();
                 setTabSelection(QRDATA);
             }
         });
         mQCExcelButton.setMagicButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setMaginButtonsInVisible();
                 setTabSelection(QREXCEL);
             }
         });
+
+        setTabSelection(QRSCANNER);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     private void setTabSelection(int selection) {
-        clearSelection();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         // 先隐藏掉所有的Fragment，以防止有多个Fragment显示在界面上的情况
-        Log.d("jiangsu", "transaction = " + transaction);
-        //hideFragments(transaction);
+        hideFragments(transaction);
         switch (selection) {
             case QRSCANNER:
+                if (mQRScannerFragment == null) {
+                    mQRScannerFragment = new QRScannerFragment();
+                    transaction.replace(R.id.qrcore_content, mQRScannerFragment);
+                } else {
+                    // 如果mQRDataFragment不为空，则直接将它显示出来
+                    transaction.show(mQRScannerFragment);
+                }
+                mCurrentState = QRSCANNER;
                 break;
             case QRDATA:
-                if (mQRDataFragment != null) {
+                if (mQRDataFragment == null) {
                     mQRDataFragment = new QRDataFragment();
-                    transaction.add(R.id.content, mQRDataFragment);
+                    transaction.replace(R.id.qrcore_content, mQRDataFragment);
                 } else {
                     // 如果mQRDataFragment不为空，则直接将它显示出来
                     transaction.show(mQRDataFragment);
                 }
+                mCurrentState = QRDATA;
                 break;
             case QREXCEL:
+                if (mQRExcelFragment == null) {
+                    mQRExcelFragment = new QRExcelFragment();
+                    transaction.replace(R.id.qrcore_content, mQRExcelFragment);
+                } else {
+                    // 如果mQRExcelFragment不为空，则直接将它显示出来
+                    transaction.show(mQRExcelFragment);
+                }
+                mCurrentState = QREXCEL;
                 break;
             default:
                 break;
@@ -95,15 +125,50 @@ public class QRCoreActivity extends BaseActivity {
         transaction.commit();
     }
 
-    private void clearSelection() {
-    }
-
     private void hideFragments(FragmentTransaction transaction) {
+        if (mQRScannerFragment != null) {
+            transaction.hide(mQRScannerFragment);
+        }
         if (mQRDataFragment != null) {
             transaction.hide(mQRDataFragment);
         }
-        if (mQCExcelButton != null) {
+        if (mQRExcelFragment != null) {
             transaction.hide(mQRExcelFragment);
+        }
+    }
+
+    private void setMaginButtonsInVisible() {
+        if (mQCScannerButton != null) {
+            mQCScannerButton.setVisibility(View.INVISIBLE);
+        }
+        if (mQCDataButton != null) {
+            mQCDataButton.setVisibility(View.INVISIBLE);
+        }
+        if (mQCExcelButton != null) {
+            mQCExcelButton.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mCurrentState == QRSCANNER) {
+            finish();
+        } else {
+            setTabSelection(QRSCANNER);
+            setMaginButtonsVisible();
+        }
+    }
+
+
+    private void setMaginButtonsVisible() {
+        if (mQCScannerButton != null) {
+            mQCScannerButton.setVisibility(View.VISIBLE);
+        }
+        if (mQCDataButton != null) {
+            mQCDataButton.setVisibility(View.VISIBLE);
+        }
+        if (mQCExcelButton != null) {
+            mQCExcelButton.setVisibility(View.VISIBLE);
         }
     }
 }
