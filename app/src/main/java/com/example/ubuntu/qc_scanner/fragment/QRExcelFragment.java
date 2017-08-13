@@ -40,25 +40,12 @@ public class QRExcelFragment extends Fragment {
         mExcelQueryButton = (Button) qrExcelLayout.findViewById(R.id.excel_button1);
         mExcelInsertButton = (Button) qrExcelLayout.findViewById(R.id.excel_button2);
 
-        mExcelInsertButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                add();
-            }
-        });
-
-        mExcelQueryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                query();
-            }
-        });
     }
 
     private void add() {
         ContentValues values = new ContentValues();
         values.put(BaseColumns.QRDATA_DATE, "20170812");
-        values.put(BaseColumns.QRDATA_GROUP_ID, 1);
+        values.put(BaseColumns.QRDATA_FOREIGN_GROUP_ID, 1);
         values.put(BaseColumns.QRDATA_PEAK_VALUE, 200.00);
         values.put(BaseColumns.QRDATA_VALLEY_VALUE, 700.00);
         values.put(BaseColumns.QRDATA_TOTAL_AMOUNT, 1000.00);
@@ -68,31 +55,5 @@ public class QRExcelFragment extends Fragment {
         Toast.makeText(getActivity(), "add success !", Toast.LENGTH_LONG).show();
     }
 
-    private void query() {
-        String columns[] = new String[]{BaseColumns.QRDATA_ID, BaseColumns.QRDATA_DATE, BaseColumns.QRDATA_PEAK_VALUE,
-                BaseColumns.QRDATA_VALLEY_VALUE, BaseColumns.QRDATA_TOTAL_AMOUNT};
-        Uri mUri = QRContentProviderMetaData.QRTableMetaData.CONTENT_URI;
-        Cursor cursor = getActivity().getContentResolver().query(mUri, columns, null, null, null);
 
-        if (cursor.moveToFirst()) {
-            int id = 0;
-            int foreign_id = 0;
-            String date = null;
-            float pakeValue = 0.0f;
-            float valleyValue = 0.0f;
-            float totalValue = 0.0f;
-
-            do {
-                id = cursor.getInt(cursor.getColumnIndex(BaseColumns.QRDATA_ID));
-                foreign_id = cursor.getInt(cursor.getColumnIndex(BaseColumns.QRDATA_FOREIGN_GROUP_ID));
-                date = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_DATE));
-                pakeValue = cursor.getFloat(cursor.getColumnIndex(BaseColumns.QRDATA_PEAK_VALUE));
-                valleyValue = cursor.getFloat(cursor.getColumnIndex(BaseColumns.QRDATA_VALLEY_VALUE));
-                totalValue = cursor.getFloat(cursor.getColumnIndex(BaseColumns.QRDATA_TOTAL_AMOUNT));
-                Log.d(TAG, "id = " + id + ",foreign_id = " + foreign_id + ",date = " + date);
-                Log.d(TAG, "pakeValue = " + pakeValue + ",valleyValue = " + valleyValue + ",totalValue = " + totalValue);
-            } while (cursor.moveToNext());
-        }
-
-    }
 }

@@ -15,15 +15,130 @@
         android:layout_height="160dp"
         android:background="@drawable/shape_rectangle_with_radius">
 
-        <TextView
-            android:id="@+id/text_list_card_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:textColor="@android:color/white"
-            android:textSize="40sp"
-            android:textStyle="bold"
-            tools:text="12"/>
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/text_list_card_title"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="2017-08-13"
+                    android:textColor="@android:color/holo_red_light"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/text_list_card_group"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/text_list_card_title"
+                    android:layout_alignBottom="@+id/text_list_card_title"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="59dp"
+                    android:text="1"
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp"
+                    android:textStyle="bold"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/text_list_card_valley_title"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="谷值："
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/text_list_card_valley_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/text_list_card_valley_title"
+                    android:layout_toRightOf="@+id/text_list_card_valley_title"
+                    android:layout_marginEnd="100dp"
+                    android:text="100.00 f"
+                    android:singleLine="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/text_list_card_peak_title"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="峰值："
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/text_list_card_peak_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/text_list_card_peak_title"
+                    android:layout_toRightOf="@+id/text_list_card_peak_title"
+                    android:layout_marginEnd="100dp"
+                    android:text="500.00 f"
+                    android:singleLine="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/text_list_card_total_title"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="总量："
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/text_list_card_total_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/text_list_card_total_title"
+                    android:layout_toRightOf="@+id/text_list_card_total_title"
+                    android:layout_marginEnd="100dp"
+                    android:text="1000.00 f"
+                    android:singleLine="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
+            </RelativeLayout>
+        </LinearLayout>
+
     </FrameLayout>
 
     <LinearLayout
