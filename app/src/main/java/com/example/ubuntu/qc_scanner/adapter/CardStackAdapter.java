@@ -13,10 +13,6 @@ import com.example.ubuntu.qc_scanner.fragment.QRDataFragment;
 import com.loopeer.cardstack.CardStackView;
 import com.loopeer.cardstack.StackAdapter;
 
-import org.w3c.dom.Text;
-
-import java.util.List;
-
 public class CardStackAdapter extends StackAdapter<QRDataFragment.QRDataItem> {
 
     private static final String TAG = "CardStackAdapter";
@@ -49,6 +45,7 @@ public class CardStackAdapter extends StackAdapter<QRDataFragment.QRDataItem> {
     class ColorItemViewHolder extends CardStackView.ViewHolder {
         View mLayout;
         View mContainerContent;
+        TextView mTextNumber;
         TextView mTextTitle;
         TextView mTextGroupName;
         TextView mTextValleyValue;
@@ -60,6 +57,7 @@ public class CardStackAdapter extends StackAdapter<QRDataFragment.QRDataItem> {
             mLayout = view.findViewById(R.id.frame_list_card_item);
             mContainerContent = view.findViewById(R.id.container_list_content);
             mTextTitle = (TextView) view.findViewById(R.id.text_list_card_title);
+            mTextNumber = (TextView) view.findViewById(R.id.text_list_card_number);
             mTextGroupName = (TextView) view.findViewById(R.id.text_list_card_group);
             mTextValleyValue = (TextView) view.findViewById(R.id.text_list_card_valley_value);
             mTextPeakValue = (TextView)view.findViewById(R.id.text_list_card_peak_value);
@@ -76,6 +74,7 @@ public class CardStackAdapter extends StackAdapter<QRDataFragment.QRDataItem> {
             QRDataFragment.QRDataItem item = data;
             Log.d(TAG, "item = " + item.toString());
             mTextGroupName.setText(String.valueOf(item.getmForeignGroupID()));
+            mTextNumber.setText(item.getmQRDataNumberID());
             mTextTitle.setText(item.getmQRDataTime());
             mTextValleyValue.setText(String.valueOf(item.getmValleyValue()));
             mTextPeakValue.setText(String.valueOf(item.getmPEAKValue()));

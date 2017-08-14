@@ -41,6 +41,7 @@ public class QRCoreActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG,"onCreate !");
         setContentLayout(R.layout.qrcore_layout);
 
         fragmentManager = getFragmentManager();
@@ -77,6 +78,7 @@ public class QRCoreActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume !!");
     }
 
     @Override
@@ -158,7 +160,6 @@ public class QRCoreActivity extends BaseActivity {
             setMaginButtonsVisible();
         }
     }
-
 
     private void setMaginButtonsVisible() {
         if (mQCScannerButton != null) {

@@ -9,6 +9,7 @@ public class BaseColumns {
     //table:qrdata columns
     public static final String QRDATA_ID = "_id";
     public static final String QRDATA_FOREIGN_GROUP_ID = "_foreign_group_id";
+    public static final String QRDATA_NUMBER_ID = "_data_number";
     public static final String QRDATA_DATE = "_data_date";
     public static final String QRDATA_TOTAL_AMOUNT = "_total_amount";
     public static final String QRDATA_PEAK_VALUE = "_peak_value";

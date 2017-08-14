@@ -40,12 +40,19 @@ public class QRExcelFragment extends Fragment {
         mExcelQueryButton = (Button) qrExcelLayout.findViewById(R.id.excel_button1);
         mExcelInsertButton = (Button) qrExcelLayout.findViewById(R.id.excel_button2);
 
+        mExcelInsertButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                add();
+            }
+        });
     }
 
     private void add() {
         ContentValues values = new ContentValues();
         values.put(BaseColumns.QRDATA_DATE, "20170812");
         values.put(BaseColumns.QRDATA_FOREIGN_GROUP_ID, 1);
+        values.put(BaseColumns.QRDATA_NUMBER_ID, "3330001000100099845745");
         values.put(BaseColumns.QRDATA_PEAK_VALUE, 200.00);
         values.put(BaseColumns.QRDATA_VALLEY_VALUE, 700.00);
         values.put(BaseColumns.QRDATA_TOTAL_AMOUNT, 1000.00);
@@ -54,6 +61,5 @@ public class QRExcelFragment extends Fragment {
 
         Toast.makeText(getActivity(), "add success !", Toast.LENGTH_LONG).show();
     }
-
 
 }

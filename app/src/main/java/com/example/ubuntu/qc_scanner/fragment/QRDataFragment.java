@@ -65,7 +65,8 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
 
 
     private void queryAllQRData() {
-        String columns[] = new String[]{BaseColumns.QRDATA_ID, BaseColumns.QRDATA_FOREIGN_GROUP_ID, BaseColumns.QRDATA_DATE, BaseColumns.QRDATA_PEAK_VALUE,
+        String columns[] = new String[]{BaseColumns.QRDATA_ID, BaseColumns.QRDATA_FOREIGN_GROUP_ID, BaseColumns.QRDATA_NUMBER_ID,
+                BaseColumns.QRDATA_DATE, BaseColumns.QRDATA_PEAK_VALUE,
                 BaseColumns.QRDATA_VALLEY_VALUE, BaseColumns.QRDATA_TOTAL_AMOUNT};
         Uri mUri = QRContentProviderMetaData.QRTableMetaData.CONTENT_URI;
         Cursor cursor = getActivity().getContentResolver().query(mUri, columns, null, null, null);
@@ -73,6 +74,7 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
         if (cursor.moveToFirst()) {
             int id = 0;
             int foreign_id = 0;
+            String numberId = null;
             String date = null;
             float peakValue = 0.0f;
             float valleyValue = 0.0f;
@@ -81,14 +83,15 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
             do {
                 id = cursor.getInt(cursor.getColumnIndex(BaseColumns.QRDATA_ID));
                 foreign_id = cursor.getInt(cursor.getColumnIndex(BaseColumns.QRDATA_FOREIGN_GROUP_ID));
+                numberId = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_NUMBER_ID));
                 date = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_DATE));
                 peakValue = cursor.getFloat(cursor.getColumnIndex(BaseColumns.QRDATA_PEAK_VALUE));
                 valleyValue = cursor.getFloat(cursor.getColumnIndex(BaseColumns.QRDATA_VALLEY_VALUE));
                 totalValue = cursor.getFloat(cursor.getColumnIndex(BaseColumns.QRDATA_TOTAL_AMOUNT));
-                Log.d(TAG, "id = " + id + ",foreign_id = " + foreign_id + ",date = " + date);
+                Log.d(TAG, "id = " + id + ",foreign_id = " + foreign_id + ",date = " + date + ",numberId = " + numberId);
                 Log.d(TAG, "peakValue = " + peakValue + ",valleyValue = " + valleyValue + ",totalValue = " + totalValue);
 
-                QRDataItem item = new QRDataItem(foreign_id, date, peakValue, valleyValue, totalValue);
+                QRDataItem item = new QRDataItem(foreign_id, numberId, date, peakValue, valleyValue, totalValue);
                 mAllQRDataLists.add(item);
 
             } while (cursor.moveToNext());
@@ -96,8 +99,10 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
     }
 
     private void resetListData() {
-        mAllQRDataLists.clear();
-        mAllQRDataLists = null;
+        if (mAllQRDataLists != null) {
+            mAllQRDataLists.clear();
+            mAllQRDataLists = null;
+        }
     }
 
     @Override
@@ -109,19 +114,24 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
     public class QRDataItem {
 
         private int mForeignGroupID;
+        private String mQRDataNumberID;
         private String mQRDataTime;
         private float mPEAKValue;
         private float mValleyValue;
         private float mTotalValue;
 
-        public QRDataItem(int foreignGroupID, String qrDateTime, float peakValue, float valleyValue, float totalValue) {
+        public QRDataItem(int foreignGroupID, String qrDataNumberID, String qrDateTime, float peakValue, float valleyValue, float totalValue) {
             mForeignGroupID = foreignGroupID;
+            mQRDataNumberID = qrDataNumberID;
             mQRDataTime = qrDateTime;
             mPEAKValue = peakValue;
             mValleyValue = valleyValue;
             mTotalValue = totalValue;
         }
 
+        public String getmQRDataNumberID() {
+            return mQRDataNumberID;
+        }
 
         public int getmForeignGroupID() {
             return mForeignGroupID;
@@ -145,7 +155,8 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
 
         @Override
         public String toString() {
-            return "mForeignGroupID = " + mForeignGroupID + ",mQRDataTime = " + mQRDataTime + ",mPEAKValue = " + mPEAKValue + ",mValleyValue = " + mValleyValue + "mTotalValue = " + mTotalValue;
+            return "mForeignGroupID = " + mForeignGroupID + ",mQRDataNumberID = " + mQRDataNumberID + ",mQRDataTime = " + mQRDataTime + ",mPEAKValue = " + mPEAKValue + ",mValleyValue = " + mValleyValue + "mTotalValue = " + mTotalValue;
         }
+
     }
 }

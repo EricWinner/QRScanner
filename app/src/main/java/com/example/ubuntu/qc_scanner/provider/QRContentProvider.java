@@ -25,8 +25,10 @@ public class QRContentProvider extends ContentProvider {
 
     private static final String TAG = "QRContentProvider";
 
-    public static final int INCOMING_USER_COLLECTION = 1;
-    public static final int INCOMING_USER_SINGLE = 2;
+    public static final int INCOMING_QRDATA = 0x1;
+    public static final int INCOMING_QRDATA_SINGLE = 0x2;
+    public static final int INCOMING_QRGROUP = 0x3;
+    public static final int INCOMING_QRGROUP_SINGLE = 0x4;
     public static final UriMatcher uriMatcher;
 
     private QRDataBaseHelper mQRDataBaseHelper;
@@ -35,9 +37,13 @@ public class QRContentProvider extends ContentProvider {
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(AUTHORITIES, "/qrdata",
-                INCOMING_USER_COLLECTION);
+                INCOMING_QRDATA);
         uriMatcher.addURI(AUTHORITIES, "/qrdata/#",
-                INCOMING_USER_SINGLE);
+                INCOMING_QRDATA_SINGLE);
+        uriMatcher.addURI(AUTHORITIES, "/qrgroup",
+                INCOMING_QRGROUP);
+        uriMatcher.addURI(AUTHORITIES, "/qrgroup/#",
+                INCOMING_QRGROUP_SINGLE);
     }
 
     @Override
@@ -66,16 +72,30 @@ public class QRContentProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        mSqliteDB = mQRDataBaseHelper.getWritableDatabase();
         Log.d(TAG, "insert values = " + values);
-        long insertId = mSqliteDB.insert(QR_DATA_TABLE_NAME, "",values);
-        Log.d(TAG, "insertId = " + insertId);
-        if (insertId > 0) {
-            Uri rowUri = ContentUris.appendId(QRTableMetaData.CONTENT_URI.buildUpon(), insertId).build();
-            getContext().getContentResolver().notifyChange(rowUri, null);
-            return rowUri;
+        mSqliteDB = mQRDataBaseHelper.getWritableDatabase();
+        switch (uriMatcher.match(uri)) {
+            case INCOMING_QRDATA:
+                long insertQRDataId = mSqliteDB.insert(QR_DATA_TABLE_NAME, "",values);
+                Log.d(TAG, "insertQRDataId = " + insertQRDataId);
+                if (insertQRDataId > 0) {
+                    Uri rowUri = ContentUris.appendId(QRTableMetaData.CONTENT_URI.buildUpon(), insertQRDataId).build();
+                    getContext().getContentResolver().notifyChange(rowUri, null);
+                    return rowUri;
+                }
+                throw new SQLException("Failed to insert row into " + uri);
+            case INCOMING_QRGROUP:
+                long inserQRGroupId = mSqliteDB.insert(QR_GROUP_TABLE_NAME, "",values);
+                Log.d(TAG, "inserQRGroupId = " + inserQRGroupId);
+                if (inserQRGroupId > 0) {
+                    Uri rowUri = ContentUris.appendId(QRTableMetaData.GROUP_CONTENT_URI.buildUpon(), inserQRGroupId).build();
+                    getContext().getContentResolver().notifyChange(rowUri, null);
+                    return rowUri;
+                }
+                throw new SQLException("Failed to insert row into " + uri);
+            default:
+                    return null;
         }
-        throw new SQLException("Failed to insert row into " + uri);
     }
 
     @Override
@@ -85,6 +105,29 @@ public class QRContentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
+        Log.d(TAG, "update values = " + values);
+        mSqliteDB = mQRDataBaseHelper.getWritableDatabase();
+        switch (uriMatcher.match(uri)) {
+            case INCOMING_QRDATA:
+                int updateQRDataId = mSqliteDB.update(QR_DATA_TABLE_NAME, values, selection, selectionArgs);
+                Log.d(TAG, "updateQRDataId = " + updateQRDataId);
+                if (updateQRDataId > 0) {
+                    Uri rowUri = ContentUris.appendId(QRTableMetaData.CONTENT_URI.buildUpon(), updateQRDataId).build();
+                    getContext().getContentResolver().notifyChange(rowUri, null);
+                    return updateQRDataId;
+                }
+                throw new SQLException("Failed to update row into " + uri);
+            case INCOMING_QRGROUP:
+                int updateQRGroupId = mSqliteDB.update(QR_GROUP_TABLE_NAME, values, selection, selectionArgs);
+                Log.d(TAG, "updateQRGroupId = " + updateQRGroupId);
+                if (updateQRGroupId > 0) {
+                    Uri rowUri = ContentUris.appendId(QRTableMetaData.GROUP_CONTENT_URI.buildUpon(), updateQRGroupId).build();
+                    getContext().getContentResolver().notifyChange(rowUri, null);
+                    return updateQRGroupId;
+                }
+                throw new SQLException("Failed to update row into " + uri);
+            default:
+                return 0;
+        }
     }
 }

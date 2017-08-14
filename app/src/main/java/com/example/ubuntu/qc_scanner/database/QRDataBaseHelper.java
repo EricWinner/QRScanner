@@ -36,6 +36,7 @@ public class QRDataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + QRContentProviderMetaData.QR_DATA_TABLE_NAME + "(" +
                     BaseColumns.QRDATA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     BaseColumns.QRDATA_FOREIGN_GROUP_ID + " INTEGER ," +
+                    BaseColumns.QRDATA_NUMBER_ID + " TEXT," +
                     BaseColumns.QRDATA_DATE + " TEXT ," +
                     BaseColumns.QRDATA_PEAK_VALUE + " FLOAT ," +
                     BaseColumns.QRDATA_VALLEY_VALUE + " FLOAT ," +
