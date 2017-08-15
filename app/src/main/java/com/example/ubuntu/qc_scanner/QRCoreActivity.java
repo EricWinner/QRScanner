@@ -114,6 +114,7 @@ public class QRCoreActivity extends BaseActivity {
             case QREXCEL:
                 if (mQRExcelFragment == null) {
                     mQRExcelFragment = new QRExcelFragment();
+                    mQRExcelFragment.setQRDataCallback(mQRExcelFragment);
                     transaction.replace(R.id.qrcore_content, mQRExcelFragment);
                 } else {
                     // 如果mQRExcelFragment不为空，则直接将它显示出来
@@ -170,6 +171,21 @@ public class QRCoreActivity extends BaseActivity {
         }
         if (mQCExcelButton != null) {
             mQCExcelButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mQRScannerFragment != null) {
+            mQRScannerFragment = null;
+        }
+        if (mQRDataFragment != null) {
+            mQRDataFragment = null;
+        }
+        if (mQRExcelFragment != null) {
+            mQRExcelFragment.removeQRDataCallback();
+            mQRExcelFragment = null;
         }
     }
 }

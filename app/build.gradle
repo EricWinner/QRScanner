@@ -49,6 +49,7 @@ dependencies {
     compile 'com.android.support:design:25.1.0'
     compile files('libs/volley_source.jar')
     compile files('libs/gson-2.7.jar')
+    compile files('libs/jxl.jar')
     compile files('libs/MobCommons-2017.0607.1736.jar')
     compile files('libs/MobTools-2017.0607.1736.jar')
     compile 'pub.devrel:easypermissions:0.2.0'

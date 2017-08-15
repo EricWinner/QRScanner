@@ -30,4 +30,15 @@
     
     <string name="register_phone_prefix">请输入</string>
     <string name="register_phone_suffix">收到的验证码</string>
+
+    <string name="qrdata_table">电量表单</string>
+    <string name="qrdata_id">ID</string>
+    <string name="qrdata_group_name">组名</string>
+    <string name="qrdata_number">电量表</string>
+    <string name="qrdata_date">时间</string>
+    <string name="qrdata_valley_value">谷值</string>
+    <string name="qrdata_peak_value">峰值</string>
+    <string name="qrdata_total_value">总量</string>
+
+
 </resources>

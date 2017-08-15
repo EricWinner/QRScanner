@@ -40,4 +40,13 @@
 
     <string name="register_phone_prefix">Please enter</string>
     <string name="register_phone_suffix">Received verification code.</string>
+
+    <string name="qrdata_table">Electricity form</string>
+    <string name="qrdata_id">ID</string>
+    <string name="qrdata_group_name">Group Name</string>
+    <string name="qrdata_number">Number</string>
+    <string name="qrdata_date">Time</string>
+    <string name="qrdata_valley_value">Valley Value</string>
+    <string name="qrdata_peak_value">Peak Value</string>
+    <string name="qrdata_total_value">Total Value</string>
 </resources>
