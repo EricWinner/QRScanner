@@ -26,7 +26,7 @@
             app:button_icon_height="25dp"
             app:button_icon_width="25dp"
             app:expandable_area_color="#f64029"
-            app:hide_text="QRCode"
+            app:hide_text="@string/qrcore_scanner_qr"
             app:icon_button_color="#95f9f8f7"
             app:magic_button_size="50dp"/>
 
@@ -40,7 +40,7 @@
             app:button_icon_height="25dp"
             app:button_icon_width="25dp"
             app:expandable_area_color="#1296db"
-            app:hide_text="Data"
+            app:hide_text="@string/qrcore_scanner_data"
             app:icon_button_color="#365899"
             app:magic_button_size="50dp"/>
 
@@ -54,7 +54,7 @@
             app:button_icon_height="25dp"
             app:button_icon_width="25dp"
             app:expandable_area_color="#08af24"
-            app:hide_text="Excel"
+            app:hide_text="@string/qrcore_scanner_excel"
             app:icon_button_color="#ced0d4"
             app:magic_button_size="50dp"/>
     </LinearLayout>

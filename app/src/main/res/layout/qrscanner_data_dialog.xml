@@ -16,7 +16,7 @@
             android:layout_centerVertical="true"
             android:layout_marginTop="30dp"
             android:singleLine="true"
-            android:text="3331000100099845745"
+            android:text="@string/card_table_name"
             android:textColor="@color/color_1"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="10dp"
-            android:text="请输入组："
+            android:text="@string/qrcore_scanner_group"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="10dp"
-            android:text="请输入电量谷值："
+            android:text="@string/qrcore_scanner_valley_value"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="10dp"
-            android:text="请输入电量峰值："
+            android:text="@string/qrcore_scanner_peak_value"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="10dp"
-            android:text="请输入电量总值："
+            android:text="@string/qrcore_scanner_total_value"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -120,7 +120,7 @@
             android:layout_marginTop="6dp"
             android:layout_weight="1"
             android:background="#00FFFFFF"
-            android:text="Cancel"
+            android:text="@string/qrcode_dialog_cancel"
             android:textColor="@color/colorPositive"
             android:textSize="18sp"></Button>
 
@@ -136,7 +136,7 @@
             android:layout_marginTop="6dp"
             android:layout_weight="1"
             android:background="#00FFFFFF"
-            android:text="Ok"
+            android:text="@string/qrcode_dialog_ok"
             android:textColor="@color/forget_text_color"
             android:textSize="18sp"></Button>
     </LinearLayout>

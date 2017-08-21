@@ -14,4 +14,7 @@
     <dimen name="welcome_text_margin_bottom">12dp</dimen>
     <dimen name="welcome_content_min_height">96dp</dimen>
     <dimen name="welcome_content">16sp</dimen>
+
+    <dimen name="demo_button_min_width">140dp</dimen>
+    <dimen name="demo_button_min_height">50dp</dimen>
 </resources>

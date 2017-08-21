@@ -19,14 +19,16 @@
     <string name="get_verification_code">获取验证码</string>
     <string name="confirm_login">确认登录</string>
 
-    <string name="welcome_head_01">Spreadsheets on the go</string>
-    <string name="welcome_content_01">Get stuff done with or without an internet connection.</string>
-    <string name="welcome_head_02">Share and edit together</string>
-    <string name="welcome_content_02">Write on your own or invite more people to contribute.</string>
-    <string name="welcome_head_03">Automatically save to the web</string>
-    <string name="welcome_content_03">Never lose your progress, so you can keep working from any computer or device.</string>
-    <string name="welcome_head_04">Edit Excel spreadsheets</string>
-    <string name="welcome_content_04">Open, edit, and save Excel files - all within Sheets.</string>
+    <string name="welcome_head_01">在路上编辑电子表格</string>
+    <string name="welcome_content_01">在没有网络连接的情况下完成任务。</string>
+    <string name="welcome_head_02">一起分享和编辑</string>
+    <string name="welcome_content_02">自己写或者邀请更多的人来做贡献。</string>
+    <string name="welcome_head_03">自动保存到web</string>
+    <string name="welcome_content_03">永远不要失去你的进步，所以你可以继续在任何电脑或设备工作。</string>
+    <string name="welcome_head_04">编辑Excel电子表格</string>
+    <string name="welcome_content_04">打开，编辑，并保存Excel文件-全部在被单内。</string>
+    <string name="welcome_skip">跳过</string>
+    <string name="welcome_done">完成</string>
     
     <string name="register_phone_prefix">请输入</string>
     <string name="register_phone_suffix">收到的验证码</string>
@@ -36,9 +38,35 @@
     <string name="qrdata_group_name">组名</string>
     <string name="qrdata_number">电量表</string>
     <string name="qrdata_date">时间</string>
-    <string name="qrdata_valley_value">谷值</string>
-    <string name="qrdata_peak_value">峰值</string>
-    <string name="qrdata_total_value">总量</string>
+    <string name="qrdata_valley_value">谷值:</string>
+    <string name="qrdata_peak_value">峰值:</string>
+    <string name="qrdata_total_value">总量:</string>
 
+    <string name="prompt_account">账号:</string>
+    <string name="next_action">下一步</string>
+    <string name="reset_password">请设置新的登录密码！</string>
+    <string name="enter_normal_characters">请输入6-20位字符</string>
+    <string name="forget_remarks">请输入6-20位字符备注：请将密码设置为6-20位，并且由字母、数字或半角符号组成,不能与旧密码相同</string>
+    <string name="forget_done">完成</string>
+
+    <string name="register_protocol">同意扫描条形码用户注册协议</string>
+    <string name="register_password">请设置登录密码！</string>
+    <string name="register_confirm_password">再次输入密码</string>
+    <string name="register_password_visible">密码可见</string>
+    <string name="register_remarks">密码由6-20位字母、数字或半角符号组成</string>
+
+    <string name="card_table_name">33300010001000998457545</string>
+    <string name="card_table_date">2017-8-13</string>
+    <string name="card_table_info">电量的详细数据!</string>
+
+    <string name="qrcore_scanner_qr">扫描二维码</string>
+    <string name="qrcore_scanner_data">查看电表数据</string>
+    <string name="qrcore_scanner_excel">导出Excel</string>
+    <string name="qrcore_scanner_group">请输入组:</string>
+    <string name="qrcore_scanner_valley_value">请输入电量谷值:</string>
+    <string name="qrcore_scanner_peak_value">请输入电量峰值:</string>
+    <string name="qrcore_scanner_total_value">请输入电量总值:</string>
+    <string name="qrcode_dialog_cancel">取消</string>
+    <string name="qrcode_dialog_ok">完成</string>
 
 </resources>

@@ -45,7 +45,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_toEndOf="@+id/register_serial_number"
-            android:hint="请输入手机号"
+            android:hint="@string/input_phone_number"
+            android:singleLine="true"
             android:maxLength="11"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -67,9 +68,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="同意扫描条形码用户注册协议"
+            android:text="@string/register_protocol"
             android:layout_toEndOf="@+id/radio_agree"
-            android:paddingLeft="10dp"
+            android:singleLine="true"
+            android:paddingLeft="5dp"
             android:gravity="center"/>
     </RelativeLayout>
 
@@ -81,7 +83,7 @@
         android:layout_marginRight="40dp"
         android:layout_marginTop="10dp"
         android:background="@color/next_background_color"
-        android:text="下一步"
+        android:text="@string/next_action"
         android:textColor="#7b7a77"
         />
 </LinearLayout>

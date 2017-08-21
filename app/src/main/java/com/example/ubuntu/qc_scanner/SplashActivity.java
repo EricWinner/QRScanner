@@ -105,7 +105,7 @@ public class SplashActivity extends AppCompatActivity implements HttpResponeCall
                 UserPreference.save(KeyConstance.IS_USER_ID, String.valueOf(info.getUserid()));
 
                 Intent intent = new Intent();
-                intent.setClass(SplashActivity.this, QCScannerActivity.class);
+                intent.setClass(SplashActivity.this, QRCoreActivity.class);
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.slide_in_left,
                         android.R.anim.slide_out_right);
@@ -124,7 +124,7 @@ public class SplashActivity extends AppCompatActivity implements HttpResponeCall
                     UserPreference.save(KeyConstance.IS_USER_ID, String.valueOf(info.getUserid()));
 
                     Intent intent = new Intent();
-                    intent.setClass(SplashActivity.this, QCScannerActivity.class);
+                    intent.setClass(SplashActivity.this, QRCoreActivity.class);
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.slide_in_left,
                             android.R.anim.slide_out_right);

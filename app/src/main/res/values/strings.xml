@@ -10,8 +10,7 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."
-    </string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
     <string name="forget_password">Forget Password?</string>
     <string name="register_account">Register Account!</string>
     <string name="input_phone_number">Please input phone number!</string>
@@ -32,7 +31,8 @@
     <string name="welcome_content_03">Never lose your progress, so you can keep working from any computer or device.</string>
     <string name="welcome_head_04">Edit Excel spreadsheets</string>
     <string name="welcome_content_04">Open, edit, and save Excel files - all within Sheets.</string>
-
+    <string name="welcome_skip">SKIP</string>
+    <string name="welcome_done">DONE</string>
 
     <string name="menu_action_all_down">All down</string>
     <string name="menu_action_up_down">Up down</string>
@@ -46,7 +46,35 @@
     <string name="qrdata_group_name">Group Name</string>
     <string name="qrdata_number">Number</string>
     <string name="qrdata_date">Time</string>
-    <string name="qrdata_valley_value">Valley Value</string>
-    <string name="qrdata_peak_value">Peak Value</string>
-    <string name="qrdata_total_value">Total Value</string>
+    <string name="qrdata_valley_value">Valley Value :</string>
+    <string name="qrdata_peak_value">Peak Value :</string>
+    <string name="qrdata_total_value">Total Value :</string>
+
+    <string name="prompt_account">Account:</string>
+    <string name="next_action">Next</string>
+    <string name="reset_password">Please set up a new login password!</string>
+    <string name="enter_normal_characters">Please enter 6-20 characters!</string>
+    <string name="forget_remarks">Please enter 6-20 character remarks: please set the password to 6-20, and it is composed of letters, Numbers or semicolon symbols, and cannot be the same as the old password</string>
+    <string name="forget_done">Done</string>
+
+    <string name="register_protocol">Agree to scan barcode user registration protocol</string>
+    <string name="register_password">Please set the login password！</string>
+    <string name="register_confirm_password">Enter password again!</string>
+    <string name="register_password_visible">The password is visible!</string>
+    <string name="register_remarks">The password is made up of 6-20 letters, Numbers, or semiangular symbols!</string>
+
+    <string name="card_table_name">33300010001000998457545</string>
+    <string name="card_table_date">2017-8-13</string>
+    <string name="card_table_info">Detailed data of the meter!</string>
+
+    <string name="qrcore_scanner_qr">Scan QR Code</string>
+    <string name="qrcore_scanner_data">View Data</string>
+    <string name="qrcore_scanner_excel">Export Excel</string>
+    <string name="qrcore_scanner_group">Please enter the group:</string>
+    <string name="qrcore_scanner_valley_value">Please enter the power valley value:</string>
+    <string name="qrcore_scanner_peak_value">Please enter the power peak value:</string>
+    <string name="qrcore_scanner_total_value">Please enter the power total value:</string>
+    <string name="qrcode_dialog_cancel">Cancel</string>
+    <string name="qrcode_dialog_ok">OK</string>
+
 </resources>

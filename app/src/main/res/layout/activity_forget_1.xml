@@ -21,9 +21,9 @@
             android:gravity="center"
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"
-            android:paddingRight="20dp"
+            android:paddingRight="10dp"
             android:paddingTop="10dp"
-            android:text="帐号"
+            android:text="@string/prompt_account"
             android:textColor="#000000"
             android:textSize="18sp"/>
 
@@ -42,7 +42,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_toEndOf="@+id/forget_account_number"
-            android:hint="请输入手机号"
+            android:hint="@string/input_phone_number"
+            android:singleLine="true"
             android:maxLength="11"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -57,7 +58,7 @@
         android:layout_marginRight="40dp"
         android:layout_marginTop="20dp"
         android:background="@color/next_background_color"
-        android:text="下一步"
+        android:text="@string/next_action"
         android:textColor="#7b7a77"
         />
 </LinearLayout>

@@ -69,7 +69,7 @@ public class ForgetPasswordActivity extends BaseActivity implements HttpResponeC
     }
 
     private void requestRegisterInfo(String phoneNumber, String userPassword) {
-        Log.d("jiangsu", "requestRegisterInfo getRegisterData !!");
+        Log.d(TAG, "requestRegisterInfo getRegisterData !!");
         RequestApiData.getInstance().getRegisterData(phoneNumber, userPassword,
                 AnalyticalRegistInfo.class, ForgetPasswordActivity.this);
     }
@@ -201,14 +201,14 @@ public class ForgetPasswordActivity extends BaseActivity implements HttpResponeC
 
     @Override
     public void onSuccess(String apiName, Object object) {
-        Log.d("jiangsu", "onSuccess apiName = " + apiName + ",object = " + object);
+        Log.d(TAG, "onSuccess apiName = " + apiName + ",object = " + object);
         if (UrlConstance.KEY_REGIST_INFO.equals(apiName)) {
             if (object != null && object instanceof AnalyticalRegistInfo) {
                 mForgetThirdFragment.onSuccessLogin();
 
                 AnalyticalRegistInfo info = (AnalyticalRegistInfo) object;
                 String successCode = info.getRet();
-                Log.d("jiangsu", "onSuccess successCode = " + successCode);
+                Log.d(TAG, "onSuccess successCode = " + successCode);
                 if (successCode.equals(Constant.KEY_SUCCESS)) {
                     UserBaseInfo baseUser = new UserBaseInfo();
                     baseUser.setEmail(info.getEmail());
@@ -218,7 +218,7 @@ public class ForgetPasswordActivity extends BaseActivity implements HttpResponeC
                     UserPreference.save(KeyConstance.IS_USER_PASSWORD, mAccountPassword);
 
                     Toast.makeText(ForgetPasswordActivity.this, "注册成功...", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(ForgetPasswordActivity.this, QCScannerActivity.class);
+                    Intent intent = new Intent(ForgetPasswordActivity.this, QRCoreActivity.class);
                     ForgetPasswordActivity.this.startActivity(intent);
                     ForgetPasswordActivity.this.finish();
                 }
