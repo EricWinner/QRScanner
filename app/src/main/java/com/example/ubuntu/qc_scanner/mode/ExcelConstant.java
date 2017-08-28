@@ -22,13 +22,14 @@ public class ExcelConstant {
     private Context mContext;
     public List<ExcelData> mAllQRDataLists = null;
     private QRDataCallback mCallback;
+    private Cursor mCursor;
 
     public ExcelConstant(Context context, QRDataCallback callback) {
         mContext = context;
         mCallback = callback;
     }
 
-    public void queryAllQRData() {
+    public boolean checkQRData() {
         mAllQRDataLists = new ArrayList<ExcelData>();
         String columns[] = new String[]{BaseColumns.QRDATA_ID, BaseColumns.QRDATA_FOREIGN_GROUP_ID, BaseColumns.QRDATA_NUMBER_ID,
                 BaseColumns.QRDATA_DATE, BaseColumns.QRDATA_PEAK_VALUE,
@@ -36,8 +37,26 @@ public class ExcelConstant {
         Uri mUri = QRContentProviderMetaData.QRTableMetaData.CONTENT_URI;
         Cursor cursor = mContext.getContentResolver().query(mUri, columns, null, null, null);
 
+        mCursor = cursor;
         int count = cursor.getCount();
         Log.d(TAG, "queryAllQRData count = " + count);
+        if (count == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void queryAllQRData() {
+        if (mCursor != null) {
+            queryAllQRData(mCursor);
+        } else {
+            Log.d(TAG, "mCursor is null!");
+            return;
+        }
+    }
+
+    private void queryAllQRData(Cursor cursor) {
         if (cursor.moveToFirst()) {
             int id = 0;
             int foreign_id = 0;
@@ -61,7 +80,7 @@ public class ExcelConstant {
                 ExcelData data = new ExcelData(String.valueOf(id), String.valueOf(foreign_id), numberId, date, String.valueOf(peakValue), String.valueOf(valleyValue), String.valueOf(totalValue));
                 mAllQRDataLists.add(data);
             } while (cursor.moveToNext());
-            mCallback.writeToExcel();
         }
+        mCallback.writeToExcel();
     }
 }

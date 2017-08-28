@@ -64,10 +64,14 @@ public class QRExcelFragment extends Fragment implements QRDataCallback {
                 try {
                     if (mCallback != null) {
                         mExcelConstant = new ExcelConstant(getActivity(), mCallback);
-                        mExcelConstant.queryAllQRData();
-                        mExcelExportButton.setVisibility(View.GONE);
-                        mActionButton.setVisibility(View.VISIBLE);
-                        mActionButton.startPour();
+                        if (mExcelConstant.checkQRData()) {
+                            mExcelConstant.queryAllQRData();
+                            mExcelExportButton.setVisibility(View.GONE);
+                            mActionButton.setVisibility(View.VISIBLE);
+                            mActionButton.startPour();
+                        } else {
+                            Toast.makeText(getActivity(), "没有可以导出的数据！", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 } catch (Exception e) {
                     Log.d(TAG, "fail to write excel , " + e);
@@ -97,7 +101,7 @@ public class QRExcelFragment extends Fragment implements QRDataCallback {
                 ExcelUtil.writeExcel(getActivity(), mAllDatas, "excel_");
                 mActionButton.finishPour();
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, "e = " + e);
             }
         }
     }
