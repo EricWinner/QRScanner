@@ -43,7 +43,9 @@ public class ExcelUtil {
             Toast.makeText(context, "SD卡不可用", Toast.LENGTH_LONG).show();
             return;
         }
-        File dir = new File(context.getExternalFilesDir(null).getPath());
+        String path = context.getExternalFilesDir(null).getPath();
+        Log.d(TAG, "path = " + path);
+        File dir = new File(path);
         Log.d(TAG, "writeExcel fileName = " + fileName);
         File file = new File(dir, fileName + ".xls");
         if (!dir.exists()) {
@@ -60,7 +62,6 @@ public class ExcelUtil {
         setExcelData(exportOrder, sheet);
         writeWorkbook.write();
         writeWorkbook.close();
-        Toast.makeText(context, "写入成功", Toast.LENGTH_LONG).show();
     }
 
     private static void setExcelData(List<ExcelData> exportOrder, WritableSheet sheet) throws WriteException {

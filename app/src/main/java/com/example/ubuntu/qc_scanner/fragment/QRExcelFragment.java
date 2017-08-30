@@ -69,6 +69,7 @@ public class QRExcelFragment extends Fragment implements QRDataCallback {
                             mExcelExportButton.setVisibility(View.GONE);
                             mActionButton.setVisibility(View.VISIBLE);
                             mActionButton.startPour();
+                            mActionButton.setAutoPlay(true);
                         } else {
                             Toast.makeText(getActivity(), "没有可以导出的数据！", Toast.LENGTH_SHORT).show();
                         }
@@ -82,7 +83,7 @@ public class QRExcelFragment extends Fragment implements QRDataCallback {
         mActionButton.setPourFinishListener(new LiquidButton.PourFinishListener() {
             @Override
             public void onPourFinish() {
-                Toast.makeText(getActivity(), "Finish", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "写入成功", Toast.LENGTH_LONG).show();
             }
 
             @Override

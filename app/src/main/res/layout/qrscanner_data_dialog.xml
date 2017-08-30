@@ -24,87 +24,142 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/input_group_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
+            android:textColor="@color/colorPositive"
             android:text="@string/qrcore_scanner_group"
             android:textSize="14sp"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/input_group_name"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/input_group_id" />
+            android:layout_marginLeft="10dp"
+            android:inputType="numberDecimal"
+            android:layout_toRightOf="@+id/input_group_id"
+            android:background="@drawable/edittext_input_backgroud"/>
     </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#50BEBEBE"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/input_valley_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
+            android:textColor="@color/colorPositive"
             android:text="@string/qrcore_scanner_valley_value"
             android:textSize="14sp"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/input_valley_value"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/input_valley_title" />
+            android:inputType="numberDecimal"
+            android:layout_toRightOf="@+id/input_valley_title"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/edittext_input_backgroud"/>
     </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#50BEBEBE"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/input_peak_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
+            android:singleLine="true"
             android:text="@string/qrcore_scanner_peak_value"
+            android:textColor="@color/colorPositive"
             android:textSize="14sp"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/input_peak_value"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/input_peak_title" />
+            android:inputType="numberDecimal"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/input_peak_title"
+            android:background="@drawable/edittext_input_backgroud"/>
     </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#50BEBEBE"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/input_total_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
+            android:singleLine="true"
             android:text="@string/qrcore_scanner_total_value"
             android:textSize="14sp"
+            android:textColor="@color/colorPositive"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/input_total_value"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/input_total_title" />
+            android:inputType="numberDecimal"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/input_total_title"
+            android:background="@drawable/edittext_input_backgroud"
+            />
     </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#50BEBEBE"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -122,7 +177,7 @@
             android:background="#00FFFFFF"
             android:text="@string/qrcode_dialog_cancel"
             android:textColor="@color/colorPositive"
-            android:textSize="18sp"></Button>
+            android:textSize="16sp"></Button>
 
         <ImageView
             android:layout_width="2dp"
@@ -138,6 +193,6 @@
             android:background="#00FFFFFF"
             android:text="@string/qrcode_dialog_ok"
             android:textColor="@color/forget_text_color"
-            android:textSize="18sp"></Button>
+            android:textSize="16sp"></Button>
     </LinearLayout>
 </LinearLayout>

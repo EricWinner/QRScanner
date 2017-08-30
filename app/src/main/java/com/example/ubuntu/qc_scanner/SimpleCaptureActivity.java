@@ -41,6 +41,7 @@ public class SimpleCaptureActivity extends CaptureActivity {
     private EditText mQRDataTotalValue;
 
     private String mDataNumberID;
+    private int mDataNumberGroupID;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,10 +68,10 @@ public class SimpleCaptureActivity extends CaptureActivity {
         mQRDataNumber = (TextView) view.findViewById(R.id.qrscanner_data_number);
         mQRDataNumber.setText(resultString);
 
-        mQRDataGroupID     = (EditText) view.findViewById(R.id.input_group_name);
+        mQRDataGroupID = (EditText) view.findViewById(R.id.input_group_name);
         mQRDataValleyValue = (EditText) view.findViewById(R.id.input_valley_value);
-        mQRDataPeakValue   = (EditText) view.findViewById(R.id.input_peak_value);
-        mQRDataTotalValue  = (EditText) view.findViewById(R.id.input_total_value);
+        mQRDataPeakValue = (EditText) view.findViewById(R.id.input_peak_value);
+        mQRDataTotalValue = (EditText) view.findViewById(R.id.input_total_value);
 
         builder.setView(view);
         builder.setOnCancelListener(cd);
@@ -106,28 +107,32 @@ public class SimpleCaptureActivity extends CaptureActivity {
     }
 
     private void saveQRData() {
-        boolean isFirstData = queryQRData();
-        if (!isFirstData) {
-            updateData();
-            return;
-        }
-        operationDatabase(OPERATION_INSERT);
+        final boolean isFirstData = queryQRData();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (!isFirstData) {
+                    operationDatabase(OPERATION_UPDATE);
+                } else {
+                    operationDatabase(OPERATION_INSERT);
+                }
+            }
+        }).start();
     }
 
     private boolean queryQRData() {
         String columns[] = new String[]{BaseColumns.QRDATA_NUMBER_ID};
         Uri mUri = QRContentProviderMetaData.QRTableMetaData.CONTENT_URI;
-        Cursor cursor = mActivity.getContentResolver().query(mUri, columns, null, null, null);
+        Cursor cursor = mActivity.getContentResolver().query(mUri, columns, BaseColumns.QRDATA_NUMBER_ID + "= ? ", new String[]{mDataNumberID}, null);
         if (cursor != null && cursor.moveToFirst()) {
             int id = cursor.getInt(cursor.getColumnIndex(BaseColumns.QRDATA_ID));
-            Log.d(TAG,"queryQRData id = " + id);
+            int group_id = cursor.getInt(cursor.getColumnIndex(BaseColumns.QRDATA_FOREIGN_GROUP_ID));
+            mDataNumberGroupID = group_id;
+            String dataNumber = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_NUMBER_ID));
+            Log.d(TAG, "queryQRData id = " + id + ",dataNumber = " + dataNumber + ",group_id = " + group_id);
             return false;
         }
         return true;
-    }
-
-    private void updateData() {
-        operationDatabase(OPERATION_UPDATE);
     }
 
     private void operationDatabase(int operationAction) {
@@ -137,32 +142,39 @@ public class SimpleCaptureActivity extends CaptureActivity {
         String peakValue = QRDataInfo.getPeakValue();
         String totalValue = QRDataInfo.getTotalValue();
 
-        if (groupId != null && valleyValue != null && peakValue != null && totalValue != null) {
+        Log.d(TAG, "groupId = " + groupId + ",valleyValue = " + valleyValue + ",peakValue = " + peakValue + ",totalValue = " + totalValue);
+        if (!TextUtils.isEmpty(groupId) && !TextUtils.isEmpty(valleyValue) && !TextUtils.isEmpty(peakValue) && !TextUtils.isEmpty(totalValue)) {
             ContentValues qrGroupValues = new ContentValues();
             qrGroupValues.put(BaseColumns.QRDATA_GROUP_NAME, groupId);
 
             ContentValues qrDataValues = new ContentValues();
-            qrDataValues.put(BaseColumns.QRDATA_DATE, DateUtils.getCurrentDate());
+            qrDataValues.put(BaseColumns.QRDATA_DATE, DateUtils.getTodayDate());
             qrDataValues.put(BaseColumns.QRDATA_FOREIGN_GROUP_ID, groupId);
             qrDataValues.put(BaseColumns.QRDATA_NUMBER_ID, mDataNumberID);
-            qrDataValues.put(BaseColumns.QRDATA_PEAK_VALUE, Float.valueOf(valleyValue));
-            qrDataValues.put(BaseColumns.QRDATA_VALLEY_VALUE, Float.valueOf(peakValue));
+            qrDataValues.put(BaseColumns.QRDATA_PEAK_VALUE, Float.valueOf(peakValue));
+            qrDataValues.put(BaseColumns.QRDATA_VALLEY_VALUE, Float.valueOf(valleyValue));
             qrDataValues.put(BaseColumns.QRDATA_TOTAL_AMOUNT, Float.valueOf(totalValue));
 
-            switch (operationAction){
+            switch (operationAction) {
                 case OPERATION_INSERT:
                     mActivity.getContentResolver().insert(QRContentProviderMetaData.QRTableMetaData.GROUP_CONTENT_URI, qrGroupValues);
                     mActivity.getContentResolver().insert(QRContentProviderMetaData.QRTableMetaData.CONTENT_URI, qrDataValues);
+                    Toast.makeText(mActivity, "电表数据写入完成", Toast.LENGTH_LONG).show();
                     break;
                 case OPERATION_UPDATE:
+                    if (Integer.parseInt(groupId) == mDataNumberGroupID) {
+                        Toast.makeText(mActivity, "此电表也在组 ：" + mDataNumberGroupID + "内，不可以添加", Toast.LENGTH_LONG).show();
+                        return ;
+                    }
                     mActivity.getContentResolver().update(QRContentProviderMetaData.QRTableMetaData.GROUP_CONTENT_URI, qrGroupValues, null, null);
                     mActivity.getContentResolver().update(QRContentProviderMetaData.QRTableMetaData.CONTENT_URI, qrDataValues, null, null);
+                    Toast.makeText(mActivity, "电表数据更新完成", Toast.LENGTH_LONG).show();
                     break;
                 default:
                     break;
             }
         } else {
-            Toast.makeText(mActivity, "请填写全部数据",Toast.LENGTH_LONG).show();
+            Toast.makeText(mActivity, "请填写全部数据", Toast.LENGTH_LONG).show();
         }
     }
 

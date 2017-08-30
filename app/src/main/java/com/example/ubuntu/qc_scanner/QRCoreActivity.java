@@ -44,6 +44,8 @@ public class QRCoreActivity extends BaseActivity {
         Log.d(TAG,"onCreate !");
         setContentLayout(R.layout.qrcore_layout);
 
+        setTitle("QRScanner");
+
         fragmentManager = getFragmentManager();
         // 第一次启动时选中第0个tab
         mQCScannerButton = (MagicButton) this.findViewById(R.id.magic_button_scanner);

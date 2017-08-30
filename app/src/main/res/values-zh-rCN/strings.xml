@@ -55,17 +55,17 @@
     <string name="register_password_visible">密码可见</string>
     <string name="register_remarks">密码由6-20位字母、数字或半角符号组成</string>
 
-    <string name="card_table_name">33300010001000998457545</string>
+    <string name="card_table_name">33300010001000998457546</string>
     <string name="card_table_date">2017-8-13</string>
     <string name="card_table_info">电量的详细数据!</string>
 
     <string name="qrcore_scanner_qr">扫描二维码</string>
     <string name="qrcore_scanner_data">查看电表数据</string>
     <string name="qrcore_scanner_excel">导出Excel</string>
-    <string name="qrcore_scanner_group">请输入组:</string>
-    <string name="qrcore_scanner_valley_value">请输入电量谷值:</string>
-    <string name="qrcore_scanner_peak_value">请输入电量峰值:</string>
-    <string name="qrcore_scanner_total_value">请输入电量总值:</string>
+    <string name="qrcore_scanner_group">请输入电量所在组:</string>
+    <string name="qrcore_scanner_valley_value">请输入电量的谷值:</string>
+    <string name="qrcore_scanner_peak_value">请输入电量的峰值:</string>
+    <string name="qrcore_scanner_total_value">请输入电量的总值:</string>
     <string name="qrcode_dialog_cancel">取消</string>
     <string name="qrcode_dialog_ok">完成</string>
 
