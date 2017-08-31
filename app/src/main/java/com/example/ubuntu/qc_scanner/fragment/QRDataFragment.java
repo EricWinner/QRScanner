@@ -33,7 +33,8 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mAllQRDataLists = new ArrayList<QRDataItem>();
+        Log.d(TAG, "onCreateView !");
+        mAllQRDataLists = new ArrayList<>();
         View qrDataLayout = inflater.inflate(R.layout.qrdatalist_layout, container, false);
 
         mStackView = (CardStackView) qrDataLayout.findViewById(R.id.stackview_main);
@@ -51,6 +52,7 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
     }
 
     private void initData() {
+        Log.d(TAG, "initData ");
         queryAllQRData();
         new Handler().postDelayed(
                 new Runnable() {
@@ -65,6 +67,7 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
 
 
     private void queryAllQRData() {
+        Log.d(TAG, "queryAllQRData ");
         String columns[] = new String[]{BaseColumns.QRDATA_ID, BaseColumns.QRDATA_FOREIGN_GROUP_ID, BaseColumns.QRDATA_NUMBER_ID,
                 BaseColumns.QRDATA_DATE, BaseColumns.QRDATA_PEAK_VALUE,
                 BaseColumns.QRDATA_VALLEY_VALUE, BaseColumns.QRDATA_TOTAL_AMOUNT};
@@ -95,10 +98,13 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
                 mAllQRDataLists.add(item);
 
             } while (cursor.moveToNext());
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 
-    private void resetListData() {
+    public void resetListData() {
         if (mAllQRDataLists != null) {
             mAllQRDataLists.clear();
             mAllQRDataLists = null;
@@ -108,7 +114,6 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
     @Override
     public void onDestroy() {
         super.onDestroy();
-        resetListData();
     }
 
     public class QRDataItem {

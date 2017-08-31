@@ -5,6 +5,7 @@ import com.example.ubuntu.qc_scanner.R;
 import com.example.ubuntu.qc_scanner.mode.ExcelData;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.List;
@@ -31,6 +32,9 @@ import android.widget.Toast;
 public class ExcelUtil {
 
     private static final String TAG = "ExcelUtil";
+
+    public static final String OWNER_CREATE_EXCEL_PATH = Environment.getExternalStorageDirectory().toString() + "/QRData";
+
     private static Context mContext;
     //内存地址
     public static String root = Environment.getExternalStorageDirectory()
@@ -39,19 +43,7 @@ public class ExcelUtil {
     public static void writeExcel(Context context, List<ExcelData> exportOrder,
                                   String fileName) throws Exception {
         mContext = context;
-        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) && getAvailableStorage() > 1000000) {
-            Toast.makeText(context, "SD卡不可用", Toast.LENGTH_LONG).show();
-            return;
-        }
-        String path = context.getExternalFilesDir(null).getPath();
-        Log.d(TAG, "path = " + path);
-        File dir = new File(path);
-        Log.d(TAG, "writeExcel fileName = " + fileName);
-        File file = new File(dir, fileName + ".xls");
-        if (!dir.exists()) {
-            Log.d(TAG, "create dir !");
-            dir.mkdirs();
-        }
+        File file = createQRDataPath(context, fileName);
         // 创建Excel工作表
         WritableWorkbook writeWorkbook;
         OutputStream os = new FileOutputStream(file);
@@ -63,6 +55,29 @@ public class ExcelUtil {
         writeWorkbook.write();
         writeWorkbook.close();
     }
+
+    private static File createQRDataPath(Context context, String fileName) {
+        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            Toast.makeText(context, "SD卡不可用", Toast.LENGTH_LONG).show();
+            return null;
+        }
+        File file = null;
+        String status = Environment.getExternalStorageState();
+        if (status.equals(Environment.MEDIA_MOUNTED)) {
+            String path = OWNER_CREATE_EXCEL_PATH;
+            File destDir = new File(path);
+            if (!destDir.exists()) {
+                boolean result = destDir.mkdir();
+                Log.d(TAG, "createQRDataPath mkdirs , destDir = " + destDir.getPath() + ",success = " + result);
+                if(!result){
+                    Log.d(TAG, "create folder :" + path + ", failed.");
+                }
+            }
+            file = new File(destDir, fileName + ".xls");
+        }
+        return file;
+    }
+
 
     private static void setExcelData(List<ExcelData> exportOrder, WritableSheet sheet) throws WriteException {
         for (int i = 0; i < exportOrder.size(); i++) {

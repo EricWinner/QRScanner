@@ -7,6 +7,9 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +33,9 @@ public class SimpleCaptureActivity extends CaptureActivity {
 
     private static final int OPERATION_INSERT = 0x1;
     private static final int OPERATION_UPDATE = 0x2;
+    private static final int OPERATION_CHECK  = 0x3;
+    private static final int OPERATION_CHECK_INSERT  = 0x4;
+    private static final int OPERATION_CHECK_UPDATE  = 0x5;
 
     private Activity mActivity = this;
     private AlertDialog mAlertDialog;
@@ -42,6 +48,25 @@ public class SimpleCaptureActivity extends CaptureActivity {
 
     private String mDataNumberID;
     private int mDataNumberGroupID;
+
+    private Handler mHandler = new Handler(Looper.getMainLooper()){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case OPERATION_CHECK_INSERT:
+                    Log.d(TAG, "OPERATION_CHECK_INSERT !");
+                    operationDatabase(OPERATION_INSERT);
+                    break;
+                case OPERATION_CHECK_UPDATE:
+                    Log.d(TAG, "OPERATION_UPDATE !");
+                    operationDatabase(OPERATION_UPDATE);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,7 +115,7 @@ public class SimpleCaptureActivity extends CaptureActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.dialog_verity_choose:
-                    saveQRData();
+                    queryQRData();
                     mAlertDialog.dismiss();
                     break;
                 case R.id.dialog_cancel_choose:
@@ -106,33 +131,24 @@ public class SimpleCaptureActivity extends CaptureActivity {
         }
     }
 
-    private void saveQRData() {
-        final boolean isFirstData = queryQRData();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (!isFirstData) {
-                    operationDatabase(OPERATION_UPDATE);
-                } else {
-                    operationDatabase(OPERATION_INSERT);
-                }
-            }
-        }).start();
-    }
-
-    private boolean queryQRData() {
+    private void queryQRData() {
         String columns[] = new String[]{BaseColumns.QRDATA_NUMBER_ID};
         Uri mUri = QRContentProviderMetaData.QRTableMetaData.CONTENT_URI;
         Cursor cursor = mActivity.getContentResolver().query(mUri, columns, BaseColumns.QRDATA_NUMBER_ID + "= ? ", new String[]{mDataNumberID}, null);
+        Log.d(TAG, "queryQRData cursor = " + cursor);
         if (cursor != null && cursor.moveToFirst()) {
             int id = cursor.getInt(cursor.getColumnIndex(BaseColumns.QRDATA_ID));
             int group_id = cursor.getInt(cursor.getColumnIndex(BaseColumns.QRDATA_FOREIGN_GROUP_ID));
             mDataNumberGroupID = group_id;
             String dataNumber = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_NUMBER_ID));
             Log.d(TAG, "queryQRData id = " + id + ",dataNumber = " + dataNumber + ",group_id = " + group_id);
-            return false;
+            mHandler.sendEmptyMessage(OPERATION_CHECK_UPDATE);
+        } else {
+            mHandler.sendEmptyMessage(OPERATION_CHECK_INSERT);
         }
-        return true;
+        if (cursor != null) {
+            cursor.close();
+        }
     }
 
     private void operationDatabase(int operationAction) {

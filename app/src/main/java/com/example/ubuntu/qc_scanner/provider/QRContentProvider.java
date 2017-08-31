@@ -59,7 +59,7 @@ public class QRContentProvider extends ContentProvider {
         SQLiteQueryBuilder sqliteBuilder = new SQLiteQueryBuilder();
         mSqliteDB = mQRDataBaseHelper.getReadableDatabase();
         sqliteBuilder.setTables(QR_DATA_TABLE_NAME);
-        Cursor cursor = sqliteBuilder.query(mSqliteDB, projection, selection, null, null,null, sortOrder);
+        Cursor cursor = sqliteBuilder.query(mSqliteDB, projection, selection, null, null, null, sortOrder);
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }

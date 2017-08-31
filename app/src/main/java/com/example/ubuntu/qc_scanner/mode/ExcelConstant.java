@@ -81,6 +81,10 @@ public class ExcelConstant {
                 mAllQRDataLists.add(data);
             } while (cursor.moveToNext());
         }
+        if (cursor != null) {
+            cursor.close();
+            mCursor = null;
+        }
         mCallback.writeToExcel();
     }
 }

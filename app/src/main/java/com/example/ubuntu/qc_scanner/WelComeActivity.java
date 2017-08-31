@@ -1,5 +1,6 @@
 package com.example.ubuntu.qc_scanner;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -137,8 +138,10 @@ public class WelComeActivity extends AppCompatActivity  {
 
 
     private void endTWizard() {
+        Intent intent = new Intent();
+        intent.setClass(WelComeActivity.this, QRCoreActivity.class);
+        startActivity(intent);
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
-        finish();
     }
 
     private void setIndicator(int index) {

@@ -75,7 +75,7 @@ public class SplashActivity extends AppCompatActivity implements HttpResponeCall
         Log.d(TAG, "checkAccount userAccount = " + userAccount + ",userPassword = " + userPassword + ",userId = " + userId);
         if (TextUtils.isEmpty(userAccount)) {
             Intent intent = new Intent();
-            intent.setClass(SplashActivity.this, LoginActivity.class);
+            intent.setClass(SplashActivity.this, QRCoreActivity.class);
             startActivity(intent);
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         } else {

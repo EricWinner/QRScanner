@@ -1,5 +1,6 @@
 package com.example.ubuntu.qc_scanner;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -37,6 +38,7 @@ public class QRCoreActivity extends BaseActivity {
     private int mCurrentState = QRSCANNER;
 
     private FragmentManager fragmentManager;
+    private Fragment mFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +91,7 @@ public class QRCoreActivity extends BaseActivity {
     }
 
     private void setTabSelection(int selection) {
+        Log.d(TAG, "setTabSelection selection = " + selection);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         // 先隐藏掉所有的Fragment，以防止有多个Fragment显示在界面上的情况
         hideFragments(transaction);
@@ -96,7 +99,11 @@ public class QRCoreActivity extends BaseActivity {
             case QRSCANNER:
                 if (mQRScannerFragment == null) {
                     mQRScannerFragment = new QRScannerFragment();
-                    transaction.replace(R.id.qrcore_content, mQRScannerFragment);
+                    if (mFragment != null) {
+                        transaction.hide(mFragment);
+                    }
+                    mFragment = mQRScannerFragment;
+                    transaction.add(R.id.qrcore_content, mQRScannerFragment);
                 } else {
                     // 如果mQRDataFragment不为空，则直接将它显示出来
                     transaction.show(mQRScannerFragment);
@@ -104,22 +111,35 @@ public class QRCoreActivity extends BaseActivity {
                 mCurrentState = QRSCANNER;
                 break;
             case QRDATA:
+                Log.d(TAG, "mQRDataFragment = " + mQRDataFragment);
                 if (mQRDataFragment == null) {
                     mQRDataFragment = new QRDataFragment();
-                    transaction.replace(R.id.qrcore_content, mQRDataFragment);
+                    if (mFragment != null) {
+                        transaction.hide(mFragment);
+                    }
+                    mFragment = mQRDataFragment;
+                    transaction.add(R.id.qrcore_content, mQRDataFragment);
                 } else {
                     // 如果mQRDataFragment不为空，则直接将它显示出来
+                    Log.d(TAG, "transaction.show(mQRDataFragment) !");
                     transaction.show(mQRDataFragment);
                 }
                 mCurrentState = QRDATA;
                 break;
             case QREXCEL:
+                Log.d(TAG, "mQRExcelFragment = " + mQRExcelFragment);
                 if (mQRExcelFragment == null) {
                     mQRExcelFragment = new QRExcelFragment();
                     mQRExcelFragment.setQRDataCallback(mQRExcelFragment);
-                    transaction.replace(R.id.qrcore_content, mQRExcelFragment);
+                    mQRExcelFragment.registerFragmentPermission(mQRExcelFragment);
+                    if (mFragment != null) {
+                        transaction.hide(mFragment);
+                    }
+                    mFragment = mQRExcelFragment;
+                    transaction.add(R.id.qrcore_content, mQRExcelFragment);
                 } else {
                     // 如果mQRExcelFragment不为空，则直接将它显示出来
+                    Log.d(TAG, "transaction.show(mQRExcelFragment) !");
                     transaction.show(mQRExcelFragment);
                 }
                 mCurrentState = QREXCEL;
@@ -187,6 +207,7 @@ public class QRCoreActivity extends BaseActivity {
         }
         if (mQRExcelFragment != null) {
             mQRExcelFragment.removeQRDataCallback();
+            mQRExcelFragment.removeFragmentPermission();
             mQRExcelFragment = null;
         }
     }
