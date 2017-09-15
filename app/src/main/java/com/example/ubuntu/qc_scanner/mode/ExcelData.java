@@ -16,6 +16,10 @@ public class ExcelData implements Serializable {
     public String valleyValue;
     public String peakValue;
     public String totalValue;
+    //add
+    public String caseNumber;
+    public String caseName;
+    public String caseType;
 
     public ExcelData(String id, String groupID, String numberID, String dateTime,String valleyValue,String peakValue, String totalValue) {
         this.id = id;
@@ -25,6 +29,17 @@ public class ExcelData implements Serializable {
         this.valleyValue = valleyValue;
         this.peakValue = peakValue;
         this.totalValue = totalValue;
+    }
+
+    public ExcelData(String id, String groupID, String dateTime, String valleyValue, String totalValue,String qrDataCaseNumber,String qrDataCaseName,String qrDataCaseType) {
+        this.id = id;
+        this.groupID = groupID;
+        this.dateTime = dateTime;
+        this.valleyValue = valleyValue;
+        this.totalValue = totalValue;
+        this.caseNumber = qrDataCaseNumber;
+        this.caseName = qrDataCaseName;
+        this.caseType = qrDataCaseType;
     }
 
     public ExcelData(JSONObject obj) {

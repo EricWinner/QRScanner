@@ -31,9 +31,11 @@ public class ExcelConstant {
 
     public boolean checkQRData() {
         mAllQRDataLists = new ArrayList<ExcelData>();
-        String columns[] = new String[]{BaseColumns.QRDATA_ID, BaseColumns.QRDATA_FOREIGN_GROUP_ID, BaseColumns.QRDATA_NUMBER_ID,
-                BaseColumns.QRDATA_DATE, BaseColumns.QRDATA_PEAK_VALUE,
-                BaseColumns.QRDATA_VALLEY_VALUE, BaseColumns.QRDATA_TOTAL_AMOUNT};
+        String columns[] = new String[]{BaseColumns.QRDATA_ID, BaseColumns.QRDATA_FOREIGN_GROUP_ID,
+                BaseColumns.QRDATA_NUMBER_ID,BaseColumns.QRDATA_DATE,
+                BaseColumns.QRDATA_TOTAL_AMOUNT,BaseColumns.QRDATA_VALLEY_VALUE,
+                BaseColumns.QRDATA_CASE_NAME,BaseColumns.QRDATA_CASE_TYPE
+        };
         Uri mUri = QRContentProviderMetaData.QRTableMetaData.CONTENT_URI;
         Cursor cursor = mContext.getContentResolver().query(mUri, columns, null, null, null);
 
@@ -65,19 +67,22 @@ public class ExcelConstant {
             float peakValue = 0.0f;
             float valleyValue = 0.0f;
             float totalValue = 0.0f;
+            String case_name;
+            String case_type;
 
             do {
                 id = cursor.getInt(cursor.getColumnIndex(BaseColumns.QRDATA_ID));
                 foreign_id = cursor.getInt(cursor.getColumnIndex(BaseColumns.QRDATA_FOREIGN_GROUP_ID));
                 numberId = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_NUMBER_ID));
                 date = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_DATE));
-                peakValue = cursor.getFloat(cursor.getColumnIndex(BaseColumns.QRDATA_PEAK_VALUE));
-                valleyValue = cursor.getFloat(cursor.getColumnIndex(BaseColumns.QRDATA_VALLEY_VALUE));
                 totalValue = cursor.getFloat(cursor.getColumnIndex(BaseColumns.QRDATA_TOTAL_AMOUNT));
-                Log.d(TAG, "id = " + id + ",foreign_id = " + foreign_id + ",date = " + date + ",numberId = " + numberId);
-                Log.d(TAG, "peakValue = " + peakValue + ",valleyValue = " + valleyValue + ",totalValue = " + totalValue);
+                valleyValue = cursor.getFloat(cursor.getColumnIndex(BaseColumns.QRDATA_VALLEY_VALUE));
+                case_name = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_CASE_NAME));
+                case_type = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_CASE_TYPE));
+                Log.d(TAG, "id = " + id + ",foreign_id = " + foreign_id + ",date = " + date + ",numberId = " + numberId );
+                Log.d(TAG, "valleyValue = " + valleyValue + ",totalValue = " + totalValue + ",case_name = " + case_name + ",case_type = " + case_type);
 
-                ExcelData data = new ExcelData(String.valueOf(id), String.valueOf(foreign_id), numberId, date, String.valueOf(peakValue), String.valueOf(valleyValue), String.valueOf(totalValue));
+                ExcelData data = new ExcelData(String.valueOf(id), String.valueOf(foreign_id), date, String.valueOf(valleyValue), String.valueOf(totalValue), case_name,case_type);
                 mAllQRDataLists.add(data);
             } while (cursor.moveToNext());
         }

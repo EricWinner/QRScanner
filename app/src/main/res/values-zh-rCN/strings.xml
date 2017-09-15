@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QC_Scanner</string>
+    <string name="app_name">EM-scanner</string>
 
     <!-- Strings related to login -->
     <string name="prompt_username">手机号码</string>
@@ -41,6 +41,15 @@
     <string name="qrdata_valley_value">谷值:</string>
     <string name="qrdata_peak_value">峰值:</string>
     <string name="qrdata_total_value">总量:</string>
+    <string name="qrdata_case_number">箱号</string>
+    <string name="qrdata_case_name">设备名称</string>
+    <string name="qrdata_case_type">设备类型</string>
+    <string name="qrdata_case_name1">单相表</string>
+    <string name="qrdata_case_name2">三相表</string>
+    <string name="qrdata_case_type1">销户</string>
+    <string name="qrdata_case_type2">轮换</string>
+    <string name="qrdata_case_type3">故障</string>
+    <string name="qrdata_case_type4">增容</string>
 
     <string name="prompt_account">账号:</string>
     <string name="next_action">下一步</string>

@@ -68,9 +68,11 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
 
     private void queryAllQRData() {
         Log.d(TAG, "queryAllQRData ");
-        String columns[] = new String[]{BaseColumns.QRDATA_ID, BaseColumns.QRDATA_FOREIGN_GROUP_ID, BaseColumns.QRDATA_NUMBER_ID,
-                BaseColumns.QRDATA_DATE, BaseColumns.QRDATA_PEAK_VALUE,
-                BaseColumns.QRDATA_VALLEY_VALUE, BaseColumns.QRDATA_TOTAL_AMOUNT};
+        String columns[] = new String[]{BaseColumns.QRDATA_ID, BaseColumns.QRDATA_FOREIGN_GROUP_ID,
+                BaseColumns.QRDATA_CASE_NUMBER,BaseColumns.QRDATA_DATE,
+                BaseColumns.QRDATA_TOTAL_AMOUNT,BaseColumns.QRDATA_VALLEY_VALUE,
+                BaseColumns.QRDATA_CASE_NAME,BaseColumns.QRDATA_CASE_TYPE
+        };
         Uri mUri = QRContentProviderMetaData.QRTableMetaData.CONTENT_URI;
         Cursor cursor = getActivity().getContentResolver().query(mUri, columns, null, null, null);
 
@@ -79,6 +81,9 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
             int foreign_id = 0;
             String numberId = null;
             String date = null;
+            String case_number;
+            String case_name;
+            String case_type;
             float peakValue = 0.0f;
             float valleyValue = 0.0f;
             float totalValue = 0.0f;
@@ -87,14 +92,16 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
                 id = cursor.getInt(cursor.getColumnIndex(BaseColumns.QRDATA_ID));
                 foreign_id = cursor.getInt(cursor.getColumnIndex(BaseColumns.QRDATA_FOREIGN_GROUP_ID));
                 numberId = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_NUMBER_ID));
+                //case_number = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_CASE_NUMBER));
                 date = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_DATE));
-                peakValue = cursor.getFloat(cursor.getColumnIndex(BaseColumns.QRDATA_PEAK_VALUE));
-                valleyValue = cursor.getFloat(cursor.getColumnIndex(BaseColumns.QRDATA_VALLEY_VALUE));
                 totalValue = cursor.getFloat(cursor.getColumnIndex(BaseColumns.QRDATA_TOTAL_AMOUNT));
+                valleyValue = cursor.getFloat(cursor.getColumnIndex(BaseColumns.QRDATA_VALLEY_VALUE));
+                case_name = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_CASE_NAME));
+                case_type = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_CASE_TYPE));
                 Log.d(TAG, "id = " + id + ",foreign_id = " + foreign_id + ",date = " + date + ",numberId = " + numberId);
-                Log.d(TAG, "peakValue = " + peakValue + ",valleyValue = " + valleyValue + ",totalValue = " + totalValue);
+                Log.d(TAG, "valleyValue = " + valleyValue + ",totalValue = " + totalValue + ",case_name = " + case_name + ",case_type = " + case_type);
 
-                QRDataItem item = new QRDataItem(foreign_id, numberId, date, peakValue, valleyValue, totalValue);
+                QRDataItem item = new QRDataItem(foreign_id, numberId, date, valleyValue, totalValue, case_name, case_type);
                 mAllQRDataLists.add(item);
 
             } while (cursor.moveToNext());
@@ -121,6 +128,8 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
         private int mForeignGroupID;
         private String mQRDataNumberID;
         private String mQRDataTime;
+        private String mQRDataCaseName;
+        private String mQRDataCaseType;
         private float mPEAKValue;
         private float mValleyValue;
         private float mTotalValue;
@@ -132,6 +141,16 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
             mPEAKValue = peakValue;
             mValleyValue = valleyValue;
             mTotalValue = totalValue;
+        }
+
+        public QRDataItem(int foreignGroupID, String qrDataNumberID, String qrDateTime, float valleyValue, float totalValue,String qrDataCaseName,String qrDataCaseType) {
+            mForeignGroupID = foreignGroupID;
+            mQRDataNumberID = qrDataNumberID;
+            mQRDataTime = qrDateTime;
+            mValleyValue = valleyValue;
+            mTotalValue = totalValue;
+            mQRDataCaseName = qrDataCaseName;
+            mQRDataCaseType = qrDataCaseType;
         }
 
         public String getmQRDataNumberID() {
@@ -156,6 +175,14 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
 
         public float getmTotalValue() {
             return mTotalValue;
+        }
+
+        public String getmQRDataCaseName() {
+            return mQRDataCaseName;
+        }
+
+        public String getmQRDataCaseType() {
+            return mQRDataCaseType;
         }
 
         @Override

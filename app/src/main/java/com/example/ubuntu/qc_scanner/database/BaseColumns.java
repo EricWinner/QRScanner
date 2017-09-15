@@ -15,6 +15,11 @@ public class BaseColumns {
     public static final String QRDATA_PEAK_VALUE = "_peak_value";
     public static final String QRDATA_VALLEY_VALUE = "_valley_value";
 
+    //add columns
+    public static final String QRDATA_CASE_NUMBER = "_case_number";
+    public static final String QRDATA_CASE_NAME   = "_case_name";
+    public static final String QRDATA_CASE_TYPE   = "_case_type";
+
     //table:qrgroup columns
     public static final String QRDATA_GROUP_ID = "_group_id";
     public static final String QRDATA_GROUP_NAME = "_group_name";

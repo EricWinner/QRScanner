@@ -95,7 +95,7 @@ public class SimpleCaptureActivity extends CaptureActivity {
 
         mQRDataGroupID = (EditText) view.findViewById(R.id.input_group_name);
         mQRDataValleyValue = (EditText) view.findViewById(R.id.input_valley_value);
-        mQRDataPeakValue = (EditText) view.findViewById(R.id.input_peak_value);
+        //mQRDataPeakValue = (EditText) view.findViewById(R.id.input_peak_value);
         mQRDataTotalValue = (EditText) view.findViewById(R.id.input_total_value);
 
         builder.setView(view);
@@ -167,7 +167,7 @@ public class SimpleCaptureActivity extends CaptureActivity {
             qrDataValues.put(BaseColumns.QRDATA_DATE, DateUtils.getTodayDate());
             qrDataValues.put(BaseColumns.QRDATA_FOREIGN_GROUP_ID, groupId);
             qrDataValues.put(BaseColumns.QRDATA_NUMBER_ID, mDataNumberID);
-            qrDataValues.put(BaseColumns.QRDATA_PEAK_VALUE, Float.valueOf(peakValue));
+            //qrDataValues.put(BaseColumns.QRDATA_PEAK_VALUE, Float.valueOf(peakValue));
             qrDataValues.put(BaseColumns.QRDATA_VALLEY_VALUE, Float.valueOf(valleyValue));
             qrDataValues.put(BaseColumns.QRDATA_TOTAL_AMOUNT, Float.valueOf(totalValue));
 
@@ -199,6 +199,8 @@ public class SimpleCaptureActivity extends CaptureActivity {
         private String valleyValue;
         private String peakValue;
         private String totalValue;
+        private String caseName;
+        private String caseType;
 
         public String getGroupId() {
             return groupId;
@@ -215,6 +217,15 @@ public class SimpleCaptureActivity extends CaptureActivity {
         public String getTotalValue() {
             return totalValue;
         }
+
+        public String getCaseName() {
+            return caseName;
+        }
+
+        public String getCaseType() {
+            return caseType;
+        }
+
 
         public QRDataInfo invoke() {
             groupId = mQRDataGroupID.getText().toString();

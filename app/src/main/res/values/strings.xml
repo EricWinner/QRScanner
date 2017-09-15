@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QC_Scanner</string>
+    <string name="app_name">EM-scanner</string>
 
     <!-- Strings related to login -->
     <string name="prompt_username">PhoneNumber</string>
@@ -49,6 +49,15 @@
     <string name="qrdata_valley_value">Valley Value :</string>
     <string name="qrdata_peak_value">Peak Value :</string>
     <string name="qrdata_total_value">Total Value :</string>
+    <string name="qrdata_case_number">Case Number :</string>
+    <string name="qrdata_case_name">Case Name :</string>
+    <string name="qrdata_case_type">Case Type :</string>
+    <string name="qrdata_case_name1">Single-phase table</string>
+    <string name="qrdata_case_name2">Three-phase table</string>
+    <string name="qrdata_case_type1">Sales</string>
+    <string name="qrdata_case_type2">Rotation</string>
+    <string name="qrdata_case_type3">Malfunction</string>
+    <string name="qrdata_case_type4">Capacity increase</string>
 
     <string name="prompt_account">Account:</string>
     <string name="next_action">Next</string>

@@ -13,6 +13,8 @@ import com.example.ubuntu.qc_scanner.fragment.QRDataFragment;
 import com.loopeer.cardstack.CardStackView;
 import com.loopeer.cardstack.StackAdapter;
 
+import org.w3c.dom.Text;
+
 public class CardStackAdapter extends StackAdapter<QRDataFragment.QRDataItem> {
 
     private static final String TAG = "CardStackAdapter";
@@ -51,17 +53,21 @@ public class CardStackAdapter extends StackAdapter<QRDataFragment.QRDataItem> {
         TextView mTextValleyValue;
         TextView mTextPeakValue;
         TextView mTextTotalValue;
+        TextView mTextCaseName;
+        TextView mTextCaseType;
 
         public ColorItemViewHolder(View view) {
             super(view);
             mLayout = view.findViewById(R.id.frame_list_card_item);
             mContainerContent = view.findViewById(R.id.container_list_content);
-            mTextTitle = (TextView) view.findViewById(R.id.text_list_card_title);
+            mTextTitle = (TextView) view.findViewById(R.id.text_list_card_case_number_value);
             mTextNumber = (TextView) view.findViewById(R.id.text_list_card_number);
-            mTextGroupName = (TextView) view.findViewById(R.id.text_list_card_group);
+            mTextGroupName = (TextView) view.findViewById(R.id.text_list_card_case_number);
             mTextValleyValue = (TextView) view.findViewById(R.id.text_list_card_valley_value);
-            mTextPeakValue = (TextView)view.findViewById(R.id.text_list_card_peak_value);
+            //mTextPeakValue = (TextView)view.findViewById(R.id.text_list_card_peak_value);
             mTextTotalValue = (TextView)view.findViewById(R.id.text_list_card_total_amount);
+            mTextCaseName = (TextView)view.findViewById(R.id.text_list_card_case_name_value);
+            mTextCaseType = (TextView)view.findViewById(R.id.text_list_card_case_type_value);
         }
 
         @Override
@@ -77,8 +83,10 @@ public class CardStackAdapter extends StackAdapter<QRDataFragment.QRDataItem> {
             mTextNumber.setText(item.getmQRDataNumberID());
             mTextTitle.setText(item.getmQRDataTime());
             mTextValleyValue.setText(String.valueOf(item.getmValleyValue()));
-            mTextPeakValue.setText(String.valueOf(item.getmPEAKValue()));
+            //mTextPeakValue.setText(String.valueOf(item.getmPEAKValue()));
             mTextTotalValue.setText(String.valueOf(item.getmTotalValue()));
+            mTextCaseName.setText(String.valueOf(item.getmQRDataCaseName()));
+            mTextCaseType.setText(String.valueOf(item.getmQRDataCaseType()));
         }
 
         public  Integer[] colors = new Integer[]{
