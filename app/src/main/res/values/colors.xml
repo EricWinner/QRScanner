@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#e9a642</color>
-    <color name="colorPrimaryDark">#be7d04</color>
-    <color name="colorAccent">#f1620d</color>
+    <color name="colorPrimary">#48938d</color>
+    <color name="colorPrimaryDark">#48938d</color>
+    <color name="colorAccent">#48938d</color>
     <color name="forget_text_color">#408cff</color>
     <color name="register_view_background">#525353</color>
     <color name="register_background">#504cf1f1</color>
@@ -42,4 +42,5 @@
     <color name="color_26">#000000</color>
 
     <color name="next_background_color">#a9a8a6</color>
+    <color name="time_button_backgroup">#08ffef</color>
 </resources>

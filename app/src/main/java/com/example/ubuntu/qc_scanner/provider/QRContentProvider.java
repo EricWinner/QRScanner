@@ -1,8 +1,10 @@
 package com.example.ubuntu.qc_scanner.provider;
 
 import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -33,6 +35,8 @@ public class QRContentProvider extends ContentProvider {
 
     private QRDataBaseHelper mQRDataBaseHelper;
     private SQLiteDatabase mSqliteDB;
+    private ContentResolver mResolver = null;
+    private Context mContext;
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -50,6 +54,8 @@ public class QRContentProvider extends ContentProvider {
     public boolean onCreate() {
         Log.d(TAG, "QRContentProvider onCreate!");
         mQRDataBaseHelper = new QRDataBaseHelper(getContext(), DATABASE_NAME, null, DATABASE_VERSION);
+        mContext = getContext();
+        mResolver = mContext.getContentResolver();
         return false;
     }
 
@@ -81,6 +87,7 @@ public class QRContentProvider extends ContentProvider {
                 if (insertQRDataId > 0) {
                     Uri rowUri = ContentUris.appendId(QRTableMetaData.CONTENT_URI.buildUpon(), insertQRDataId).build();
                     getContext().getContentResolver().notifyChange(rowUri, null);
+                    mResolver.notifyChange(uri, null);
                     return rowUri;
                 }
                 throw new SQLException("Failed to insert row into " + uri);
@@ -90,6 +97,7 @@ public class QRContentProvider extends ContentProvider {
                 if (inserQRGroupId > 0) {
                     Uri rowUri = ContentUris.appendId(QRTableMetaData.GROUP_CONTENT_URI.buildUpon(), inserQRGroupId).build();
                     getContext().getContentResolver().notifyChange(rowUri, null);
+                    mResolver.notifyChange(rowUri, null);
                     return rowUri;
                 }
                 throw new SQLException("Failed to insert row into " + uri);
@@ -100,7 +108,22 @@ public class QRContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        mSqliteDB = mQRDataBaseHelper.getWritableDatabase();
+        int count = 0;
+
+        switch(uriMatcher.match(uri)) {
+            case INCOMING_QRDATA:
+                count = mSqliteDB.delete(QR_DATA_TABLE_NAME, selection, selectionArgs);
+                break;
+            case INCOMING_QRGROUP:
+                count = mSqliteDB.delete(QR_GROUP_TABLE_NAME, selection, selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("Error Uri: " + uri);
+        }
+
+        mResolver.notifyChange(uri, null);
+        return count;
     }
 
     @Override

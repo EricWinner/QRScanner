@@ -2,10 +2,9 @@ package com.example.ubuntu.qc_scanner.util;
 
 
 import com.example.ubuntu.qc_scanner.R;
-import com.example.ubuntu.qc_scanner.mode.ExcelData;
+import com.example.ubuntu.qc_scanner.mode.ExcelDataItem;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.List;
@@ -40,7 +39,7 @@ public class ExcelUtil {
     public static String root = Environment.getExternalStorageDirectory()
             .getPath();
 
-    public static void writeExcel(Context context, List<ExcelData> exportOrder,
+    public static void writeExcel(Context context, List<ExcelDataItem> exportOrder,
                                   String fileName) throws Exception {
         mContext = context;
         File file = createQRDataPath(context, fileName);
@@ -79,16 +78,16 @@ public class ExcelUtil {
     }
 
 
-    private static void setExcelData(List<ExcelData> exportOrder, WritableSheet sheet) throws WriteException {
+    private static void setExcelData(List<ExcelDataItem> exportOrder, WritableSheet sheet) throws WriteException {
         for (int i = 0; i < exportOrder.size(); i++) {
-            ExcelData order = exportOrder.get(i);
-            Label idLabel = new Label(0, i + 1, order.id);
-            Label groupIDLabel = new Label(1, i + 1, order.groupID);
-            Label nameLabel = new Label(2, i + 1, order.numberID);
-            Label dateLabel = new Label(3, i + 1, order.dateTime);
-            Label valleyLabel = new Label(4, i + 1, order.valleyValue);
-            Label peakLabel = new Label(5, i + 1, order.peakValue);
-            Label totalLabel = new Label(6, i + 1, order.totalValue);
+            ExcelDataItem order = exportOrder.get(i);
+            Label idLabel = new Label(0, i + 1, order.getId());
+            Label groupIDLabel = new Label(1, i + 1, order.getGroupID());
+            Label nameLabel = new Label(2, i + 1, order.getNumberID());
+            Label dateLabel = new Label(3, i + 1, order.getDateTime());
+            Label valleyLabel = new Label(4, i + 1, order.getValleyValue());
+            Label peakLabel = new Label(5, i + 1, order.getPeakValue());
+            Label totalLabel = new Label(6, i + 1, order.getTotalValue());
             sheet.addCell(idLabel);
             sheet.addCell(groupIDLabel);
             sheet.addCell(nameLabel);

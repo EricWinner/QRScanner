@@ -79,11 +79,29 @@
     <string name="qrcore_scanner_qr">Scan QR Code</string>
     <string name="qrcore_scanner_data">View Data</string>
     <string name="qrcore_scanner_excel">Export Excel</string>
+    <string name="qrcore_scanner_clear">Clear Data</string>
+    <string name="qrcore_scanner_camera">Select Camera</string>
     <string name="qrcore_scanner_group">Please enter the group:</string>
     <string name="qrcore_scanner_valley_value">Please enter the power valley value:</string>
     <string name="qrcore_scanner_peak_value">Please enter the power peak value:</string>
     <string name="qrcore_scanner_total_value">Please enter the power total value:</string>
     <string name="qrcode_dialog_cancel">Cancel</string>
     <string name="qrcode_dialog_ok">OK</string>
+    <string name="input_username">Input username</string>
+    <string name="choose_date">Choose the date of the year</string>
+    <string name="login_sign_in">Press and hold login.</string>
+
+    <string name="qrdata_case_group_number">Case Number:</string>
+    <string name="qrdata_case_total_value">Meter total battery:</string>
+    <string name="qrdata_case_valley_value">Meter valley battery:</string>
+
+    <string-array name="type">
+        <item>@string/qrdata_case_type1</item>
+        <item>@string/qrdata_case_type2</item>
+        <item>@string/qrdata_case_type3</item>
+        <item>@string/qrdata_case_type4</item>
+    </string-array>
+
+    <string name="qrdata_case_type_hint">Please select case type :</string>
 
 </resources>

@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.ubuntu.qc_scanner.R;
-import com.example.ubuntu.qc_scanner.mode.ExcelConstant;
-import com.example.ubuntu.qc_scanner.mode.ExcelData;
+import com.example.ubuntu.qc_scanner.task.QRExcelDataTask;
+import com.example.ubuntu.qc_scanner.mode.ExcelDataItem;
 import com.example.ubuntu.qc_scanner.mode.QRDataCallback;
 import com.example.ubuntu.qc_scanner.util.ExcelUtil;
 import com.gospelware.liquidbutton.LiquidButton;
@@ -38,8 +38,8 @@ public class QRExcelFragment extends Fragment implements QRDataCallback,Fragment
     private QRDataCallback mCallback;
     private FButton mExcelExportButton;
     private LiquidButton mActionButton;
-    private ExcelConstant mExcelConstant;
-    private List<ExcelData> mAllDatas = new ArrayList<ExcelData>();
+    private QRExcelDataTask mQRExcelDataTask;
+    private List<ExcelDataItem> mAllDatas = new ArrayList<ExcelDataItem>();
     private FragmentPermission mFragmentPermission;
 
     private boolean permissionGranted = false;
@@ -133,9 +133,9 @@ public class QRExcelFragment extends Fragment implements QRDataCallback,Fragment
     @Override
     public void writeToExcel() {
         Log.d(TAG, "writeToExcel ");
-        if (mExcelConstant.mAllQRDataLists != null) {
-            for (ExcelData excelData : mExcelConstant.mAllQRDataLists) {
-                mAllDatas.add(excelData);
+        if (mQRExcelDataTask.mAllQRDataLists != null) {
+            for (ExcelDataItem excelDataItem : mQRExcelDataTask.mAllQRDataLists) {
+                mAllDatas.add(excelDataItem);
             }
             try {
                 ExcelUtil.writeExcel(getActivity(), mAllDatas, "qrdata");
@@ -165,9 +165,9 @@ public class QRExcelFragment extends Fragment implements QRDataCallback,Fragment
         try {
             Log.d(TAG, "mCallback = " + mCallback);
             if (mCallback != null) {
-                mExcelConstant = new ExcelConstant(getActivity(), mCallback);
-                if (mExcelConstant.checkQRData()) {
-                    mExcelConstant.queryAllQRData();
+                mQRExcelDataTask = new QRExcelDataTask(getActivity(), mCallback);
+                if (mQRExcelDataTask.checkQRData()) {
+                    mQRExcelDataTask.queryAllQRData();
                     mExcelExportButton.setVisibility(View.GONE);
                     mActionButton.setVisibility(View.VISIBLE);
                     mActionButton.startPour();

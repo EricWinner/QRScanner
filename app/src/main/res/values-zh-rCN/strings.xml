@@ -41,9 +41,9 @@
     <string name="qrdata_valley_value">谷值:</string>
     <string name="qrdata_peak_value">峰值:</string>
     <string name="qrdata_total_value">总量:</string>
-    <string name="qrdata_case_number">箱号</string>
-    <string name="qrdata_case_name">设备名称</string>
-    <string name="qrdata_case_type">设备类型</string>
+    <string name="qrdata_case_number">箱号:</string>
+    <string name="qrdata_case_name">设备名称:</string>
+    <string name="qrdata_case_type">退库类型:</string>
     <string name="qrdata_case_name1">单相表</string>
     <string name="qrdata_case_name2">三相表</string>
     <string name="qrdata_case_type1">销户</string>
@@ -71,11 +71,28 @@
     <string name="qrcore_scanner_qr">扫描二维码</string>
     <string name="qrcore_scanner_data">查看电表数据</string>
     <string name="qrcore_scanner_excel">导出Excel</string>
+    <string name="qrcore_scanner_clear">清除数据</string>
+    <string name="qrcore_scanner_camera">选择拍照</string>
     <string name="qrcore_scanner_group">请输入电量所在组:</string>
     <string name="qrcore_scanner_valley_value">请输入电量的谷值:</string>
     <string name="qrcore_scanner_peak_value">请输入电量的峰值:</string>
     <string name="qrcore_scanner_total_value">请输入电量的总值:</string>
     <string name="qrcode_dialog_cancel">取消</string>
     <string name="qrcode_dialog_ok">完成</string>
+    <string name="input_username">请输入姓名</string>
+    <string name="choose_date">选择年月日</string>
+    <string name="login_sign_in">按住滑动登录</string>
 
+    <string name="qrdata_case_group_number">组箱号:</string>
+    <string name="qrdata_case_total_value">表计总电量:</string>
+    <string name="qrdata_case_valley_value">表计谷电量:</string>
+
+    <string-array name="type">
+        <item>@string/qrdata_case_type1</item>
+        <item>@string/qrdata_case_type2</item>
+        <item>@string/qrdata_case_type3</item>
+        <item>@string/qrdata_case_type4</item>
+    </string-array>
+
+    <string name="qrdata_case_type_hint">请选择退库类型:</string>
 </resources>

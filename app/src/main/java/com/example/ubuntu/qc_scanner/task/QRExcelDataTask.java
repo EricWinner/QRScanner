@@ -1,4 +1,4 @@
-package com.example.ubuntu.qc_scanner.mode;
+package com.example.ubuntu.qc_scanner.task;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,7 +7,8 @@ import android.util.Log;
 
 import com.example.ubuntu.qc_scanner.database.BaseColumns;
 import com.example.ubuntu.qc_scanner.database.QRContentProviderMetaData;
-import com.example.ubuntu.qc_scanner.fragment.QRExcelFragment;
+import com.example.ubuntu.qc_scanner.mode.ExcelDataItem;
+import com.example.ubuntu.qc_scanner.mode.QRDataCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,25 +17,26 @@ import java.util.List;
  * Created by ubuntu on 17-8-15.
  */
 
-public class ExcelConstant {
+public class QRExcelDataTask {
 
-    private static final String TAG = "ExcelConstant";
+    private static final String TAG = "QRExcelDataTask";
     private Context mContext;
-    public List<ExcelData> mAllQRDataLists = null;
     private QRDataCallback mCallback;
     private Cursor mCursor;
 
-    public ExcelConstant(Context context, QRDataCallback callback) {
+    public List<ExcelDataItem> mAllQRDataLists = null;
+
+    public QRExcelDataTask(Context context, QRDataCallback callback) {
         mContext = context;
         mCallback = callback;
     }
 
     public boolean checkQRData() {
-        mAllQRDataLists = new ArrayList<ExcelData>();
+        mAllQRDataLists = new ArrayList<ExcelDataItem>();
         String columns[] = new String[]{BaseColumns.QRDATA_ID, BaseColumns.QRDATA_FOREIGN_GROUP_ID,
-                BaseColumns.QRDATA_NUMBER_ID,BaseColumns.QRDATA_DATE,
-                BaseColumns.QRDATA_TOTAL_AMOUNT,BaseColumns.QRDATA_VALLEY_VALUE,
-                BaseColumns.QRDATA_CASE_NAME,BaseColumns.QRDATA_CASE_TYPE
+                BaseColumns. QRDATA_NUMBER_ID, BaseColumns.QRDATA_DATE,
+                BaseColumns.QRDATA_TOTAL_AMOUNT, BaseColumns.QRDATA_VALLEY_VALUE,
+                BaseColumns.QRDATA_CASE_NAME, BaseColumns.QRDATA_CASE_TYPE
         };
         Uri mUri = QRContentProviderMetaData.QRTableMetaData.CONTENT_URI;
         Cursor cursor = mContext.getContentResolver().query(mUri, columns, null, null, null);
@@ -82,7 +84,7 @@ public class ExcelConstant {
                 Log.d(TAG, "id = " + id + ",foreign_id = " + foreign_id + ",date = " + date + ",numberId = " + numberId );
                 Log.d(TAG, "valleyValue = " + valleyValue + ",totalValue = " + totalValue + ",case_name = " + case_name + ",case_type = " + case_type);
 
-                ExcelData data = new ExcelData(String.valueOf(id), String.valueOf(foreign_id), date, String.valueOf(valleyValue), String.valueOf(totalValue), case_name,case_type);
+                ExcelDataItem data = new ExcelDataItem(String.valueOf(id), String.valueOf(foreign_id), date, String.valueOf(valleyValue), String.valueOf(totalValue), case_name,case_type);
                 mAllQRDataLists.add(data);
             } while (cursor.moveToNext());
         }

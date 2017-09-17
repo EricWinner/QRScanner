@@ -3,14 +3,23 @@ package com.example.ubuntu.qc_scanner;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.ubuntu.qc_scanner.fragment.QRDataFragment;
 import com.example.ubuntu.qc_scanner.fragment.QRExcelFragment;
 import com.example.ubuntu.qc_scanner.fragment.QRScannerFragment;
+import com.example.ubuntu.qc_scanner.task.QRClearDataTask;
+import com.example.ubuntu.qc_scanner.task.QRSuperDataTask;
 
 import br.com.bloder.magic.view.MagicButton;
 
@@ -24,37 +33,45 @@ public class QRCoreActivity extends BaseActivity {
 
     private static final int REQUEST_QR_CODE = 1;
     private static final int QRSCANNER = 0x1;
-    private static final int QRDATA    = 0x2;
-    private static final int QREXCEL   = 0x3;
+    private static final int QRDATA = 0x2;
+    private static final int QREXCEL = 0x3;
+    private static final int REQUEST_CAMERA = 1;
 
     private QRScannerFragment mQRScannerFragment;
-    private QRDataFragment    mQRDataFragment;
-    private QRExcelFragment   mQRExcelFragment;
+    private QRDataFragment mQRDataFragment;
+    private QRExcelFragment mQRExcelFragment;
 
-    private MagicButton mQCScannerButton;
+    private MagicButton mQRScannerButton;
     private MagicButton mQCDataButton;
-    private MagicButton mQCExcelButton;
+    private MagicButton mQRExcelButton;
+    private MagicButton mQRClearButton;
+    private MagicButton mQRCameraButton;
 
     private int mCurrentState = QRSCANNER;
-
     private FragmentManager fragmentManager;
+
     private Fragment mFragment;
+
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG,"onCreate !");
+        Log.d(TAG, "onCreate !");
         setContentLayout(R.layout.qrcore_layout);
 
-        setTitle("QRScanner");
+        setTitle(getString(R.string.app_name));
 
+        mContext = this;
         fragmentManager = getFragmentManager();
         // 第一次启动时选中第0个tab
-        mQCScannerButton = (MagicButton) this.findViewById(R.id.magic_button_scanner);
+        mQRScannerButton = (MagicButton) this.findViewById(R.id.magic_button_scanner);
         mQCDataButton = (MagicButton) this.findViewById(R.id.magic_button_data);
-        mQCExcelButton = (MagicButton) this.findViewById(R.id.magic_button_excel);
+        mQRExcelButton = (MagicButton) this.findViewById(R.id.magic_button_excel);
+        mQRClearButton = (MagicButton) this.findViewById(R.id.magic_button_clear);
+        mQRCameraButton = (MagicButton) this.findViewById(R.id.magic_button_camera);
 
-        mQCScannerButton.setMagicButtonClickListener(new View.OnClickListener() {
+        mQRScannerButton.setMagicButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(QRCoreActivity.this, SimpleCaptureActivity.class);
@@ -68,7 +85,7 @@ public class QRCoreActivity extends BaseActivity {
                 setTabSelection(QRDATA);
             }
         });
-        mQCExcelButton.setMagicButtonClickListener(new View.OnClickListener() {
+        mQRExcelButton.setMagicButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setMaginButtonsInVisible();
@@ -76,6 +93,24 @@ public class QRCoreActivity extends BaseActivity {
             }
         });
 
+        mQRClearButton.setMagicButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                QRSuperDataTask task = new QRClearDataTask(mContext);
+                if (task.isExistData()) {
+                    task.clearAllData();
+                } else {
+                    Toast.makeText(mContext, "没有可以清除的数据！", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        mQRCameraButton.setMagicButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startCameraActivity(mContext);
+            }
+        });
         setTabSelection(QRSCANNER);
     }
 
@@ -163,14 +198,20 @@ public class QRCoreActivity extends BaseActivity {
     }
 
     private void setMaginButtonsInVisible() {
-        if (mQCScannerButton != null) {
-            mQCScannerButton.setVisibility(View.INVISIBLE);
+        if (mQRScannerButton != null) {
+            mQRScannerButton.setVisibility(View.INVISIBLE);
         }
         if (mQCDataButton != null) {
             mQCDataButton.setVisibility(View.INVISIBLE);
         }
-        if (mQCExcelButton != null) {
-            mQCExcelButton.setVisibility(View.INVISIBLE);
+        if (mQRExcelButton != null) {
+            mQRExcelButton.setVisibility(View.INVISIBLE);
+        }
+        if (mQRClearButton != null) {
+            mQRClearButton.setVisibility(View.INVISIBLE);
+        }
+        if (mQRCameraButton != null) {
+            mQRCameraButton.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -185,14 +226,20 @@ public class QRCoreActivity extends BaseActivity {
     }
 
     private void setMaginButtonsVisible() {
-        if (mQCScannerButton != null) {
-            mQCScannerButton.setVisibility(View.VISIBLE);
+        if (mQRScannerButton != null) {
+            mQRScannerButton.setVisibility(View.VISIBLE);
         }
         if (mQCDataButton != null) {
             mQCDataButton.setVisibility(View.VISIBLE);
         }
-        if (mQCExcelButton != null) {
-            mQCExcelButton.setVisibility(View.VISIBLE);
+        if (mQRExcelButton != null) {
+            mQRExcelButton.setVisibility(View.VISIBLE);
+        }
+        if (mQRClearButton != null) {
+            mQRClearButton.setVisibility(View.VISIBLE);
+        }
+        if (mQRCameraButton != null) {
+            mQRCameraButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -209,6 +256,38 @@ public class QRCoreActivity extends BaseActivity {
             mQRExcelFragment.removeQRDataCallback();
             mQRExcelFragment.removeFragmentPermission();
             mQRExcelFragment = null;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //MenuInflater inflater = getMenuInflater();
+        //inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    public static void startCameraActivity(Context context) {
+        Intent intent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA)
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        | Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            // This will only occur if Camera was disabled while Gallery is open
+            // since we cache our availability check. Just abort the attempt.
+            Log.e(TAG, "Camera activity previously detected but cannot be found", e);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_camera:
+                startCameraActivity(mContext);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

@@ -4,14 +4,14 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_cut"
+        android:id="@+id/action_camera"
         android:title="@string/title_action_cut"
         android:orderInCategory="1"
-        android:icon="@drawable/avd_cut"
+        android:icon="@drawable/camera"
         app:showAsAction="always"
         />
 
-    <item
+    <!--<item
         android:id="@+id/action_copy"
         android:title="@string/title_action_copy"
         android:orderInCategory="2"
@@ -33,6 +33,6 @@
         android:orderInCategory="4"
         android:icon="@drawable/avd_share"
         app:showAsAction="always"
-        />
+        />-->
 
 </menu>

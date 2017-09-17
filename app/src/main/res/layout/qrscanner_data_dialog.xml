@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/white"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -19,123 +21,212 @@
             android:text="@string/card_table_name"
             android:textColor="@color/color_1"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:layout_height="48dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp">
 
         <TextView
             android:id="@+id/input_group_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
+            android:text="@string/qrdata_case_group_number"
             android:textColor="@color/colorPositive"
-            android:text="@string/qrcore_scanner_group"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <EditText
             android:id="@+id/input_group_name"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:inputType="numberDecimal"
             android:layout_toRightOf="@+id/input_group_id"
-            android:background="@drawable/edittext_input_backgroud"/>
+            android:background="@drawable/edittext_input_backgroud"
+            android:inputType="numberDecimal"/>
     </RelativeLayout>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#50BEBEBE"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginRight="20dp"
+        android:background="#50BEBEBE"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
-
-        <TextView
-            android:id="@+id/input_valley_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/colorPositive"
-            android:text="@string/qrcore_scanner_valley_value"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/input_valley_value"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:layout_toRightOf="@+id/input_valley_title"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/edittext_input_backgroud"/>
-    </RelativeLayout>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#50BEBEBE"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#50BEBEBE"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:layout_height="48dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp">
 
         <TextView
             android:id="@+id/input_total_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:singleLine="true"
-            android:text="@string/qrcore_scanner_total_value"
-            android:textSize="14sp"
+            android:text="@string/qrdata_case_total_value"
             android:textColor="@color/colorPositive"
-            android:textStyle="bold" />
+            android:textSize="14sp"
+            android:textStyle="bold"/>
 
         <EditText
             android:id="@+id/input_total_value"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/input_total_title"
             android:background="@drawable/edittext_input_backgroud"
+            android:inputType="numberDecimal"
             />
     </RelativeLayout>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#50BEBEBE"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginRight="20dp"
+        android:background="#50BEBEBE"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/input_valley_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/qrdata_case_valley_value"
+            android:textColor="@color/colorPositive"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/input_valley_value"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/input_valley_title"
+            android:background="@drawable/edittext_input_backgroud"
+            android:inputType="numberDecimal"/>
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#50BEBEBE"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/input_name_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/qrdata_case_name"
+            android:textColor="@color/colorPositive"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+        <RadioGroup
+            android:id="@+id/case_name_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/input_name_title"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/case_name_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:checked="true"
+                android:text="@string/qrdata_case_name1"
+                />
+
+            <RadioButton
+                android:id="@+id/case_name_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:singleLine="true"
+                android:checked="false"
+                android:text="@string/qrdata_case_name2"/>
+        </RadioGroup>
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#50BEBEBE"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/input_type_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/qrdata_case_type"
+            android:textColor="@color/colorPositive"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+        <com.piotrek.customspinner.CustomSpinner
+            android:id="@+id/type_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/input_type_title"
+            android:background="@android:color/white">
+        </com.piotrek.customspinner.CustomSpinner>
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#50BEBEBE"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="48dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="5dp"
         android:orientation="horizontal">
@@ -154,7 +245,7 @@
         <ImageView
             android:layout_width="2dp"
             android:layout_height="fill_parent"
-            android:background="#50BEBEBE" />
+            android:background="#50BEBEBE"/>
 
         <Button
             android:id="@+id/dialog_verity_choose"

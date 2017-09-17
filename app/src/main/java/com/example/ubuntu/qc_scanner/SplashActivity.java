@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.ubuntu.qc_scanner.application.ItLanBaoApplication;
@@ -27,7 +29,7 @@ public class SplashActivity extends AppCompatActivity implements HttpResponeCall
 
     private static final String TAG = "SplashActivity";
 
-    private static final int TIME_DELAY = 500; //ms
+    private static final int TIME_DELAY = 800; //ms
     private static final String LOGIN_COUNT = "loginCount";
 
     private final Handler mHandler = new Handler();
@@ -37,6 +39,10 @@ public class SplashActivity extends AppCompatActivity implements HttpResponeCall
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //全屏设置，隐藏窗口所有装饰
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //标题是属于View的，所以窗口所有的修饰部分被隐藏后标题依然有效
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -75,7 +81,7 @@ public class SplashActivity extends AppCompatActivity implements HttpResponeCall
         Log.d(TAG, "checkAccount userAccount = " + userAccount + ",userPassword = " + userPassword + ",userId = " + userId);
         if (TextUtils.isEmpty(userAccount)) {
             Intent intent = new Intent();
-            intent.setClass(SplashActivity.this, QRCoreActivity.class);
+            intent.setClass(SplashActivity.this, SimpleLoginActivity.class);
             startActivity(intent);
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         } else {

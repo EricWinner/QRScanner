@@ -139,9 +139,10 @@ public class WelComeActivity extends AppCompatActivity  {
 
     private void endTWizard() {
         Intent intent = new Intent();
-        intent.setClass(WelComeActivity.this, QRCoreActivity.class);
+        intent.setClass(WelComeActivity.this, SimpleLoginActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+        finish();
     }
 
     private void setIndicator(int index) {

@@ -10,12 +10,13 @@ import android.widget.TextView;
 
 import com.example.ubuntu.qc_scanner.R;
 import com.example.ubuntu.qc_scanner.fragment.QRDataFragment;
+import com.example.ubuntu.qc_scanner.mode.QRDataItem;
 import com.loopeer.cardstack.CardStackView;
 import com.loopeer.cardstack.StackAdapter;
 
 import org.w3c.dom.Text;
 
-public class CardStackAdapter extends StackAdapter<QRDataFragment.QRDataItem> {
+public class CardStackAdapter extends StackAdapter<QRDataItem> {
 
     private static final String TAG = "CardStackAdapter";
 
@@ -24,7 +25,7 @@ public class CardStackAdapter extends StackAdapter<QRDataFragment.QRDataItem> {
     }
 
     @Override
-    public void bindView(QRDataFragment.QRDataItem data, int position, CardStackView.ViewHolder holder) {
+    public void bindView(QRDataItem data, int position, CardStackView.ViewHolder holder) {
         if (holder instanceof ColorItemViewHolder) {
             ColorItemViewHolder h = (ColorItemViewHolder) holder;
             h.onBind(data, position);
@@ -60,9 +61,9 @@ public class CardStackAdapter extends StackAdapter<QRDataFragment.QRDataItem> {
             super(view);
             mLayout = view.findViewById(R.id.frame_list_card_item);
             mContainerContent = view.findViewById(R.id.container_list_content);
-            mTextTitle = (TextView) view.findViewById(R.id.text_list_card_case_number_value);
+            //mTextTitle = (TextView) view.findViewById(R.id.text_list_card_case_number_value);
             mTextNumber = (TextView) view.findViewById(R.id.text_list_card_number);
-            mTextGroupName = (TextView) view.findViewById(R.id.text_list_card_case_number);
+            mTextGroupName = (TextView) view.findViewById(R.id.text_list_card_case_number_value);
             mTextValleyValue = (TextView) view.findViewById(R.id.text_list_card_valley_value);
             //mTextPeakValue = (TextView)view.findViewById(R.id.text_list_card_peak_value);
             mTextTotalValue = (TextView)view.findViewById(R.id.text_list_card_total_amount);
@@ -75,18 +76,17 @@ public class CardStackAdapter extends StackAdapter<QRDataFragment.QRDataItem> {
             mContainerContent.setVisibility(b ? View.VISIBLE : View.GONE);
         }
 
-        public void onBind(QRDataFragment.QRDataItem data, int position) {
+        public void onBind(QRDataItem data, int position) {
             mLayout.getBackground().setColorFilter(ContextCompat.getColor(getContext(), colors[position % colors.length]), PorterDuff.Mode.SRC_IN);
-            QRDataFragment.QRDataItem item = data;
+            QRDataItem item = data;
             Log.d(TAG, "item = " + item.toString());
-            mTextGroupName.setText(String.valueOf(item.getmForeignGroupID()));
-            mTextNumber.setText(item.getmQRDataNumberID());
-            mTextTitle.setText(item.getmQRDataTime());
-            mTextValleyValue.setText(String.valueOf(item.getmValleyValue()));
-            //mTextPeakValue.setText(String.valueOf(item.getmPEAKValue()));
-            mTextTotalValue.setText(String.valueOf(item.getmTotalValue()));
-            mTextCaseName.setText(String.valueOf(item.getmQRDataCaseName()));
-            mTextCaseType.setText(String.valueOf(item.getmQRDataCaseType()));
+            mTextGroupName.setText(String.valueOf(item.getGroupID()));
+            mTextNumber.setText(item.getNumberID());
+            //mTextTitle.setText(item.getmQRDataTime());
+            mTextValleyValue.setText(item.getValleyValue());
+            mTextTotalValue.setText(item.getTotalValue());
+            mTextCaseName.setText(String.valueOf(item.getCaseName()));
+            mTextCaseType.setText(String.valueOf(item.getCaseType()));
         }
 
         public  Integer[] colors = new Integer[]{

@@ -31,8 +31,7 @@ s
         <activity
             android:name="com.example.ubuntu.qc_scanner.SplashActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme">
+            android:screenOrientation="portrait">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,6 +44,10 @@ s
             android:screenOrientation="portrait"></activity>
         <activity
             android:name="com.example.ubuntu.qc_scanner.LoginActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.example.ubuntu.qc_scanner.SimpleLoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"></activity>
         <activity

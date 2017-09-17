@@ -14,7 +14,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -66,4 +66,11 @@ dependencies {
     compile 'com.github.bloder:magic:1.1'
     compile 'info.hoang8f:fbutton:1.0.5'
     compile 'com.gospelware.liquidbutton:liquidButtonLib:1.1.5'
+    compile('com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.5.5') {
+        exclude group: 'com.android.support'
+    }
+    compile 'com.shitij.goyal:slide-button:1.0.0'
+    compile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    compile 'com.github.piotrek1543:CustomSpinner:0.1'
+    compile 'com.github.dakatso:livebutton:1.0.0'
 }

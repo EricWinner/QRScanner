@@ -12,11 +12,9 @@ public class BaseColumns {
     public static final String QRDATA_NUMBER_ID = "_data_number";
     public static final String QRDATA_DATE = "_data_date";
     public static final String QRDATA_TOTAL_AMOUNT = "_total_amount";
-    public static final String QRDATA_PEAK_VALUE = "_peak_value";
     public static final String QRDATA_VALLEY_VALUE = "_valley_value";
 
     //add columns
-    public static final String QRDATA_CASE_NUMBER = "_case_number";
     public static final String QRDATA_CASE_NAME   = "_case_name";
     public static final String QRDATA_CASE_TYPE   = "_case_type";
 

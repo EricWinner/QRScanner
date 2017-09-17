@@ -57,7 +57,35 @@
             app:button_icon_width="25dp"
             app:expandable_area_color="#08af24"
             app:hide_text="@string/qrcore_scanner_excel"
-            app:icon_button_color="#ced0d4"
+            app:icon_button_color="#87f276"
+            app:magic_button_size="50dp"/>
+
+        <br.com.bloder.magic.view.MagicButton
+            android:id="@+id/magic_button_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            app:button_icon="@drawable/clear"
+            app:button_icon_height="25dp"
+            app:button_icon_width="25dp"
+            app:expandable_area_color="#13227a"
+            app:hide_text="@string/qrcore_scanner_clear"
+            app:icon_button_color="#465ad1"
+            app:magic_button_size="50dp"/>
+
+        <br.com.bloder.magic.view.MagicButton
+            android:id="@+id/magic_button_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            app:button_icon="@drawable/camera"
+            app:button_icon_height="25dp"
+            app:button_icon_width="25dp"
+            app:expandable_area_color="#f5046d"
+            app:hide_text="@string/qrcore_scanner_camera"
+            app:icon_button_color="#f77db3"
             app:magic_button_size="50dp"/>
     </LinearLayout>
 

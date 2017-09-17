@@ -13,13 +13,17 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ubuntu.qc_scanner.database.BaseColumns;
 import com.example.ubuntu.qc_scanner.database.QRContentProviderMetaData;
 import com.example.ubuntu.qc_scanner.util.DateUtils;
+import com.piotrek.customspinner.CustomSpinner;
 
 import io.github.xudaojie.qrcodelib.CaptureActivity;
 
@@ -33,9 +37,9 @@ public class SimpleCaptureActivity extends CaptureActivity {
 
     private static final int OPERATION_INSERT = 0x1;
     private static final int OPERATION_UPDATE = 0x2;
-    private static final int OPERATION_CHECK  = 0x3;
-    private static final int OPERATION_CHECK_INSERT  = 0x4;
-    private static final int OPERATION_CHECK_UPDATE  = 0x5;
+    private static final int OPERATION_CHECK = 0x3;
+    private static final int OPERATION_CHECK_INSERT = 0x4;
+    private static final int OPERATION_CHECK_UPDATE = 0x5;
 
     private Activity mActivity = this;
     private AlertDialog mAlertDialog;
@@ -43,13 +47,18 @@ public class SimpleCaptureActivity extends CaptureActivity {
     private TextView mQRDataNumber;
     private EditText mQRDataGroupID;
     private EditText mQRDataValleyValue;
-    private EditText mQRDataPeakValue;
     private EditText mQRDataTotalValue;
+    private RadioGroup mQRDataRadioGroup;
+    private RadioButton mQRDataRadion1;
+    private RadioButton mQRDataRadion2;
+    private CustomSpinner mCustomSpinner;
 
     private String mDataNumberID;
+    private String mDataCaseName = "";
+    private String mDataCaseType = "";
     private int mDataNumberGroupID;
 
-    private Handler mHandler = new Handler(Looper.getMainLooper()){
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -90,20 +99,60 @@ public class SimpleCaptureActivity extends CaptureActivity {
         ConfirmDialogListener cd = new ConfirmDialogListener();
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         View view = View.inflate(mActivity, R.layout.qrscanner_data_dialog, null);
-        mQRDataNumber = (TextView) view.findViewById(R.id.qrscanner_data_number);
-        mQRDataNumber.setText(resultString);
-
-        mQRDataGroupID = (EditText) view.findViewById(R.id.input_group_name);
-        mQRDataValleyValue = (EditText) view.findViewById(R.id.input_valley_value);
-        //mQRDataPeakValue = (EditText) view.findViewById(R.id.input_peak_value);
-        mQRDataTotalValue = (EditText) view.findViewById(R.id.input_total_value);
-
+        initDialogViews(resultString, view);
         builder.setView(view);
         builder.setOnCancelListener(cd);
         view.findViewById(R.id.dialog_cancel_choose).setOnClickListener(cd);
         view.findViewById(R.id.dialog_verity_choose).setOnClickListener(cd);
         mAlertDialog = builder.create();
         mAlertDialog.show();
+    }
+
+    private void initDialogViews(String resultString, View view) {
+        mQRDataNumber = (TextView) view.findViewById(R.id.qrscanner_data_number);
+        mQRDataNumber.setText(resultString);
+        mQRDataGroupID = (EditText) view.findViewById(R.id.input_group_name);
+        mQRDataValleyValue = (EditText) view.findViewById(R.id.input_valley_value);
+        mQRDataTotalValue = (EditText) view.findViewById(R.id.input_total_value);
+        mQRDataRadioGroup = (RadioGroup) view.findViewById(R.id.case_name_group);
+        mQRDataRadion1 = (RadioButton) view.findViewById(R.id.case_name_1);
+        mQRDataRadion2 = (RadioButton) view.findViewById(R.id.case_name_2);
+        mCustomSpinner = (CustomSpinner) view.findViewById(R.id.type_spinner);
+
+        //init radiobutton
+        mQRDataRadioGroup.setOnCheckedChangeListener(new RadioGroupListener());
+        mQRDataRadion1.setTextColor(getResources().getColorStateList(R.color.radiobutton_txt_color));
+        mQRDataRadion2.setTextColor(getResources().getColorStateList(R.color.radiobutton_txt_color));
+        //init spinner
+        String[] types = getResources().getStringArray(R.array.type);
+        mCustomSpinner.initializeStringValues(types, getString(R.string.qrdata_case_type_hint));
+        mCustomSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (!adapterView.getSelectedItem().equals(getString(R.string.qrdata_case_type_hint))) {
+                    //TODO
+                    mDataCaseType = adapterView.getSelectedItem().toString();
+                } else {
+                    onNothingSelected(adapterView);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //TODO
+            }
+        });
+    }
+
+    class RadioGroupListener implements RadioGroup.OnCheckedChangeListener {
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            if (checkedId == mQRDataRadion1.getId()) {
+                mDataCaseName = getString(R.string.qrdata_case_name1);
+            } else if (checkedId == mQRDataRadion2.getId()) {
+                mDataCaseName = getString(R.string.qrdata_case_name2);
+            }
+        }
     }
 
     private class ConfirmDialogListener implements View.OnClickListener, DialogInterface.OnCancelListener {
@@ -155,11 +204,10 @@ public class SimpleCaptureActivity extends CaptureActivity {
         QRDataInfo QRDataInfo = new QRDataInfo().invoke();
         String groupId = QRDataInfo.getGroupId();
         String valleyValue = QRDataInfo.getValleyValue();
-        String peakValue = QRDataInfo.getPeakValue();
         String totalValue = QRDataInfo.getTotalValue();
 
-        Log.d(TAG, "groupId = " + groupId + ",valleyValue = " + valleyValue + ",peakValue = " + peakValue + ",totalValue = " + totalValue);
-        if (!TextUtils.isEmpty(groupId) && !TextUtils.isEmpty(valleyValue) && !TextUtils.isEmpty(peakValue) && !TextUtils.isEmpty(totalValue)) {
+        Log.d(TAG, "groupId = " + groupId + ",valleyValue = " + valleyValue + ",totalValue = " + totalValue);
+        if (!TextUtils.isEmpty(groupId) && !TextUtils.isEmpty(valleyValue) && !TextUtils.isEmpty(totalValue) && !TextUtils.isEmpty(mDataCaseName)) {
             ContentValues qrGroupValues = new ContentValues();
             qrGroupValues.put(BaseColumns.QRDATA_GROUP_NAME, groupId);
 
@@ -167,9 +215,10 @@ public class SimpleCaptureActivity extends CaptureActivity {
             qrDataValues.put(BaseColumns.QRDATA_DATE, DateUtils.getTodayDate());
             qrDataValues.put(BaseColumns.QRDATA_FOREIGN_GROUP_ID, groupId);
             qrDataValues.put(BaseColumns.QRDATA_NUMBER_ID, mDataNumberID);
-            //qrDataValues.put(BaseColumns.QRDATA_PEAK_VALUE, Float.valueOf(peakValue));
-            qrDataValues.put(BaseColumns.QRDATA_VALLEY_VALUE, Float.valueOf(valleyValue));
             qrDataValues.put(BaseColumns.QRDATA_TOTAL_AMOUNT, Float.valueOf(totalValue));
+            qrDataValues.put(BaseColumns.QRDATA_VALLEY_VALUE, Float.valueOf(valleyValue));
+            qrDataValues.put(BaseColumns.QRDATA_CASE_NAME, mDataCaseName);
+            qrDataValues.put(BaseColumns.QRDATA_CASE_TYPE, mDataCaseType);
 
             switch (operationAction) {
                 case OPERATION_INSERT:
@@ -180,7 +229,7 @@ public class SimpleCaptureActivity extends CaptureActivity {
                 case OPERATION_UPDATE:
                     if (Integer.parseInt(groupId) == mDataNumberGroupID) {
                         Toast.makeText(mActivity, "此电表也在组 ：" + mDataNumberGroupID + "内，不可以添加", Toast.LENGTH_LONG).show();
-                        return ;
+                        return;
                     }
                     mActivity.getContentResolver().update(QRContentProviderMetaData.QRTableMetaData.GROUP_CONTENT_URI, qrGroupValues, null, null);
                     mActivity.getContentResolver().update(QRContentProviderMetaData.QRTableMetaData.CONTENT_URI, qrDataValues, null, null);
@@ -197,10 +246,7 @@ public class SimpleCaptureActivity extends CaptureActivity {
     private class QRDataInfo {
         private String groupId;
         private String valleyValue;
-        private String peakValue;
         private String totalValue;
-        private String caseName;
-        private String caseType;
 
         public String getGroupId() {
             return groupId;
@@ -210,27 +256,14 @@ public class SimpleCaptureActivity extends CaptureActivity {
             return valleyValue;
         }
 
-        public String getPeakValue() {
-            return peakValue;
-        }
-
         public String getTotalValue() {
             return totalValue;
-        }
-
-        public String getCaseName() {
-            return caseName;
-        }
-
-        public String getCaseType() {
-            return caseType;
         }
 
 
         public QRDataInfo invoke() {
             groupId = mQRDataGroupID.getText().toString();
             valleyValue = mQRDataValleyValue.getText().toString();
-            peakValue = mQRDataPeakValue.getText().toString();
             totalValue = mQRDataTotalValue.getText().toString();
             return this;
         }
