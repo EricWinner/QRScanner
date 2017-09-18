@@ -25,7 +25,7 @@ public class BaseActivity extends AppCompatActivity {
     /**
      * 通用的ToolBar
      */
-    private Toolbar commonTitleTb;
+    public Toolbar commonTitleTb;
     /**
      * 内容区域
      */
@@ -78,18 +78,12 @@ public class BaseActivity extends AppCompatActivity {
      * 设置左上角back按钮
      */
     public void setBackArrow() {
-        final Drawable upArrow = getResources().getDrawable(R.drawable.common_back_ic);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.back);
         //给ToolBar设置左侧的图标
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
         // 给左上角图标的左边加上一个返回的图标 。对应ActionBar.DISPLAY_HOME_AS_UP
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //设置返回按钮的点击事件
-        commonTitleTb.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     /**

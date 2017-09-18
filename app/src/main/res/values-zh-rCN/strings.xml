@@ -95,4 +95,7 @@
     </string-array>
 
     <string name="qrdata_case_type_hint">请选择退库类型:</string>
+    <string name="qrdata_excel_username">登陆人：</string>
+    <string name="qrdata_excel_datetime">日期：</string>
+
 </resources>

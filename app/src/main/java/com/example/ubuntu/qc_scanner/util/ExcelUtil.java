@@ -3,6 +3,7 @@ package com.example.ubuntu.qc_scanner.util;
 
 import com.example.ubuntu.qc_scanner.R;
 import com.example.ubuntu.qc_scanner.mode.ExcelDataItem;
+import com.example.ubuntu.qc_scanner.mode.IQRDataItem;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,11 +36,14 @@ public class ExcelUtil {
     public static final String OWNER_CREATE_EXCEL_PATH = Environment.getExternalStorageDirectory().toString() + "/QRData";
 
     private static Context mContext;
+
+    private static String mUserName;
+    private static String mDateTime;
     //内存地址
     public static String root = Environment.getExternalStorageDirectory()
             .getPath();
 
-    public static void writeExcel(Context context, List<ExcelDataItem> exportOrder,
+    public static void writeExcel(Context context, List<IQRDataItem> exportOrder,
                                   String fileName) throws Exception {
         mContext = context;
         File file = createQRDataPath(context, fileName);
@@ -68,7 +72,7 @@ public class ExcelUtil {
             if (!destDir.exists()) {
                 boolean result = destDir.mkdir();
                 Log.d(TAG, "createQRDataPath mkdirs , destDir = " + destDir.getPath() + ",success = " + result);
-                if(!result){
+                if (!result) {
                     Log.d(TAG, "create folder :" + path + ", failed.");
                 }
             }
@@ -78,34 +82,78 @@ public class ExcelUtil {
     }
 
 
-    private static void setExcelData(List<ExcelDataItem> exportOrder, WritableSheet sheet) throws WriteException {
-        for (int i = 0; i < exportOrder.size(); i++) {
-            ExcelDataItem order = exportOrder.get(i);
-            Label idLabel = new Label(0, i + 1, order.getId());
-            Label groupIDLabel = new Label(1, i + 1, order.getGroupID());
-            Label nameLabel = new Label(2, i + 1, order.getNumberID());
-            Label dateLabel = new Label(3, i + 1, order.getDateTime());
-            Label valleyLabel = new Label(4, i + 1, order.getValleyValue());
-            Label peakLabel = new Label(5, i + 1, order.getPeakValue());
-            Label totalLabel = new Label(6, i + 1, order.getTotalValue());
+    private static void setExcelData(List<IQRDataItem> exportOrder, WritableSheet sheet) throws WriteException {
+        int exportOrderSize = exportOrder.size();
+        for (int i = 0; i < exportOrderSize; i++) {
+            IQRDataItem order = exportOrder.get(i);
+            Label idLabel       = new Label(0, i + 1, order.getId());
+            Label groupIDLabel  = new Label(1, i + 1, order.getGroupID());
+            Label nameLabel     = new Label(2, i + 1, order.getNumberID());
+            Label totalLabel    = new Label(3, i + 1, order.getTotalValue());
+            Label valleyLabel   = new Label(4, i + 1, order.getValleyValue());
+            Label caseNameLabel = new Label(5, i + 1, order.getCaseName());
+            Label caseTypeLabel = new Label(6, i + 1, order.getCaseType());
+
+            Log.d(TAG, "order.getId() = " + order.getId() + ",order.getGroupID() = " + order.getGroupID() + ",order.getNumberID() = " + order.getNumberID());
+            Log.d(TAG, "order.getTotalValue() = " + order.getTotalValue() + ",order.getValleyValue() = " + order.getValleyValue() + ",order.getNumberID() = " + order.getCaseName() + ",order.getCaseType() = " + order.getCaseType());
             sheet.addCell(idLabel);
             sheet.addCell(groupIDLabel);
             sheet.addCell(nameLabel);
-            sheet.addCell(dateLabel);
-            sheet.addCell(valleyLabel);
-            sheet.addCell(peakLabel);
             sheet.addCell(totalLabel);
+            sheet.addCell(valleyLabel);
+            sheet.addCell(caseNameLabel);
+            sheet.addCell(caseTypeLabel);
         }
+
+        addExcelUserInfo(sheet, exportOrderSize);
     }
 
-    private static void setExcelTitle (WritableSheet sheet) {
+    private static void addExcelUserInfo(WritableSheet sheet, int exportOrderSize) throws WriteException {
+        UserLoginInfoUtil.UserInfo userinfo = UserLoginInfoUtil.getInstance().getUserInfo(mContext);
+        mUserName = userinfo.getUsername();
+        mDateTime = userinfo.getDateTime();
+        Log.d(TAG, "setExcelData mUserName = " + mUserName + ",mDateTime = " + mDateTime);
+        Label idLabel            = new Label(0, exportOrderSize + 5, "");
+        Label groupIDLabel       = new Label(1, exportOrderSize + 5, "");
+        Label nameLabel          = new Label(2, exportOrderSize + 5, "");
+        Label totalLabel         = new Label(3, exportOrderSize + 5, "");
+        Label valleyLabel        = new Label(4, exportOrderSize + 5, "");
+        Label usernameLabelTitle = new Label(5, exportOrderSize + 5, mContext.getString(R.string.qrdata_excel_username));
+        Label usernameLabelName  = new Label(6, exportOrderSize + 5, mUserName);
+
+        sheet.addCell(idLabel);
+        sheet.addCell(groupIDLabel);
+        sheet.addCell(nameLabel);
+        sheet.addCell(totalLabel);
+        sheet.addCell(valleyLabel);
+        sheet.addCell(usernameLabelTitle);
+        sheet.addCell(usernameLabelName);
+
+        Label idLabel2           = new Label(0, exportOrderSize + 6, "");
+        Label groupIDLabel2      = new Label(1, exportOrderSize + 6, "");
+        Label nameLabel2         = new Label(2, exportOrderSize + 6, "");
+        Label totalLabel2        = new Label(3, exportOrderSize + 6, "");
+        Label valleyLabel2       = new Label(4, exportOrderSize + 6, "");
+        Label datetimeLabelTitle = new Label(5, exportOrderSize + 6, mContext.getString(R.string.qrdata_excel_datetime));
+        Label datetimeLabelName  = new Label(6, exportOrderSize + 6, mDateTime);
+
+        sheet.addCell(idLabel2);
+        sheet.addCell(groupIDLabel2);
+        sheet.addCell(nameLabel2);
+        sheet.addCell(totalLabel2);
+        sheet.addCell(valleyLabel2);
+        sheet.addCell(datetimeLabelTitle);
+        sheet.addCell(datetimeLabelName);
+    }
+
+    private static void setExcelTitle(WritableSheet sheet) {
         String columnFirst = mContext.getString(R.string.qrdata_id);
         String columnSecond = mContext.getString(R.string.qrdata_group_name);
         String columnThird = mContext.getString(R.string.qrdata_number);
-        String columnFourth = mContext.getString(R.string.qrdata_date);
+        String columnFourth = mContext.getString(R.string.qrdata_total_value);
         String columnFifth = mContext.getString(R.string.qrdata_valley_value);
-        String columnSixth = mContext.getString(R.string.qrdata_peak_value);
-        String columnSeventh = mContext.getString(R.string.qrdata_total_value);
+        String columnSixth = mContext.getString(R.string.qrdata_case_name);
+        String columnSeventh = mContext.getString(R.string.qrdata_case_type);
 
         Label label;
         String[] title = {columnFirst, columnSecond, columnThird, columnFourth, columnFifth, columnSixth, columnSeventh};
@@ -127,7 +175,7 @@ public class ExcelUtil {
         WritableFont font = new WritableFont(WritableFont.TIMES, 10,
                 WritableFont.BOLD);// 定义字体
         try {
-            font.setColour(Colour.BLUE);// 蓝色字体
+            font.setColour(Colour.BLACK);// 黑色字体
         } catch (WriteException e1) {
             e1.printStackTrace();
         }
@@ -155,4 +203,5 @@ public class ExcelUtil {
         // Formatter.formatFileSize(context, availableSize);
         return availableSize;
     }
+
 }

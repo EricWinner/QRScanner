@@ -103,5 +103,7 @@
     </string-array>
 
     <string name="qrdata_case_type_hint">Please select case type :</string>
+    <string name="qrdata_excel_username">User：</string>
+    <string name="qrdata_excel_datetime">DateTime：</string>
 
 </resources>

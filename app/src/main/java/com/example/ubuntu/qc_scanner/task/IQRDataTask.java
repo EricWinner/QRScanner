@@ -18,7 +18,7 @@ public interface IQRDataTask {
     boolean queryAllData(Cursor cursor);
     Cursor getCursor();
     int clearAllData();
-    void addArrayList(ArrayList<? extends IQRDataItem> arrayList);
+    void addArrayList(ArrayList<IQRDataItem> arrayList,  IQRDataItem iqrDataItem);
     ArrayList<? extends IQRDataItem> getDataArrayList();
 
 }

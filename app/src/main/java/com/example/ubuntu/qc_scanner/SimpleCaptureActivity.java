@@ -123,6 +123,7 @@ public class SimpleCaptureActivity extends CaptureActivity {
         mQRDataRadioGroup.setOnCheckedChangeListener(new RadioGroupListener());
         mQRDataRadion1.setTextColor(getResources().getColorStateList(R.color.radiobutton_txt_color));
         mQRDataRadion2.setTextColor(getResources().getColorStateList(R.color.radiobutton_txt_color));
+        mDataCaseName = getString(R.string.qrdata_case_name1);
         //init spinner
         String[] types = getResources().getStringArray(R.array.type);
         mCustomSpinner.initializeStringValues(types, getString(R.string.qrdata_case_type_hint));
@@ -206,7 +207,7 @@ public class SimpleCaptureActivity extends CaptureActivity {
         String valleyValue = QRDataInfo.getValleyValue();
         String totalValue = QRDataInfo.getTotalValue();
 
-        Log.d(TAG, "groupId = " + groupId + ",valleyValue = " + valleyValue + ",totalValue = " + totalValue);
+        Log.d(TAG, "groupId = " + groupId + ",valleyValue = " + valleyValue + ",totalValue = " + totalValue + ",mDataNumberID = " + mDataNumberID);
         if (!TextUtils.isEmpty(groupId) && !TextUtils.isEmpty(valleyValue) && !TextUtils.isEmpty(totalValue) && !TextUtils.isEmpty(mDataCaseName)) {
             ContentValues qrGroupValues = new ContentValues();
             qrGroupValues.put(BaseColumns.QRDATA_GROUP_NAME, groupId);

@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ubuntu.qc_scanner.fragment.QRDataFragment;
@@ -20,6 +21,7 @@ import com.example.ubuntu.qc_scanner.fragment.QRExcelFragment;
 import com.example.ubuntu.qc_scanner.fragment.QRScannerFragment;
 import com.example.ubuntu.qc_scanner.task.QRClearDataTask;
 import com.example.ubuntu.qc_scanner.task.QRSuperDataTask;
+import com.example.ubuntu.qc_scanner.util.UserLoginInfoUtil;
 
 import br.com.bloder.magic.view.MagicButton;
 
@@ -46,23 +48,24 @@ public class QRCoreActivity extends BaseActivity {
     private MagicButton mQRExcelButton;
     private MagicButton mQRClearButton;
     private MagicButton mQRCameraButton;
+    private TextView    mQRTimeTextView;
 
-    private int mCurrentState = QRSCANNER;
     private FragmentManager fragmentManager;
-
     private Fragment mFragment;
-
     private Context mContext;
+
+    private String mUserName;
+    private String mDateTime;
+    private int mCurrentState = QRSCANNER;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate !");
-        setContentLayout(R.layout.qrcore_layout);
-
-        setTitle(getString(R.string.app_name));
-
         mContext = this;
+        setContentLayout(R.layout.qrcore_layout);
+        setBackArrow();
+
         fragmentManager = getFragmentManager();
         // 第一次启动时选中第0个tab
         mQRScannerButton = (MagicButton) this.findViewById(R.id.magic_button_scanner);
@@ -70,7 +73,9 @@ public class QRCoreActivity extends BaseActivity {
         mQRExcelButton = (MagicButton) this.findViewById(R.id.magic_button_excel);
         mQRClearButton = (MagicButton) this.findViewById(R.id.magic_button_clear);
         mQRCameraButton = (MagicButton) this.findViewById(R.id.magic_button_camera);
+        mQRTimeTextView = (TextView) this.findViewById(R.id.qrcore_time_view);
 
+        initString();
         mQRScannerButton.setMagicButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,6 +117,22 @@ public class QRCoreActivity extends BaseActivity {
             }
         });
         setTabSelection(QRSCANNER);
+
+        commonTitleTb.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToUpper();
+            }
+        });
+    }
+
+    private void initString() {
+        UserLoginInfoUtil.UserInfo userinfo = UserLoginInfoUtil.getInstance().getUserInfo(mContext);
+        mUserName = userinfo.getUsername();
+        mDateTime = userinfo.getDateTime();
+        Log.d(TAG, "mUserName = " + mUserName + ",mDateTime = " + mDateTime);
+        setTitle(mUserName);
+        mQRTimeTextView.setText(mDateTime);
     }
 
     @Override
@@ -213,10 +234,17 @@ public class QRCoreActivity extends BaseActivity {
         if (mQRCameraButton != null) {
             mQRCameraButton.setVisibility(View.INVISIBLE);
         }
+        if (mQRTimeTextView != null) {
+            mQRTimeTextView.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
     public void onBackPressed() {
+        goToUpper();
+    }
+
+    private void goToUpper() {
         if (mCurrentState == QRSCANNER) {
             finish();
         } else {
@@ -240,6 +268,9 @@ public class QRCoreActivity extends BaseActivity {
         }
         if (mQRCameraButton != null) {
             mQRCameraButton.setVisibility(View.VISIBLE);
+        }
+        if (mQRTimeTextView != null) {
+            mQRTimeTextView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -285,6 +316,9 @@ public class QRCoreActivity extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.action_camera:
                 startCameraActivity(mContext);
+                return true;
+            case android.R.id.home:
+                goToUpper();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

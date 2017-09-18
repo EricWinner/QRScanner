@@ -8,6 +8,7 @@ import android.util.Log;
 import com.example.ubuntu.qc_scanner.database.BaseColumns;
 import com.example.ubuntu.qc_scanner.database.QRContentProviderMetaData;
 import com.example.ubuntu.qc_scanner.mode.ExcelDataItem;
+import com.example.ubuntu.qc_scanner.mode.IQRDataItem;
 import com.example.ubuntu.qc_scanner.mode.QRDataCallback;
 
 import java.util.ArrayList;
@@ -17,81 +18,29 @@ import java.util.List;
  * Created by ubuntu on 17-8-15.
  */
 
-public class QRExcelDataTask {
+public class QRExcelDataTask extends QRSuperDataTask{
 
     private static final String TAG = "QRExcelDataTask";
-    private Context mContext;
-    private QRDataCallback mCallback;
     private Cursor mCursor;
 
-    public List<ExcelDataItem> mAllQRDataLists = null;
+    public ArrayList<IQRDataItem> mAllQRDataLists = null;
 
     public QRExcelDataTask(Context context, QRDataCallback callback) {
-        mContext = context;
-        mCallback = callback;
+        super(context,callback);
+        mAllQRDataLists = new ArrayList<IQRDataItem>();
     }
 
-    public boolean checkQRData() {
-        mAllQRDataLists = new ArrayList<ExcelDataItem>();
-        String columns[] = new String[]{BaseColumns.QRDATA_ID, BaseColumns.QRDATA_FOREIGN_GROUP_ID,
-                BaseColumns. QRDATA_NUMBER_ID, BaseColumns.QRDATA_DATE,
-                BaseColumns.QRDATA_TOTAL_AMOUNT, BaseColumns.QRDATA_VALLEY_VALUE,
-                BaseColumns.QRDATA_CASE_NAME, BaseColumns.QRDATA_CASE_TYPE
-        };
-        Uri mUri = QRContentProviderMetaData.QRTableMetaData.CONTENT_URI;
-        Cursor cursor = mContext.getContentResolver().query(mUri, columns, null, null, null);
-
-        mCursor = cursor;
-        int count = cursor.getCount();
-        Log.d(TAG, "queryAllQRData count = " + count);
-        if (count == 0) {
-            return false;
-        } else {
-            return true;
-        }
+    public QRExcelDataTask() {
     }
 
-    public void queryAllQRData() {
-        if (mCursor != null) {
-            queryAllQRData(mCursor);
-        } else {
-            Log.d(TAG, "mCursor is null!");
-            return;
-        }
+    @Override
+    public boolean isExistData() {
+        return super.isExistData();
+    }
+    @Override
+    public boolean queryAllData(Cursor cursor) {
+        return super.queryAllData(cursor);
     }
 
-    private void queryAllQRData(Cursor cursor) {
-        if (cursor.moveToFirst()) {
-            int id = 0;
-            int foreign_id = 0;
-            String numberId = null;
-            String date = null;
-            float peakValue = 0.0f;
-            float valleyValue = 0.0f;
-            float totalValue = 0.0f;
-            String case_name;
-            String case_type;
 
-            do {
-                id = cursor.getInt(cursor.getColumnIndex(BaseColumns.QRDATA_ID));
-                foreign_id = cursor.getInt(cursor.getColumnIndex(BaseColumns.QRDATA_FOREIGN_GROUP_ID));
-                numberId = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_NUMBER_ID));
-                date = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_DATE));
-                totalValue = cursor.getFloat(cursor.getColumnIndex(BaseColumns.QRDATA_TOTAL_AMOUNT));
-                valleyValue = cursor.getFloat(cursor.getColumnIndex(BaseColumns.QRDATA_VALLEY_VALUE));
-                case_name = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_CASE_NAME));
-                case_type = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_CASE_TYPE));
-                Log.d(TAG, "id = " + id + ",foreign_id = " + foreign_id + ",date = " + date + ",numberId = " + numberId );
-                Log.d(TAG, "valleyValue = " + valleyValue + ",totalValue = " + totalValue + ",case_name = " + case_name + ",case_type = " + case_type);
-
-                ExcelDataItem data = new ExcelDataItem(String.valueOf(id), String.valueOf(foreign_id), date, String.valueOf(valleyValue), String.valueOf(totalValue), case_name,case_type);
-                mAllQRDataLists.add(data);
-            } while (cursor.moveToNext());
-        }
-        if (cursor != null) {
-            cursor.close();
-            mCursor = null;
-        }
-        mCallback.writeToExcel();
-    }
 }

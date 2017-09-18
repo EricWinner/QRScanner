@@ -2,7 +2,6 @@ package com.example.ubuntu.qc_scanner;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -10,14 +9,10 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.ubuntu.qc_scanner.util.UserLoginInfoUtil;
 import com.shitij.goyal.slidebutton.SwipeButton;
-
-import org.w3c.dom.Text;
 
 import cn.qqtheme.framework.picker.DatePicker;
 import cn.qqtheme.framework.util.ConvertUtils;
@@ -55,7 +50,7 @@ public class SimpleLoginActivity extends BaseActivity implements View.OnClickLis
         mSubmitButton.addOnSwipeCallback(new SwipeButton.Swipe() {
             @Override
             public void onButtonPress() {
-                Toast.makeText(SimpleLoginActivity.this, "Pressed!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(SimpleLoginActivity.this, "Pressed!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -64,7 +59,7 @@ public class SimpleLoginActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void onSwipeConfirm() {
-                Toast.makeText(SimpleLoginActivity.this, "Confirmd!", Toast.LENGTH_LONG).show();
+                //Toast.makeText(SimpleLoginActivity.this, "Confirmd!", Toast.LENGTH_LONG).show();
                 submitToQR();
             }
         });

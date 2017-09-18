@@ -87,6 +87,23 @@
             app:hide_text="@string/qrcore_scanner_camera"
             app:icon_button_color="#f77db3"
             app:magic_button_size="50dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/qrcore_time_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TEST"
+                android:textSize="18sp"
+                android:textColor="#108af4"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="50dp"
+                />
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

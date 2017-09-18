@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.ubuntu.qc_scanner.R;
+import com.example.ubuntu.qc_scanner.mode.IQRDataItem;
 import com.example.ubuntu.qc_scanner.task.QRExcelDataTask;
 import com.example.ubuntu.qc_scanner.mode.ExcelDataItem;
 import com.example.ubuntu.qc_scanner.mode.QRDataCallback;
@@ -39,7 +40,7 @@ public class QRExcelFragment extends Fragment implements QRDataCallback,Fragment
     private FButton mExcelExportButton;
     private LiquidButton mActionButton;
     private QRExcelDataTask mQRExcelDataTask;
-    private List<ExcelDataItem> mAllDatas = new ArrayList<ExcelDataItem>();
+    private List<IQRDataItem> mAllDatas = new ArrayList<IQRDataItem>();
     private FragmentPermission mFragmentPermission;
 
     private boolean permissionGranted = false;
@@ -50,6 +51,79 @@ public class QRExcelFragment extends Fragment implements QRDataCallback,Fragment
         View qrExcelLayout = inflater.inflate(R.layout.qrexcel_layout, container, false);
         initViews(qrExcelLayout);
         return qrExcelLayout;
+    }
+
+    public void setQRDataCallback(QRDataCallback callback) {
+        mCallback = callback;
+    }
+
+    public void removeQRDataCallback() {
+        mCallback = null;
+    }
+
+    private void initViews(View qrExcelLayout) {
+        Log.d(TAG, "initViews");
+        mExcelExportButton = (FButton) qrExcelLayout.findViewById(R.id.primary_excel_button);
+        mActionButton = (LiquidButton) qrExcelLayout.findViewById(R.id.liquid_button);
+        mExcelExportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkStoragePermission();
+            }
+        });
+        mActionButton.setPourFinishListener(new LiquidButton.PourFinishListener() {
+            @Override
+            public void onPourFinish() {
+                Toast.makeText(getActivity(), "写入成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "存储路径为:QRData/qrdata.xls", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onProgressUpdate(float progress) {
+            }
+        });
+    }
+
+    private void startWriteExcelTask() {
+        try {
+            Log.d(TAG, "mCallback = " + mCallback);
+            if (mCallback != null) {
+                mQRExcelDataTask = new QRExcelDataTask(getActivity(), mCallback);
+                if (mQRExcelDataTask.isExistData()) {
+                    mQRExcelDataTask.clearQRDataList();
+                    mQRExcelDataTask.addArrayList(mQRExcelDataTask.mAllQRDataLists, new ExcelDataItem());
+                    mQRExcelDataTask.queryAllData(mQRExcelDataTask.getCursor());
+                    mExcelExportButton.setVisibility(View.GONE);
+                    mActionButton.setVisibility(View.VISIBLE);
+                    mActionButton.startPour();
+                    mActionButton.setAutoPlay(true);
+                } else {
+                    Toast.makeText(getActivity(), "没有可以导出的数据！", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "fail to write excel , " + e);
+        }
+    }
+
+    @Override
+    public void writeToExcel() {
+        Log.d(TAG, "writeToExcel ");
+        if (mQRExcelDataTask.mAllQRDataLists != null) {
+            for (IQRDataItem excelDataItem : mQRExcelDataTask.getDataArrayList()) {
+                mAllDatas.add(excelDataItem);
+            }
+            try {
+                ExcelUtil.writeExcel(getActivity(), mAllDatas, "qrdata");
+                mActionButton.finishPour();
+            } catch (Exception e) {
+                Log.e(TAG, "e = " + e);
+            }
+        }
+    }
+
+    public void registerFragmentPermission(FragmentPermission fragmentPermission) {
+        mFragmentPermission = fragmentPermission;
     }
 
     private void checkStoragePermission(){
@@ -97,60 +171,6 @@ public class QRExcelFragment extends Fragment implements QRDataCallback,Fragment
         return true;
     }
 
-    public void setQRDataCallback(QRDataCallback callback) {
-        mCallback = callback;
-    }
-
-    public void removeQRDataCallback() {
-        mCallback = null;
-    }
-
-    private void initViews(View qrExcelLayout) {
-        Log.d(TAG, "initViews");
-        mExcelExportButton = (FButton) qrExcelLayout.findViewById(R.id.primary_excel_button);
-        mActionButton = (LiquidButton) qrExcelLayout.findViewById(R.id.liquid_button);
-
-        mExcelExportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkStoragePermission();
-            }
-        });
-
-        mActionButton.setPourFinishListener(new LiquidButton.PourFinishListener() {
-            @Override
-            public void onPourFinish() {
-                Toast.makeText(getActivity(), "写入成功", Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), "存储路径为:QRData/qrdata.xls", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onProgressUpdate(float progress) {
-            }
-        });
-    }
-
-    @Override
-    public void writeToExcel() {
-        Log.d(TAG, "writeToExcel ");
-        if (mQRExcelDataTask.mAllQRDataLists != null) {
-            for (ExcelDataItem excelDataItem : mQRExcelDataTask.mAllQRDataLists) {
-                mAllDatas.add(excelDataItem);
-            }
-            try {
-                ExcelUtil.writeExcel(getActivity(), mAllDatas, "qrdata");
-                mActionButton.finishPour();
-            } catch (Exception e) {
-                Log.e(TAG, "e = " + e);
-            }
-        }
-    }
-
-    public void registerFragmentPermission(FragmentPermission fragmentPermission) {
-        mFragmentPermission = fragmentPermission;
-    }
-
-
     public void removeFragmentPermission() {
         mFragmentPermission = null;
     }
@@ -159,26 +179,6 @@ public class QRExcelFragment extends Fragment implements QRDataCallback,Fragment
     public void onGetPermissionsSuccess() {
         Log.d(TAG, "onGetPermissionsSuccess !");
         startWriteExcelTask();
-    }
-
-    private void startWriteExcelTask() {
-        try {
-            Log.d(TAG, "mCallback = " + mCallback);
-            if (mCallback != null) {
-                mQRExcelDataTask = new QRExcelDataTask(getActivity(), mCallback);
-                if (mQRExcelDataTask.checkQRData()) {
-                    mQRExcelDataTask.queryAllQRData();
-                    mExcelExportButton.setVisibility(View.GONE);
-                    mActionButton.setVisibility(View.VISIBLE);
-                    mActionButton.startPour();
-                    mActionButton.setAutoPlay(true);
-                } else {
-                    Toast.makeText(getActivity(), "没有可以导出的数据！", Toast.LENGTH_SHORT).show();
-                }
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "fail to write excel , " + e);
-        }
     }
 
     @Override

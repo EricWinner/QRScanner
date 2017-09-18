@@ -8,6 +8,9 @@ import com.example.ubuntu.qc_scanner.fragment.QRDataFragment;
 
 public class QRDataItem extends IQRDataItem {
 
+    public QRDataItem() {
+    }
+
     public QRDataItem(String id, String groupID, String dateTime, String valleyValue, String totalValue, String qrDataCaseNumber, String qrDataCaseName, String qrDataCaseType) {
         this.id = id;
         this.groupID = groupID;

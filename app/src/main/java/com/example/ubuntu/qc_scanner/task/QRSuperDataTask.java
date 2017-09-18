@@ -10,6 +10,8 @@ import com.example.ubuntu.qc_scanner.database.BaseColumns;
 import com.example.ubuntu.qc_scanner.database.QRContentProviderMetaData;
 import com.example.ubuntu.qc_scanner.mode.ExcelDataItem;
 import com.example.ubuntu.qc_scanner.mode.IQRDataItem;
+import com.example.ubuntu.qc_scanner.mode.QRDataCallback;
+import com.example.ubuntu.qc_scanner.mode.QRDataItem;
 
 import java.util.ArrayList;
 
@@ -21,24 +23,31 @@ public class QRSuperDataTask implements IQRDataTask {
 
     private static final String TAG = "QRSuperDataTask";
 
+    private IQRDataItem mIQRDataItem;
     private Cursor mCursor;
     private Context mContext;
-    private int mCount;
+    private QRDataCallback mCallback;
 
-    public ArrayList<? extends IQRDataItem> mAllQRDataLists = null;
+    private int mCount;
+    public ArrayList<IQRDataItem> mAllQRDataLists = null;
 
     public QRSuperDataTask() {
 
     }
+
     public QRSuperDataTask(Context context) {
         mContext = context;
     }
 
+    public QRSuperDataTask (Context context, QRDataCallback callback) {
+        mContext = context;
+        mCallback = callback;
+    }
 
     @Override
     public boolean isExistData() {
         String columns[] = new String[]{BaseColumns.QRDATA_ID, BaseColumns.QRDATA_FOREIGN_GROUP_ID,
-                BaseColumns. QRDATA_NUMBER_ID, BaseColumns.QRDATA_DATE,
+                BaseColumns.QRDATA_NUMBER_ID, BaseColumns.QRDATA_DATE,
                 BaseColumns.QRDATA_TOTAL_AMOUNT, BaseColumns.QRDATA_VALLEY_VALUE,
                 BaseColumns.QRDATA_CASE_NAME, BaseColumns.QRDATA_CASE_TYPE
         };
@@ -48,7 +57,12 @@ public class QRSuperDataTask implements IQRDataTask {
         mCursor = cursor;
         mCount = cursor.getCount();
         Log.d(TAG, "queryAllQRData count = " + mCount);
-        return mCount == 0 ? false : true;
+        if (mCount == 0) {
+            clearQRDataList();
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override
@@ -77,12 +91,23 @@ public class QRSuperDataTask implements IQRDataTask {
                 valleyValue = cursor.getFloat(cursor.getColumnIndex(BaseColumns.QRDATA_VALLEY_VALUE));
                 case_name = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_CASE_NAME));
                 case_type = cursor.getString(cursor.getColumnIndex(BaseColumns.QRDATA_CASE_TYPE));
-                Log.d(TAG, "id = " + id + ",foreign_id = " + foreign_id + ",date = " + date + ",numberId = " + numberId );
+                Log.d(TAG, "id = " + id + ",foreign_id = " + foreign_id + ",date = " + date + ",numberId = " + numberId);
                 Log.d(TAG, "valleyValue = " + valleyValue + ",totalValue = " + totalValue + ",case_name = " + case_name + ",case_type = " + case_type);
 
-                ExcelDataItem data = new ExcelDataItem(String.valueOf(id), String.valueOf(foreign_id), date, String.valueOf(valleyValue), String.valueOf(totalValue), case_name,case_type);
-
+                if (mIQRDataItem instanceof ExcelDataItem) {
+                    ExcelDataItem data = new ExcelDataItem(String.valueOf(id), String.valueOf(foreign_id), numberId, String.valueOf(totalValue), String.valueOf(valleyValue), case_name, case_type);
+                    Log.d(TAG, "queryAllData add ExcelDataItem! ");
+                    mAllQRDataLists.add(data);
+                }
+                if (mIQRDataItem instanceof QRDataItem) {
+                    QRDataItem dataItem = new QRDataItem(String.valueOf(foreign_id), numberId, date, String.valueOf(valleyValue), String.valueOf(totalValue), case_name, case_type);
+                    Log.d(TAG, "queryAllData add QRDataItem! ");
+                    mAllQRDataLists.add(dataItem);
+                }
             } while (cursor.moveToNext());
+        }
+        if (mCallback != null) {
+            mCallback.writeToExcel();
         }
         if (cursor != null) {
             cursor.close();
@@ -95,8 +120,8 @@ public class QRSuperDataTask implements IQRDataTask {
     public int clearAllData() {
         Uri dataUri = QRContentProviderMetaData.QRTableMetaData.CONTENT_URI;
         Uri groupUri = QRContentProviderMetaData.QRTableMetaData.GROUP_CONTENT_URI;
-        int dataCount = mContext.getContentResolver().delete(dataUri,null,null);
-        int groupCount = mContext.getContentResolver().delete(groupUri,null,null);
+        int dataCount = mContext.getContentResolver().delete(dataUri, null, null);
+        int groupCount = mContext.getContentResolver().delete(groupUri, null, null);
         int allCount = dataCount + groupCount;
         clearQRDataList();
         Log.d(TAG, "clearAllData allCount = " + allCount);
@@ -105,8 +130,9 @@ public class QRSuperDataTask implements IQRDataTask {
     }
 
     @Override
-    public void addArrayList(ArrayList<? extends IQRDataItem> arrayList) {
+    public void addArrayList(ArrayList<IQRDataItem> arrayList, IQRDataItem iqrDataItem) {
         mAllQRDataLists = arrayList;
+        mIQRDataItem = iqrDataItem;
     }
 
     @Override
@@ -114,8 +140,10 @@ public class QRSuperDataTask implements IQRDataTask {
         return mAllQRDataLists == null ? null : mAllQRDataLists;
     }
 
-    private void clearQRDataList() {
+    public void clearQRDataList() {
+        Log.d(TAG, "clearQRDataList mAllQRDataLists = " + mAllQRDataLists);
         if (mAllQRDataLists != null && mAllQRDataLists.size() > 0) {
+            Log.d(TAG, "clearQRDataList clear ");
             mAllQRDataLists.clear();
         }
     }

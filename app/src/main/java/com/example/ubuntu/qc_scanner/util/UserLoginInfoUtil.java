@@ -47,13 +47,21 @@ public class UserLoginInfoUtil {
         return new UserInfo(name, time);
     }
 
-    protected class UserInfo {
+    public class UserInfo {
         protected String username;
         protected String datetime;
 
         public UserInfo (String username,String datetime) {
             this.username = username;
             this.datetime = datetime;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public String getDateTime() {
+            return datetime;
         }
     }
 }

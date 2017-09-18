@@ -10,20 +10,13 @@ import java.io.Serializable;
 
 public class ExcelDataItem extends IQRDataItem {
 
-    public ExcelDataItem(String id, String groupID, String numberID, String dateTime, String valleyValue, String peakValue, String totalValue) {
+    public ExcelDataItem() {
+    }
+
+    public ExcelDataItem(String id, String groupID, String numberID, String totalValue, String valleyValue, String qrDataCaseName, String qrDataCaseType) {
         this.id = id;
         this.groupID = groupID;
         this.numberID = numberID;
-        this.dateTime = dateTime;
-        this.valleyValue = valleyValue;
-        this.peakValue = peakValue;
-        this.totalValue = totalValue;
-    }
-
-    public ExcelDataItem(String id, String groupID, String dateTime, String valleyValue, String totalValue, String qrDataCaseNumber, String qrDataCaseName, String qrDataCaseType) {
-        this.id = id;
-        this.groupID = groupID;
-        this.dateTime = dateTime;
         this.valleyValue = valleyValue;
         this.totalValue = totalValue;
         this.caseName = qrDataCaseName;
@@ -34,9 +27,9 @@ public class ExcelDataItem extends IQRDataItem {
         this.id = obj.optString("ID");
         this.groupID = obj.optString("groupID");
         this.numberID = obj.optString("numberID");
-        this.dateTime = obj.optString("dateTime");
-        this.valleyValue = obj.optString("valleyValue");
-        this.peakValue = obj.optString("peakValue");
         this.totalValue = obj.optString("totalValue");
+        this.valleyValue = obj.optString("valleyValue");
+        this.caseName = obj.optString("caseName");
+        this.caseType = obj.optString("caseType");
     }
 }

@@ -16,6 +16,7 @@ import com.example.ubuntu.qc_scanner.R;
 import com.example.ubuntu.qc_scanner.adapter.CardStackAdapter;
 import com.example.ubuntu.qc_scanner.database.BaseColumns;
 import com.example.ubuntu.qc_scanner.database.QRContentProviderMetaData;
+import com.example.ubuntu.qc_scanner.mode.IQRDataItem;
 import com.example.ubuntu.qc_scanner.mode.QRDataItem;
 import com.example.ubuntu.qc_scanner.task.QRQueryDataTask;
 import com.example.ubuntu.qc_scanner.task.QRSuperDataTask;
@@ -33,7 +34,7 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
 
     private static final String TAG = "QRDataFragment";
     private static final int MSG_DATA_TIMEOUT = 300;
-    private ArrayList<QRDataItem> mAllQRDataLists = null;
+    private ArrayList<IQRDataItem> mAllQRDataLists = null;
     private CardStackView mStackView;
     private CardStackAdapter mCardStackAdapter;
     private Context mContext;
@@ -47,8 +48,6 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
 
         mStackView = (CardStackView) qrDataLayout.findViewById(R.id.stackview_main);
         mStackView.setItemExpendListener(this);
-        mCardStackAdapter = new CardStackAdapter(getActivity());
-        mStackView.setAdapter(mCardStackAdapter);
 
         initData();
         return qrDataLayout;
@@ -59,23 +58,40 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
     }
 
     private void initData() {
-        Log.d(TAG, "initData ");
+        Log.d(TAG, "initData start ");
+        mCardStackAdapter = new CardStackAdapter(getActivity());
+        mStackView.setAdapter(mCardStackAdapter);
         QRSuperDataTask task = new QRQueryDataTask(mContext);
         if (task.isExistData()) {
-            task.addArrayList(mAllQRDataLists);
+            task.clearQRDataList();
+            task.addArrayList(mAllQRDataLists, new QRDataItem());
             task.queryAllData(task.getCursor());
             new Handler().postDelayed(
                     new Runnable() {
                         @Override
                         public void run() {
+                            Log.d(TAG, "initData has data updateData > mAllQRDataLists.size = " + mAllQRDataLists.size());
                             mCardStackAdapter.updateData(mAllQRDataLists);
                         }
                     }
                     , MSG_DATA_TIMEOUT
             );
         } else {
+            Log.d(TAG, "initData no data");
+            task.clearQRDataList();
+            new Handler().postDelayed(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d(TAG, "initData no data updateData > mAllQRDataLists.size = " + mAllQRDataLists.size());
+                            mCardStackAdapter.updateData(mAllQRDataLists);
+                        }
+                    }
+                    , MSG_DATA_TIMEOUT
+            );
             Toast.makeText(mContext, "没有显示的数据", Toast.LENGTH_SHORT).show();
         }
+        Log.d(TAG, "initData end ");
     }
 
     @Override
@@ -83,4 +99,12 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
         super.onDestroy();
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.d(TAG, "onHiddenChanged hidden= " + hidden);
+        if (!hidden) {
+            initData();
+        }
+    }
 }
