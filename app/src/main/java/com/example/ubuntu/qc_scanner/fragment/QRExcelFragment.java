@@ -7,10 +7,12 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.example.ubuntu.qc_scanner.R;
@@ -20,6 +22,7 @@ import com.example.ubuntu.qc_scanner.mode.ExcelDataItem;
 import com.example.ubuntu.qc_scanner.mode.QRDataCallback;
 import com.example.ubuntu.qc_scanner.util.ExcelUtil;
 import com.gospelware.liquidbutton.LiquidButton;
+import com.piotrek.customspinner.CustomSpinner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +45,8 @@ public class QRExcelFragment extends Fragment implements QRDataCallback,Fragment
     private QRExcelDataTask mQRExcelDataTask;
     private List<IQRDataItem> mAllDatas = new ArrayList<IQRDataItem>();
     private FragmentPermission mFragmentPermission;
-
+    private CustomSpinner mCustomSpinner;
+    private String mExcelNumber;
     private boolean permissionGranted = false;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,6 +69,7 @@ public class QRExcelFragment extends Fragment implements QRDataCallback,Fragment
         Log.d(TAG, "initViews");
         mExcelExportButton = (FButton) qrExcelLayout.findViewById(R.id.primary_excel_button);
         mActionButton = (LiquidButton) qrExcelLayout.findViewById(R.id.liquid_button);
+        mCustomSpinner = (CustomSpinner) qrExcelLayout.findViewById(R.id.excel_number_spinner);
         mExcelExportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,23 +87,48 @@ public class QRExcelFragment extends Fragment implements QRDataCallback,Fragment
             public void onProgressUpdate(float progress) {
             }
         });
+
+        //init spinner
+        String[] types = getResources().getStringArray(R.array.excel_number);
+        mCustomSpinner.initializeStringValues(types, getString(R.string.qrdata_case_number_hint));
+        mCustomSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (!adapterView.getSelectedItem().equals(getString(R.string.qrdata_case_type_hint))) {
+                    mExcelNumber = adapterView.getSelectedItem().toString();
+                    Log.d(TAG, "mExcelNumber = " + mExcelNumber);
+                } else {
+                    onNothingSelected(adapterView);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //TODO
+            }
+        });
     }
 
     private void startWriteExcelTask() {
         try {
             Log.d(TAG, "mCallback = " + mCallback);
             if (mCallback != null) {
-                mQRExcelDataTask = new QRExcelDataTask(getActivity(), mCallback);
-                if (mQRExcelDataTask.isExistData()) {
-                    mQRExcelDataTask.clearQRDataList();
-                    mQRExcelDataTask.addArrayList(mQRExcelDataTask.mAllQRDataLists, new ExcelDataItem());
-                    mQRExcelDataTask.queryAllData(mQRExcelDataTask.getCursor());
-                    mExcelExportButton.setVisibility(View.GONE);
-                    mActionButton.setVisibility(View.VISIBLE);
-                    mActionButton.startPour();
-                    mActionButton.setAutoPlay(true);
+                if (!TextUtils.isEmpty(mExcelNumber)) {
+                    mQRExcelDataTask = new QRExcelDataTask(getActivity(), mCallback);
+                    mQRExcelDataTask.addQueryLimitNumber(mExcelNumber);
+                    if (mQRExcelDataTask.isExistData()) {
+                        mQRExcelDataTask.clearQRDataList();
+                        mQRExcelDataTask.addArrayList(mQRExcelDataTask.mAllQRDataLists, new ExcelDataItem());
+                        mQRExcelDataTask.queryAllData(mQRExcelDataTask.getCursor());
+                        mExcelExportButton.setVisibility(View.INVISIBLE);
+                        mCustomSpinner.setVisibility(View.INVISIBLE);
+                        mActionButton.setVisibility(View.VISIBLE);
+                        mActionButton.startPour();
+                        mActionButton.setAutoPlay(true);
+                    } else {
+                        Toast.makeText(getActivity(), "没有可以导出的数据！", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(getActivity(), "没有可以导出的数据！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getActivity().getString(R.string.qrdata_case_number_hint), Toast.LENGTH_SHORT).show();
                 }
             }
         } catch (Exception e) {
@@ -116,6 +146,8 @@ public class QRExcelFragment extends Fragment implements QRDataCallback,Fragment
             try {
                 ExcelUtil.writeExcel(getActivity(), mAllDatas, "qrdata");
                 mActionButton.finishPour();
+                mExcelExportButton.setVisibility(View.VISIBLE);
+                mCustomSpinner.setVisibility(View.VISIBLE);
             } catch (Exception e) {
                 Log.e(TAG, "e = " + e);
             }

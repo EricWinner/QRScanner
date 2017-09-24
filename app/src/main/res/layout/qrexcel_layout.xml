@@ -11,20 +11,35 @@
         android:id="@+id/basic_button"
         android:layout_width="match_parent"
         android:layout_height="130dp"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="15dp"
+        >
 
-        <info.hoang8f.widget.FButton
-            android:id="@+id/primary_excel_button"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|top"
-            android:layout_margin="10dp"
-            android:minHeight="@dimen/demo_button_min_height"
-            android:minWidth="@dimen/demo_button_min_width"
-            android:text="导出Excel"
-            android:textColor="@android:color/white"
-            fbutton:buttonColor="@color/fbutton_color_turquoise"
-            fbutton:shadowEnabled="true"/>
+            android:layout_height="130dp"
+            android:orientation="vertical">
+
+            <com.piotrek.customspinner.CustomSpinner
+                android:id="@+id/excel_number_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginLeft="10dp"
+                android:background="@android:color/white">
+            </com.piotrek.customspinner.CustomSpinner>
+
+            <info.hoang8f.widget.FButton
+                android:id="@+id/primary_excel_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|top"
+                android:layout_margin="10dp"
+                android:minHeight="@dimen/demo_button_min_height"
+                android:minWidth="@dimen/demo_button_min_width"
+                android:text="导出Excel"
+                android:textColor="@android:color/white"
+                fbutton:buttonColor="@color/fbutton_color_turquoise"
+                fbutton:shadowEnabled="true"/>
+        </LinearLayout>
     </FrameLayout>
 
 

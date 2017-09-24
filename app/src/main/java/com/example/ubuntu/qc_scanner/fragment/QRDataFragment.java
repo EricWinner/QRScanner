@@ -64,6 +64,7 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
         QRSuperDataTask task = new QRQueryDataTask(mContext);
         if (task.isExistData()) {
             task.clearQRDataList();
+            mAllQRDataLists.clear();
             task.addArrayList(mAllQRDataLists, new QRDataItem());
             task.queryAllData(task.getCursor());
             new Handler().postDelayed(
@@ -79,6 +80,7 @@ public class QRDataFragment extends Fragment implements CardStackView.ItemExpend
         } else {
             Log.d(TAG, "initData no data");
             task.clearQRDataList();
+            mAllQRDataLists.clear();
             new Handler().postDelayed(
                     new Runnable() {
                         @Override

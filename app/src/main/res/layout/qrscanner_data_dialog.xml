@@ -49,8 +49,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/input_group_id"
-            android:background="@drawable/edittext_input_backgroud"
-            android:inputType="numberDecimal"/>
+            android:background="@drawable/edittext_input_backgroud"/>
     </RelativeLayout>
 
     <ImageView

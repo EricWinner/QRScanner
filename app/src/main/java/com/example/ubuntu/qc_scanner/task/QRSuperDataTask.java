@@ -3,6 +3,7 @@ package com.example.ubuntu.qc_scanner.task;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,6 +13,8 @@ import com.example.ubuntu.qc_scanner.mode.ExcelDataItem;
 import com.example.ubuntu.qc_scanner.mode.IQRDataItem;
 import com.example.ubuntu.qc_scanner.mode.QRDataCallback;
 import com.example.ubuntu.qc_scanner.mode.QRDataItem;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -27,6 +30,7 @@ public class QRSuperDataTask implements IQRDataTask {
     private Cursor mCursor;
     private Context mContext;
     private QRDataCallback mCallback;
+    private String mExcelExportNumber;
 
     private int mCount;
     public ArrayList<IQRDataItem> mAllQRDataLists = null;
@@ -52,7 +56,13 @@ public class QRSuperDataTask implements IQRDataTask {
                 BaseColumns.QRDATA_CASE_NAME, BaseColumns.QRDATA_CASE_TYPE
         };
         Uri mUri = QRContentProviderMetaData.QRTableMetaData.CONTENT_URI;
-        Cursor cursor = mContext.getContentResolver().query(mUri, columns, null, null, null);
+        Cursor cursor;
+        Log.d(TAG, "isExistData mExcelExportNumber = " + mExcelExportNumber);
+        if (TextUtils.isEmpty(mExcelExportNumber) || "all".equals(mExcelExportNumber)) {
+            cursor = mContext.getContentResolver().query(mUri, columns, null, null, null);
+        } else {
+            cursor = mContext.getContentResolver().query(mUri, columns, null, null, BaseColumns.QRDATA_ID + " ASC limit " + mExcelExportNumber);
+        }
 
         mCursor = cursor;
         mCount = cursor.getCount();
@@ -138,6 +148,11 @@ public class QRSuperDataTask implements IQRDataTask {
     @Override
     public ArrayList<? extends IQRDataItem> getDataArrayList() {
         return mAllQRDataLists == null ? null : mAllQRDataLists;
+    }
+
+    @Override
+    public void addQueryLimitNumber(String number) {
+        mExcelExportNumber = number;
     }
 
     public void clearQRDataList() {

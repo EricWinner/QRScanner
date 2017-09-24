@@ -131,7 +131,6 @@ public class SimpleCaptureActivity extends CaptureActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (!adapterView.getSelectedItem().equals(getString(R.string.qrdata_case_type_hint))) {
-                    //TODO
                     mDataCaseType = adapterView.getSelectedItem().toString();
                 } else {
                     onNothingSelected(adapterView);

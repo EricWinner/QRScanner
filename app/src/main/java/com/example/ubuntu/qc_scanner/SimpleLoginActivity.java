@@ -9,10 +9,14 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ubuntu.qc_scanner.util.DateUtils;
 import com.example.ubuntu.qc_scanner.util.UserLoginInfoUtil;
 import com.shitij.goyal.slidebutton.SwipeButton;
+
+import org.w3c.dom.Text;
 
 import cn.qqtheme.framework.picker.DatePicker;
 import cn.qqtheme.framework.util.ConvertUtils;
@@ -29,6 +33,7 @@ public class SimpleLoginActivity extends BaseActivity implements View.OnClickLis
     private EditText mInputUsernameText;
     private LiveButton mChooseDateButton;
     private SwipeButton mSubmitButton;
+    private TextView mTimeTextView;
     private Context mContext;
 
     private String mUserName;
@@ -44,6 +49,7 @@ public class SimpleLoginActivity extends BaseActivity implements View.OnClickLis
         mInputUsernameText = (EditText) this.findViewById(R.id.input_username);
         mChooseDateButton = (LiveButton) this.findViewById(R.id.choose_date_button);
         mSubmitButton = (SwipeButton) this.findViewById(R.id.simple_submit);
+        mTimeTextView = (TextView) this.findViewById(R.id.choose_date_view);
 
         mInputUsernameText.addTextChangedListener(new EditChangedListener());
         mChooseDateButton.setOnClickListener(this);
@@ -63,6 +69,9 @@ public class SimpleLoginActivity extends BaseActivity implements View.OnClickLis
                 submitToQR();
             }
         });
+
+        mDateTime = DateUtils.getTodayDate();
+        mTimeTextView.setText(mDateTime);
     }
 
     @Override

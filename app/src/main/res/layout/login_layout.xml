@@ -28,6 +28,19 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/choose_date_view"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/input_username"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:singleLine="true"
+        android:text=""/>
+
     <ru.katso.livebutton.LiveButton
         xmlns:livebutton="http://schemas.android.com/apk/res-auto"
         android:id="@+id/choose_date_button"
@@ -45,7 +58,8 @@
         livebutton:corners="4dp"
         livebutton:normalHeight="6dp"
         livebutton:pressedHeight="2dp"
-        livebutton:shadowColor="#5df964"/>
+        livebutton:shadowColor="#5df964"
+        android:visibility="invisible"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

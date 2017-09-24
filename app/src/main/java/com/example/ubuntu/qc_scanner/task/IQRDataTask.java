@@ -20,5 +20,6 @@ public interface IQRDataTask {
     int clearAllData();
     void addArrayList(ArrayList<IQRDataItem> arrayList,  IQRDataItem iqrDataItem);
     ArrayList<? extends IQRDataItem> getDataArrayList();
+    void addQueryLimitNumber(String number);
 
 }
